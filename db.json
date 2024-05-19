@@ -1,0 +1,56 @@
+{
+    "usuarios": [
+        {
+            "id": 1,
+            "nombre": "Juan Pérez",
+            "dirección": "Calle Falsa 123, Bucaramanga",
+            "contacto": "juan.perez@ejemplo.com",
+            "categoria": "cliente regular",
+            "historial_servicios": [
+            {
+                "servicio": "Internet de Fibra Óptica",
+                "fecha": "2024-01-15"
+            },
+            {
+                "servicio": "Plan pospago",
+                "fecha": "2024-02-20"
+            }
+            ]
+        },
+        {
+            "id": 2,
+            "nombre": "Ana Gómez",
+            "dirección": "Avenida Siempre Viva 456, Bucaramanga",
+            "contacto": "ana.gomez@ejemplo.com",
+            "categoria": "nuevo cliente",
+            "historial_servicios": [
+            {
+                "servicio": "Plan prepago",
+                "fecha": "2024-03-05"
+            }
+            ]
+        },
+        {
+            "id": 3,
+            "nombre": "Carlos Ruiz",
+            "dirección": "Diagonal Inventada 789, Bucaramanga",
+            "contacto": "carlos.ruiz@ejemplo.com",
+            "categoria": "cliente leal",
+            "historial_servicios": [
+            {
+                "servicio": "Internet de Fibra Óptica",
+                "fecha": "2023-11-10"
+            },
+            {
+                "servicio": "Plan pospago",
+                "fecha": "2024-01-25"
+            },
+            {
+                "servicio": "Renovación equipo móvil",
+                "fecha": "2024-04-10"
+            }
+            ]
+        }
+    ]
+}
+  
