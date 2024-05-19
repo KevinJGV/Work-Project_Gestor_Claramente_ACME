@@ -1,6 +1,6 @@
 import json
 
-# Formato docstring para copiar
+# Formato docstring para copiar (esta linea no)
 #     '''
 #     ==> Recibe
 #     <== Devuelve
@@ -39,10 +39,29 @@ def msgs(op):
         print("\n(Enter, regresar)")
 
 
+def validar_ruta_main(msg):
+    '''
+    Validador de archivo "main.py·
+    ==> Recibe String
+    <== Devuelve String
+    '''
+    while True:
+        msgs(0)
+        try:
+            ruta = str(input(msg))
+            if ruta.endswith("main.py"):
+                return ruta
+            else:
+                raise ValueError
+        except:
+            input("Asegurese de que la ruta es del archivo 'main.py'. \nIntente nuevamente\n(Enter para continuar)")
+
+
 def validar_ruta_json():
     '''   Validador de ruta y formato .json de archivo
     <== Devuelve Str
     '''
+    msgs(1)
     while True:
         ruta = str(
             input("> Ingrese la ruta relativa del archivo de datos a procesar: "))
@@ -72,10 +91,11 @@ def opener(ruta):
 
 def menu_selector(*opcs, **kwargs):
     '''
-    Menu generico, recibe funciones como argumento a las cuales accede a solicitud del usuario
+    Menu generico, recibe funciones y argumentos para estas como argumentos a las cuales se accede a solicitud del usuario 
     ==> Recibe (Argumentos de longitud variable, Argumentos de palabra clave)
     <== Devuelve None
     '''
+    msgs(2)
     while True:
         try:
             op = int_val("> ")
