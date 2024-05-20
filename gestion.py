@@ -15,8 +15,9 @@ def gestiones(data_in_kwargs):
     '''
     unpacked_data = data_in_kwargs.get("db")
     msgs(3)
-    menu_selector(mostrar_usuario_s, gestion_usuario, db=unpacked_data)
+    res = menu_selector(mostrar_usuario_s, gestion_usuario, db=unpacked_data)
     msgs(2)
+    return res
 
 def mostrar_usuario_s(data_in_kwargs, es_paginado=True):
     '''
@@ -70,62 +71,64 @@ def mostrar_usuario_s(data_in_kwargs, es_paginado=True):
 
 def gestion_usuario(data_in_kwargs):
     print(">>> Gestionar usuario")
-    unpacked_data = data_in_kwargs.get("db")
-    user_id = int_val("Ingresa ID existente para gestionar usuario o uno no registrado para crear perfil de usuario (0 - Cancelar)\n> ")
+    data_in_kwargs = data_in_kwargs.get("db")
+    unpacked_data = data_in_kwargs.get("usuarios")
     while True:
+        user_id = int_val("Ingresa ID existente para gestionar usuario o uno no registrado para crear perfil de usuario (0 - Cancelar)\n> ")
         if user_id != 0:
-            user = None
-            for user_in_i in unpacked_data:
+            for pos, user_in_i in enumerate(unpacked_data):
                 if user_in_i["id"] == user_id:
+                    print("Usuario encontrado... Procesando...")
                     user = user_in_i
-                    break
-            if user is not None:
-                while True:
-                    mostrar_usuario_s(user, es_paginado=False)
-                    op = int_val("[1 - Editar Nombre]   [2 - Editar direccion]   [3 - Editar contacto]   [4 - Editar categoria manualmente -NO RECOMENDADO]\n[5 - Contratar/Descontratar Servicio]   [6 - ELIMINAR USUARIO]   [0 - Cancelar]")
-                    if op >= 0 and op <= 6:
-                        if op == 1 or op == 2 or op == 3:
-                            menu_selector(editar_perfil_usuario,es_recursivo=True, db=user, key=op)
-                            continuar = int_val("¿Desea continuar gestionando al usuario?\n 1 - Continuar    2 - Salir")
-                            if continuar == 2:
+                    while True:
+                        mostrar_usuario_s(user, es_paginado=False)
+                        op = int_val("[1 - Editar Nombre]   [2 - Editar direccion]   [3 - Editar contacto]   [4 - Editar categoria manualmente -NO RECOMENDADO]\n[5 - Contratar/Descontratar Servicio]   [6 - ELIMINAR USUARIO]   [0 - Cancelar]\n> ")
+                        if op >= 0 and op <= 6:
+                            if op == 1 or op == 2 or op == 3:
+                                res = editar_perfil_usuario(op, user)
+                                continuar = int_val("¿Desea continuar gestionando al usuario?\n 1 - Continuar    2 - Salir")
+                                unpacked_data[pos] = res
+                                if continuar == 2:
+                                    break
+                            elif op == 4:
+                                print("funcionalidad_en_desarrollo")
+                            elif op == 5:
+                                print("funcionalidad_en_desarrollo")
+                            elif op == 6:
+                                eliminar_usuario(unpacked_data,user_id)
+                            else:
                                 break
-                        elif op == 4:
-                            print("funcionalidad_en_desarrollo")
-                        elif op == 5:
-                            print("funcionalidad_en_desarrollo")
-                        elif op == 6:
-                            eliminar_usuario(unpacked_data,user_id)
                         else:
-                            break
-                    else:
-                        input("Seleccione una opcion dada\n[Enter - Reintentar]")
-
-            else:
-                input("ID no encontrada\n(Enter para reintentar)")
+                            input("Seleccione una opcion dada\n[Enter - Reintentar]")
+                    break
+            input("ID no encontrada\n(Enter para reintentar)")
         else:
             break
     msgs(3)
 
-def editar_perfil_usuario(data_in_kwargs):
+def editar_perfil_usuario(op, data):
     '''
     Edita informacion del usuario seleccionado previamente
     ==> Recibe Diccionario
     '''
-    unpacked_key = data_in_kwargs.get("key")
-    unpacked_data = data_in_kwargs.get("db")
-    if unpacked_key == 1:
-        unpacked_key = "nombre"
-    elif unpacked_key == 2:
-        unpacked_key = "dirección"
-    elif unpacked_key == 3:
-        unpacked_key = "contacto"
-    print(f">>>> Editando {unpacked_key} de usuario")
+    if op == 1:
+        op = "nombre"
+    elif op == 2:
+        op = "dirección"
+    elif op == 3:
+        op = "contacto"
+    print(f">>>> Editando {op} de usuario")
     nuevo_dato = None
-    if unpacked_key != "contacto":
-        nuevo_dato = str_val(f"Nuevo {unpacked_key} de usuario ('cancelar' para Cancelar)\n> ")
+    if op != "contacto":
+        while True:
+            nuevo_dato = str_val(f"Nuevo {op} de usuario ('cancelar' para Cancelar)\n> ")
+            if not isinstance(int(nuevo_dato), int) or nuevo_dato == "cancelar":
+                break
+            else:
+                input(f"{op.title()} debe ser alfanumerico [Enter - Reintentar]")
     else:
         while True:
-            nuevo_dato = str_val(f"Nuevo {unpacked_key} de usuario ('cancelar' para Cancelar)\n> ")
+            nuevo_dato = str_val(f"Nuevo {op} de usuario ('cancelar' para Cancelar)\n> ")
             if validar_email_regexp(nuevo_dato) or nuevo_dato == "cancelar":
                 break
             else:
@@ -133,7 +136,8 @@ def editar_perfil_usuario(data_in_kwargs):
     if nuevo_dato.lower() == "cancelar":
         print("> Cancelando...")
     else:
-        unpacked_data[unpacked_key] = nuevo_dato
+        data[op] = nuevo_dato
+        return data
 
 def eliminar_usuario(data,codigo):
     for pos, user in enumerate(data):
@@ -143,6 +147,8 @@ def eliminar_usuario(data,codigo):
                 op = str(input("> "))
                 if op == "BORRAR":
                     user[pos].pop()
+                    input("Usuario eliminado satisfactoriamente\n Gestion añadida al registro de movimientos. PENDIENTE AÑADIR FUNCIONALIDAD")
+                    return user
                 else:
                     break
             else:
