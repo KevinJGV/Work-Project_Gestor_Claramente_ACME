@@ -112,22 +112,23 @@ def opener(ruta):
         return data
 
 
-def menu_selector(*opcs, es_recursivo=False,**kwargs):
+def menu_selector(*opcs, es_return=False,**kwargs):
     '''
     Menu generico, recibe funciones y argumentos para estas como argumentos a las cuales se accede a solicitud del usuario 
     ==> Recibe (Argumentos de longitud variable, Argumentos de palabra clave)
+    ==> Devuelve lo que devuelve la funcion señalada en ella
     '''
     while True:
         try:
             op = int_val("> ")
-            if not es_recursivo:
-                if op == 0:
-                    break
-                elif op <= len(opcs):
+            if op == 0:
+                break
+            elif op <= len(opcs):
+                if not es_return:
                     opcs[op-1](kwargs)
                 else:
-                    raise ValueError
+                    return opcs[op-1](kwargs)
             else:
-                opcs[0](kwargs)
+                raise ValueError
         except:
             input("Ingrese valor valido. \nIntente nuevamente\n(Enter para continuar)")
