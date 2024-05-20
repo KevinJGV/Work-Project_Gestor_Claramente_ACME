@@ -1,4 +1,5 @@
 import json
+import re
 
 # Formato docstring para copiar (esta linea no)
 #     '''
@@ -21,11 +22,29 @@ def int_val(msg):
             input("Error de ingreso \nIntente nuevamente\n(Enter para continuar)")
 
 
+def str_val(msg):
+    '''
+    Validador de tipo string
+    ==> Recibe String
+    <== Devuelve String
+    '''
+    while True:
+        try:
+            prompt = str(input(msg))
+            return prompt
+        except:
+            input("Error de ingreso, debe ser alfanumerico \nIntente nuevamente\n(Enter para continuar)")
+
+
+def validar_email_regexp(email):
+    pattern = r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
+    return re.match(pattern, email) is not None
+
+
 def msgs(op):
     '''
     Visualizador de mensajes para el algoritmo
     ==> Recibe Numero entero
-    <== Devuelve None
     '''
     if op == 0:
         print("Para inicializar ingrese la ruta relativa actual de este scprit 'main.py: ")
@@ -33,9 +52,13 @@ def msgs(op):
         print("=" * 6 + " CLARAMENTE ACME - PROGRAMA GESTOR v1 " + "=" * 6 +
               "\nPara iniciar porfavor asegurese de tener un archivo .json con el cual trabajar.")
     elif op == 2:
-        print("=" * 6 + " MENU " + "=" * 6 +
+        print("=" * 6 + " MENU PRINCIPAL " + "=" * 6 +
               "\n1 - Registro y Gestión de Usuarios\n2 - Seguimiento del Historial de Usuarios\n3 - Personalización de Servicios\n4 - Gestión de las ventas\n0 - Salir")
     elif op == 3:
+        print("\n>> Registro y Gestión de Usuarios\n1 - Visualizar todos los usuarios\n2 - Gestionar usuario\n0 - Volver")
+    elif op == 4:
+        print("1 - Actualizar datos del usuario")
+    elif op == 9:
         print("\n(Enter, regresar)")
 
 
@@ -89,21 +112,22 @@ def opener(ruta):
         return data
 
 
-def menu_selector(*opcs, **kwargs):
+def menu_selector(*opcs, es_recursivo=False,**kwargs):
     '''
     Menu generico, recibe funciones y argumentos para estas como argumentos a las cuales se accede a solicitud del usuario 
     ==> Recibe (Argumentos de longitud variable, Argumentos de palabra clave)
-    <== Devuelve None
     '''
-    msgs(2)
     while True:
         try:
             op = int_val("> ")
-            if op == 0:
-                break
-            elif op <= len(opcs):
-                opcs[op-1](kwargs)
+            if not es_recursivo:
+                if op == 0:
+                    break
+                elif op <= len(opcs):
+                    opcs[op-1](kwargs)
+                else:
+                    raise ValueError
             else:
-                raise ValueError
+                opcs[0](kwargs)
         except:
             input("Ingrese valor valido. \nIntente nuevamente\n(Enter para continuar)")
