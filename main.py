@@ -1,7 +1,7 @@
-from gestion import *
-from reportes import *
-from ventas import *
-
+from funciones_main import *
+from imports_gestion import *
+from imports_gestion import *
+from imports_gestion import *
 
 ruta_actual = validar_ruta_main("> ")
 json_path = validar_ruta_json()
