@@ -2,55 +2,220 @@
     "usuarios": [
         {
             "id": 1,
-            "nombre": "Juan Pérez",
-            "dirección": "Calle Falsa 123, Bucaramanga",
-            "contacto": "juan.perez@ejemplo.com",
-            "categoria": "cliente regular",
-            "historial_servicios": [
-            {
-                "servicio": "Internet de Fibra Óptica",
-                "fecha": "2024-01-15"
-            },
-            {
-                "servicio": "Plan pospago",
-                "fecha": "2024-02-20"
-            }
+            "nombre": "Carlos Gómez",
+            "dirección": "Carrera 45 #30-16, Medellín",
+            "contacto": "carlos.gomez@ejemplo.co",
+            "categoria": "cliente nuevo",
+            "antiguedad": "2024-05-01",
+            "servicios": [
+                {
+                    "servicio": "Plan prepago",
+                    "fecha": "2024-05-10"
+                }
             ]
         },
         {
             "id": 2,
-            "nombre": "Ana Gómez",
-            "dirección": "Avenida Siempre Viva 456, Bucaramanga",
-            "contacto": "ana.gomez@ejemplo.com",
-            "categoria": "nuevo cliente",
-            "historial_servicios": [
-            {
-                "servicio": "Plan prepago",
-                "fecha": "2024-03-05"
-            }
+            "nombre": "Luisa Fernanda Martínez",
+            "dirección": "Calle 70 #22-08, Bogotá",
+            "contacto": "luisa.martinez@ejemplo.co",
+            "categoria": "cliente leal",
+            "antiguedad": "2020-03-15",
+            "servicios": [
+                {
+                    "servicio": "Internet de Fibra Óptica",
+                    "fecha": "2020-04-05"
+                },
+                {
+                    "servicio": "Plan pospago",
+                    "fecha": "2021-08-23"
+                }
             ]
         },
         {
             "id": 3,
-            "nombre": "Carlos Ruiz",
-            "dirección": "Diagonal Inventada 789, Bucaramanga",
-            "contacto": "carlos.ruiz@ejemplo.com",
+            "nombre": "Sofía Castro",
+            "dirección": "Diagonal 33 #15-55, Cali",
+            "contacto": "sofia.castro@ejemplo.co",
+            "categoria": "cliente regular",
+            "antiguedad": "2022-11-07",
+            "servicios": [
+                {
+                    "servicio": "Plan pospago",
+                    "fecha": "2022-12-15"
+                }
+            ]
+        },
+        {
+            "id": 4,
+            "nombre": "Andrea Ramírez",
+            "dirección": "Avenida 5 #44-86, Barranquilla",
+            "contacto": "andrea.ramirez@ejemplo.co",
+            "categoria": "cliente nuevo",
+            "antiguedad": "2024-05-19",
+            "servicios": [
+                {
+                    "servicio": "TV hogar",
+                    "fecha": "2024-05-20"
+                },
+                {
+                    "servicio": "Renovación de equipo móvil",
+                    "fecha": "2024-05-21"
+                }
+            ]
+        },
+        {
+            "id": 5,
+            "nombre": "Juan Esteban Vargas",
+            "dirección": "Calle 90 #10-80, Bucaramanga",
+            "contacto": "juan.vargas@ejemplo.co",
             "categoria": "cliente leal",
-            "historial_servicios": [
-            {
-                "servicio": "Internet de Fibra Óptica",
-                "fecha": "2023-11-10"
-            },
-            {
-                "servicio": "Plan pospago",
-                "fecha": "2024-01-25"
-            },
-            {
-                "servicio": "Renovación equipo móvil",
-                "fecha": "2024-04-10"
-            }
+            "antiguedad": "2019-06-30",
+            "servicios": [
+                {
+                    "servicio": "Internet de Fibra Óptica",
+                    "fecha": "2019-07-15"
+                },
+                {
+                    "servicio": "Plan pospago",
+                    "fecha": "2020-01-20"
+                },
+                {
+                    "servicio": "Renovación de equipo móvil",
+                    "fecha": "2021-05-05"
+                }
+            ]
+        },
+        {
+            "id": 6,
+            "nombre": "Mónica López",
+            "dirección": "Transversal 27 #50-30, Santa Marta",
+            "contacto": "monica.lopez@ejemplo.co",
+            "categoria": "cliente regular",
+            "antiguedad": "2023-08-10",
+            "servicios": [
+                {
+                    "servicio": "Plan prepago",
+                    "fecha": "2023-09-01"
+                },
+                {
+                    "servicio": "TV hogar",
+                    "fecha": "2023-10-20"
+                }
+            ]
+        },
+        {
+            "id": 7,
+            "nombre": "Carlos Gómez",
+            "dirección": "Carrera 15 #28-45, Medellín",
+            "contacto": "carlos.gomez@ejemplo.co",
+            "categoria": "cliente nuevo",
+            "antiguedad": "2024-05-19",
+            "servicios": [
+                {
+                    "servicio": "Plan pospago",
+                    "fecha": "2024-05-22"
+                },
+                {
+                    "servicio": "Internet de Fibra Óptica",
+                    "fecha": "2024-05-23"
+                }
+            ]
+        },
+        {
+            "id": 8,
+            "nombre": "Luisa Fernanda Pérez",
+            "dirección": "Diagonal 33 #66-88, Cali",
+            "contacto": "luisa.perez@ejemplo.co",
+            "categoria": "cliente leal",
+            "antiguedad": "2018-04-10",
+            "servicios": [
+                {
+                    "servicio": "Renovación de equipo móvil",
+                    "fecha": "2018-05-10"
+                },
+                {
+                    "servicio": "TV hogar",
+                    "fecha": "2019-03-15"
+                },
+                {
+                    "servicio": "Plan pospago",
+                    "fecha": "2020-07-20"
+                }
+            ]
+        },
+        {
+            "id": 9,
+            "nombre": "Sofía Martínez",
+            "dirección": "Avenida Libertadores #50-76, Cúcuta",
+            "contacto": "sofia.martinez@ejemplo.co",
+            "categoria": "cliente regular",
+            "antiguedad": "2022-11-05",
+            "servicios": [
+                {
+                    "servicio": "Internet de Fibra Óptica",
+                    "fecha": "2022-12-01"
+                },
+                {
+                    "servicio": "Plan prepago",
+                    "fecha": "2023-01-20"
+                }
+            ]
+        },
+        {
+            "id": 10,
+            "nombre": "Andrea Castillo",
+            "dirección": "Calle 70 #45-22, Barranquilla",
+            "contacto": "andrea.castillo@ejemplo.co",
+            "categoria": "cliente nuevo",
+            "antiguedad": "2024-05-20",
+            "servicios": [
+                {
+                    "servicio": "Plan pospago",
+                    "fecha": "2024-05-24"
+                }
+            ]
+        },
+        {
+            "id": 11,
+            "nombre": "Juan David Moreno",
+            "dirección": "Calle 5 #12-34, Bucaramanga",
+            "contacto": "juan.moreno@ejemplo.co",
+            "categoria": "cliente leal",
+            "antiguedad": "2019-08-15",
+            "servicios": [
+                {
+                    "servicio": "Internet de Fibra Óptica",
+                    "fecha": "2019-09-10"
+                },
+                {
+                    "servicio": "Plan pospago",
+                    "fecha": "2020-02-20"
+                },
+                {
+                    "servicio": "TV hogar",
+                    "fecha": "2021-03-30"
+                }
+            ]
+        },
+        {
+            "id": 12,
+            "nombre": "Mariana López",
+            "dirección": "Transversal 27 #33-56, Cartagena",
+            "contacto": "mariana.lopez@ejemplo.co",
+            "categoria": "cliente regular",
+            "antiguedad": "2023-06-12",
+            "servicios": [
+                {
+                    "servicio": "Plan prepago",
+                    "fecha": "2023-07-05"
+                },
+                {
+                    "servicio": "Renovación de equipo móvil",
+                    "fecha": "2023-08-21"
+                }
             ]
         }
+        
     ]
 }
-  
