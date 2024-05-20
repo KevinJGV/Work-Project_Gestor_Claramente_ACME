@@ -47,8 +47,7 @@ def mostrar_usuario_s(data_in_kwargs, es_paginado=True):
                 line = " | ".join(list(dic.values())) + "\n"
                 current_page += line
             print(current_page)
-            print(f"\t< {
-                start} / {end} >\n[0 - Pagina anterior]    [1 - Pagina siguiente]\n[2 - Volver]")
+            print(f"\t< {start} / {end} >\n[0 - Pagina anterior]    [1 - Pagina siguiente]\n[2 - Volver]")
             movimiento = int_val("> ")
             if movimiento == 2:
                 break
@@ -67,7 +66,7 @@ def mostrar_usuario_s(data_in_kwargs, es_paginado=True):
                 print(f"{key.upper()} => {data_in_kwargs[key]}")
         print("SERVICIOS ACTUALES DEL USUARIO:")
         for servicio in data_in_kwargs["servicios"]:
-            print(f"-> {servicio["servicio"]}")
+            print(f"-> {servicio['servicio']}")
 
 def gestion_usuario(data_in_kwargs):
     print(">>> Gestionar usuario")
@@ -85,16 +84,19 @@ def gestion_usuario(data_in_kwargs):
                     mostrar_usuario_s(user, es_paginado=False)
                     op = int_val("[1 - Editar Nombre]   [2 - Editar direccion]   [3 - Editar contacto]   [4 - Editar categoria manualmente -NO RECOMENDADO]\n[5 - Contratar/Descontratar Servicio]   [6 - ELIMINAR USUARIO]   [0 - Cancelar]")
                     if op >= 0 and op <= 6:
-                        if op != 5 or op != 6 or op != 0:
+                        if op == 1 or op == 2 or op == 3:
                             menu_selector(editar_perfil_usuario,es_recursivo=True, db=user, key=op)
                             continuar = int_val("¿Desea continuar gestionando al usuario?\n 1 - Continuar    2 - Salir")
                             if continuar == 2:
                                 break
+                        elif op == 4:
+                            print("funcionalidad_en_desarrollo")
+                        elif op == 5:
+                            print("funcionalidad_en_desarrollo")
+                        elif op == 6:
+                            eliminar_usuario(unpacked_data,user_id)
                         else:
-                            if op == 5:
-                                funcionalidad_en_desarrollo()
-                            else:
-                                funcionalidad_en_desarrollo()
+                            break
                     else:
                         input("Seleccione una opcion dada\n[Enter - Reintentar]")
 
@@ -117,8 +119,6 @@ def editar_perfil_usuario(data_in_kwargs):
         unpacked_key = "dirección"
     elif unpacked_key == 3:
         unpacked_key = "contacto"
-    elif unpacked_key == 4:
-        unpacked_key = "categoria"
     print(f">>>> Editando {unpacked_key} de usuario")
     nuevo_dato = None
     if unpacked_key != "contacto":
@@ -134,3 +134,17 @@ def editar_perfil_usuario(data_in_kwargs):
         print("> Cancelando...")
     else:
         unpacked_data[unpacked_key] = nuevo_dato
+
+def eliminar_usuario(data,codigo):
+    for pos, user in enumerate(data):
+        if user["id"] == codigo:
+            if len(user["servicios"]) == 0:
+                print("Esta accion es irreversible\n- 'BORRAR' para conituar\n- Cualquier otro ingreso para abortar")
+                op = str(input("> "))
+                if op == "BORRAR":
+                    user[pos].pop()
+                else:
+                    break
+            else:
+                input("Accion no permitida.\nEl usuario seleccionado no debe tener servicios contradados. Se requiere descontratar todos los servicios. [Enter - Cancelar]")
+                break
