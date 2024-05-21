@@ -13,9 +13,8 @@ def gestiones(data_in_kwargs):
     Funcion para dar como argumento de longitud variable a funcion Menu_selector()
     ==> Recibe Argumentos de palabra clave
     '''
-    unpacked_data = data_in_kwargs.get("db")
     msgs(3)
-    res = menu_selector(mostrar_usuario_s, gestion_usuario, db=unpacked_data)
+    res = menu_selector(mostrar_usuario_s, gestion_usuario, db=data_in_kwargs)
     msgs(2)
     return res
 
@@ -72,7 +71,7 @@ def mostrar_usuario_s(data_in_kwargs, es_paginado=True):
 def gestion_usuario(data_in_kwargs):
     print(">>> Gestionar usuario")
     data_in_kwargs = data_in_kwargs.get("db")
-    unpacked_data = data_in_kwargs.get("usuarios")
+    unpacked_data = data_in_kwargs.get("db").get("usuarios")
     while True:
         user_id = int_val("Ingresa ID existente para gestionar usuario o uno no registrado para crear perfil de usuario (0 - Cancelar)\n> ")
         if user_id != 0:
@@ -87,7 +86,7 @@ def gestion_usuario(data_in_kwargs):
                                 res = editar_perfil_usuario(op, data_in_kwargs, pos)
                                 if res is not None:
                                     data_in_kwargs = res
-                                    continuar = int_val("¿Desea continuar gestionando al usuario?\n 1 - Continuar    2 - Salir")
+                                    continuar = int_val("¿Desea continuar gestionando al usuario?\n 1 - Continuar    2 - Salir\n> ")
                                     if continuar == 2:
                                         break
                             elif op == 4:
@@ -95,7 +94,7 @@ def gestion_usuario(data_in_kwargs):
                             elif op == 5:
                                 print("funcionalidad_en_desarrollo")
                             elif op == 6:
-                                res = eliminar_usuario(data_in_kwargs,user_id)
+                                res = eliminar_usuario(data_in_kwargs,pos)
                                 if res is not None:
                                     data_in_kwargs = res
                                 break
@@ -104,7 +103,7 @@ def gestion_usuario(data_in_kwargs):
                         else:
                             input("Seleccione una opcion dada\n[Enter - Reintentar]")
                     break
-            input("ID no encontrada\n(Enter para reintentar)")
+            input("FUNCIONALIDAD DE AGREGAR USUARIO NUEVO PENDIENTE")
         else:
             break
     msgs(3)
@@ -130,7 +129,7 @@ def editar_perfil_usuario(op, data_in_kwargs, pos_user):
                 break
             try:
                 int(nuevo_dato)
-                input(f"{op.title()} debe ser alfanumerico\n[Enter - Reintentar]")
+                input(f"{op.title()} debe ser alfanumerico\n[Enter - Reintentar]\n")
             except:
                 break                
     else:
@@ -150,12 +149,13 @@ def editar_perfil_usuario(op, data_in_kwargs, pos_user):
 def eliminar_usuario(data_in_kwargs,pos_user):
     data = data_in_kwargs["db"]["usuarios"][pos_user]
     if len(data["servicios"]) == 0:
-        print("Esta accion es irreversible\n- 'BORRAR' para conituar\n- Cualquier otro ingreso para abortar")
-        op = str(input("> "))
+        op = input("///////////////////////////\nEsta accion es irreversible\n///////////////////////////\n['BORRAR' para confirmar]\n[Cualquier otro ingreso para abortar]\n> ")
         if op == "BORRAR":
-            data_in_kwargs["db"]["usuarios"][pos_user].pop()
+            data_in_kwargs["db"]["usuarios"].pop(pos_user)
             input("Usuario eliminado satisfactoriamente\n Gestion añadida al registro de movimientos. PENDIENTE AÑADIR FUNCIONALIDAD")
             export_file(data_in_kwargs, "exported_db")
             return data_in_kwargs
+        else:
+            print("> Cancelando...")
     else:
-        input("Accion no permitida.\nEl usuario seleccionado no debe tener servicios contradados. Se requiere descontratar todos los servicios. [Enter - Cancelar]")
+        input("Accion no permitida.\nEl usuario seleccionado no debe tener servicios contradados. Se requiere descontratar todos los servicios.\n[Enter - Cancelar]\n")
