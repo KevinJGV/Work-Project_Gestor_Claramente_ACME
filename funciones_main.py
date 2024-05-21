@@ -132,3 +132,15 @@ def menu_selector(*opcs, es_return=False,**kwargs):
                 raise ValueError
         except:
             input("Ingrese valor valido. \nIntente nuevamente\n(Enter para continuar)")
+
+def export_file(data_in_kwargs, name_file):
+    '''
+    Exporta la base de datos
+    ==> Recibe Diccionario de datos, Nombre del archivo deseado
+    '''
+    current_route = data_in_kwargs.get("script_path")
+    current_route = current_route.replace("main.py", name_file)
+    config = data_in_kwargs.get("db")
+    jsonobject = json.dumps(config, indent=4, ensure_ascii=False)
+    with open(current_route+".json", "w", encoding="utf-8") as nuevo_archivo:
+        nuevo_archivo.write(jsonobject)
