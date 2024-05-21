@@ -79,23 +79,26 @@ def gestion_usuario(data_in_kwargs):
             for pos, user_in_i in enumerate(unpacked_data):
                 if user_in_i["id"] == user_id:
                     print("Usuario encontrado... Procesando...")
-                    user = user_in_i
                     while True:
-                        mostrar_usuario_s(user, es_paginado=False)
+                        mostrar_usuario_s(user_in_i, es_paginado=False)
                         op = int_val("[1 - Editar Nombre]   [2 - Editar direccion]   [3 - Editar contacto]   [4 - Editar categoria manualmente -NO RECOMENDADO]\n[5 - Contratar/Descontratar Servicio]   [6 - ELIMINAR USUARIO]   [0 - Cancelar]\n> ")
                         if op >= 0 and op <= 6:
                             if op == 1 or op == 2 or op == 3:
-                                res = editar_perfil_usuario(op, user)
-                                continuar = int_val("¿Desea continuar gestionando al usuario?\n 1 - Continuar    2 - Salir")
-                                unpacked_data[pos] = res
-                                if continuar == 2:
-                                    break
+                                res = editar_perfil_usuario(op, data_in_kwargs, pos)
+                                if res is not None:
+                                    data_in_kwargs = res
+                                    continuar = int_val("¿Desea continuar gestionando al usuario?\n 1 - Continuar    2 - Salir")
+                                    if continuar == 2:
+                                        break
                             elif op == 4:
                                 print("funcionalidad_en_desarrollo")
                             elif op == 5:
                                 print("funcionalidad_en_desarrollo")
                             elif op == 6:
-                                eliminar_usuario(unpacked_data,user_id)
+                                res = eliminar_usuario(data_in_kwargs,user_id)
+                                if res is not None:
+                                    data_in_kwargs = res
+                                break
                             else:
                                 break
                         else:
@@ -106,7 +109,7 @@ def gestion_usuario(data_in_kwargs):
             break
     msgs(3)
 
-def editar_perfil_usuario(op, data):
+def editar_perfil_usuario(op, data_in_kwargs, pos_user):
     '''
     Edita informacion del usuario seleccionado previamente
     ==> Recibe Diccionario
@@ -122,10 +125,14 @@ def editar_perfil_usuario(op, data):
     if op != "contacto":
         while True:
             nuevo_dato = str_val(f"Nuevo {op} de usuario ('cancelar' para Cancelar)\n> ")
-            if not isinstance(int(nuevo_dato), int) or nuevo_dato == "cancelar":
+            if nuevo_dato == "cancelar":
+                print("> Cancelar")
                 break
-            else:
-                input(f"{op.title()} debe ser alfanumerico [Enter - Reintentar]")
+            try:
+                int(nuevo_dato)
+                input(f"{op.title()} debe ser alfanumerico\n[Enter - Reintentar]")
+            except:
+                break                
     else:
         while True:
             nuevo_dato = str_val(f"Nuevo {op} de usuario ('cancelar' para Cancelar)\n> ")
@@ -134,23 +141,21 @@ def editar_perfil_usuario(op, data):
             else:
                 input("Ingrese un correo electronico valido\n[Enter - Reintentar]")
     if nuevo_dato.lower() == "cancelar":
-        print("> Cancelando...")
+        print("Cancelando...")
     else:
-        data[op] = nuevo_dato
-        return data
+        data_in_kwargs["db"]["usuarios"][pos_user][op] = nuevo_dato
+        export_file(data_in_kwargs, "exported_db")
+        return data_in_kwargs
 
-def eliminar_usuario(data,codigo):
-    for pos, user in enumerate(data):
-        if user["id"] == codigo:
-            if len(user["servicios"]) == 0:
-                print("Esta accion es irreversible\n- 'BORRAR' para conituar\n- Cualquier otro ingreso para abortar")
-                op = str(input("> "))
-                if op == "BORRAR":
-                    user[pos].pop()
-                    input("Usuario eliminado satisfactoriamente\n Gestion añadida al registro de movimientos. PENDIENTE AÑADIR FUNCIONALIDAD")
-                    return user
-                else:
-                    break
-            else:
-                input("Accion no permitida.\nEl usuario seleccionado no debe tener servicios contradados. Se requiere descontratar todos los servicios. [Enter - Cancelar]")
-                break
+def eliminar_usuario(data_in_kwargs,pos_user):
+    data = data_in_kwargs["db"]["usuarios"][pos_user]
+    if len(data["servicios"]) == 0:
+        print("Esta accion es irreversible\n- 'BORRAR' para conituar\n- Cualquier otro ingreso para abortar")
+        op = str(input("> "))
+        if op == "BORRAR":
+            data_in_kwargs["db"]["usuarios"][pos_user].pop()
+            input("Usuario eliminado satisfactoriamente\n Gestion añadida al registro de movimientos. PENDIENTE AÑADIR FUNCIONALIDAD")
+            export_file(data_in_kwargs, "exported_db")
+            return data_in_kwargs
+    else:
+        input("Accion no permitida.\nEl usuario seleccionado no debe tener servicios contradados. Se requiere descontratar todos los servicios. [Enter - Cancelar]")
