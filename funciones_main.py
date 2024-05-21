@@ -30,7 +30,7 @@ def str_val(msg):
     '''
     while True:
         try:
-            prompt = str(input(msg))
+            prompt = str(input(msg).strip())
             return prompt
         except:
             input("Error de ingreso, debe ser alfanumerico \nIntente nuevamente\n(Enter para continuar)")
@@ -71,7 +71,7 @@ def validar_ruta_main(msg):
     while True:
         msgs(0)
         try:
-            ruta = str(input(msg))
+            ruta = str_val(msg)
             if ruta.endswith("main.py"):
                 return ruta
             else:
@@ -80,14 +80,13 @@ def validar_ruta_main(msg):
             input("Asegurese de que la ruta es del archivo 'main.py'. \nIntente nuevamente\n(Enter para continuar)")
 
 
-def validar_ruta_json():
+def validar_ruta_json(msg):
     '''   Validador de ruta y formato .json de archivo
     <== Devuelve Str
     '''
     msgs(1)
     while True:
-        ruta = str(
-            input("> Ingrese la ruta relativa del archivo de datos a procesar: "))
+        ruta = str_val(msg)
         try:
             with open(ruta, "r"):
                 if ruta.endswith(".json"):
