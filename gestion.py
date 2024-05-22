@@ -90,11 +90,16 @@ def gestion_usuario(data_in_kwargs):
                                 res = editar_perfil_usuario(op, data_in_kwargs, pos)
                                 if res is not None:
                                     data_in_kwargs = res
-                                    continuar = int_val("¿Desea continuar gestionando al usuario?\n 1 - Continuar    2 - Salir\n> ")
+                                    continuar = int_val("¿Desea continuar gestionando al usuario?\n1 - Continuar    2 - Salir\n> ")
                                     if continuar == 2:
                                         break
                             elif op == 4:
-                                print("funcionalidad_en_desarrollo")
+                                res = editar_categoria(data_in_kwargs, pos)
+                                if res is not None:
+                                    data_in_kwargs = res
+                                    continuar = int_val("¿Desea continuar gestionando al usuario?\n1 - Continuar    2 - Salir\n> ")
+                                    if continuar == 2:
+                                        break
                             elif op == 5:
                                 print("funcionalidad_en_desarrollo")
                             elif op == 6:
@@ -105,12 +110,34 @@ def gestion_usuario(data_in_kwargs):
                             else:
                                 break
                         else:
-                            input("Seleccione una opcion dada\n[Enter - Reintentar]")
+                            input("Seleccione una opcion dada\n[Enter - Reintentar]\n")
                     break
-            input("FUNCIONALIDAD DE AGREGAR USUARIO NUEVO PENDIENTE")
+            res = agregar_usuario(data_in_kwargs)
         else:
             break
     msgs(3)
+
+
+def agregar_usuario(data_in_kwargs):
+    print(">>>> Agregando usuario a base de datos")
+    unpacked_data = data_in_kwargs.get("db").get("usuarios")
+    input("SE EJECUTA EL MODULO DE VENTAS, PENDIENTE\nAgregar usuario incompleto")
+    user_to_fill = {}
+    id = generar_id(unpacked_data)
+    nombre = str_val("Nombre del usuario: ")
+    direccion = str_val("Direccion de domicilio del usuario: ")
+    contacto = validar_email_regexp(input("Correo electronico del usuario: "),es_validado=True)
+    
+    return ""
+    
+def generar_id(data):
+    ids = [user["id"] for user in data]
+    id = 1
+    while True:
+        if id not in ids:
+            return id
+        else:
+            id += 1
 
 def editar_perfil_usuario(op, data_in_kwargs, pos_user):
     '''
@@ -142,13 +169,33 @@ def editar_perfil_usuario(op, data_in_kwargs, pos_user):
             if validar_email_regexp(nuevo_dato) or nuevo_dato == "cancelar":
                 break
             else:
-                input("Ingrese un correo electronico valido\n[Enter - Reintentar]")
+                input("Ingrese un correo electronico valido\n[Enter - Reintentar]\n")
     if nuevo_dato.lower() == "cancelar":
         print("Cancelando...")
     else:
         data_in_kwargs["db"]["usuarios"][pos_user][op] = nuevo_dato
         export_file(data_in_kwargs, "exported_db")
         return data_in_kwargs
+
+def editar_categoria(data_in_kwargs, pos_user):
+    print(">>>> Modificando categoria de usuario\nATENCION: MODIFICAR SIN AUTORIZACION ESTE VALOR SIN AUTORIZACION ES SANCIONABLE, ASEGURESE DE TENER EL PERMISO DE SU COORDINADOR PARA ESTO.")
+    yo = input("Continuar? (y/n) ")
+    if yo != "y":
+        while True:
+            op = int_val("[1 - Modificar a Cliente Nuevo]\n[2 - Modificar a Cliente Regular]\n[3 - Modificar a Cliente Leal]\n[0 - Cancelar]")
+            if op >= 0 and op <= 3:
+                if op != 0:
+                    modificadores = ["cliente nuevo","cliente regular","cliente leal"]
+                    data_in_kwargs["db"]["usuarios"][pos_user]["categoria"] = modificadores[op-1]
+                    export_file(data_in_kwargs, "exported_db")
+                    print(f"> Modificacion: {modificadores[op-1].title()}")
+                    return data_in_kwargs
+                else:
+                    print("> Cancelando...")
+                    break
+            else:
+                input("Seleccione opcion dentro del rango\n[Enter - Reintentar]")
+
 
 def eliminar_usuario(data_in_kwargs,pos_user):
     data = data_in_kwargs["db"]["usuarios"][pos_user]
