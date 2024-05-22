@@ -65,8 +65,12 @@ def mostrar_usuario_s(data_in_kwargs, es_paginado=True):
             if key != "servicios":
                 print(f"{key.upper()} => {data_in_kwargs[key]}")
         print("SERVICIOS ACTUALES DEL USUARIO:")
-        for servicio in data_in_kwargs["servicios"]:
-            print(f"-> {servicio['servicio']}")
+        if len(data_in_kwargs["servicios"]) != 0:
+            for servicio in data_in_kwargs["servicios"]:
+                print(f"-> {servicio['servicio']}")
+        else:
+            print("[Este usuario no tiene servicios contratados actualemente]")
+
 
 def gestion_usuario(data_in_kwargs):
     print(">>> Gestionar usuario")
