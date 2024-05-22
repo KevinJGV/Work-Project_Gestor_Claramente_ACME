@@ -36,9 +36,23 @@ def str_val(msg):
             input("Error de ingreso, debe ser alfanumerico \nIntente nuevamente\n(Enter para continuar)")
 
 
-def validar_email_regexp(email):
+def validar_email_regexp(email, es_validado=False):
+    '''
+    Validador de string en formato de correo electronico
+    ==> Recibe String
+    <== Devuelve [es_validado = String,not es_validado = Bool]
+    '''
     pattern = r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
-    return re.match(pattern, email) is not None
+    if not es_validado:
+        return re.match(pattern, email) is not None
+    else:
+        while True:
+            if validar_email_regexp(email):
+                return email
+            else:
+                input("Ingrese un correo electronico valido\n[Enter - Reintentar]\n")
+                email = str_val("> ")
+
 
 
 def msgs(op):
