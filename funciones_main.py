@@ -19,7 +19,7 @@ def int_val(msg):
             prompt = int(input(msg))
             return prompt
         except:
-            input("Error de ingreso \nIntente nuevamente\n(Enter para continuar)")
+            input("Error de ingreso \nIntente nuevamente\n(Enter para continuar)\n")
 
 
 def str_val(msg):
