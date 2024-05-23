@@ -11,7 +11,8 @@ from imports_reportes import *
 def gestiones(data_in_kwargs):
     '''
     Funcion para dar como argumento de longitud variable a funcion Menu_selector()
-    ==> Recibe Argumentos de palabra clave
+    ==> Recibe Diccionario
+    <== Devuelve Diccionario
     '''
     res = menu_selector(mostrar_usuario_s, gestion_usuario,msg_op=3, db=data_in_kwargs)
     return res
@@ -71,6 +72,11 @@ def mostrar_usuario_s(data_in_kwargs, es_paginado=True):
 
 
 def gestion_usuario(data_in_kwargs):
+    '''
+    Realiza CRUDs en el json con la idea logica de un software para proveedor de servicios de telecomunicaciones
+    ==> Recibe Diccionario
+    <== Devuelve Diccionario
+    '''
     print(">>> Gestionar usuario")
     data_in_kwargs = data_in_kwargs.get("db")
     unpacked_data = data_in_kwargs.get("db").get("usuarios")
@@ -124,6 +130,11 @@ def gestion_usuario(data_in_kwargs):
 
 
 def agregar_usuario(data_in_kwargs):
+    '''
+    Agrega un usuario a la bdd
+    ==> Recibe Diccionario
+    <== Devuelve Diccionario
+    '''
     input("SE EJECUTA EL MODULO DE VENTAS, PENDIENTE\nAgregar usuario incompleto")
     print(">>>> Agregando usuario a base de datos")
     unpacked_data = data_in_kwargs.get("db").get("usuarios")
@@ -138,6 +149,11 @@ def agregar_usuario(data_in_kwargs):
         return data_in_kwargs
     
 def generar_id(data):
+    '''
+    Funcion auxiliar de agregar_usuario
+    ==> Recibe Diccionario
+    <== Devuelve Diccionario
+    '''
     ids = [user["id"] for user in data]
     id = 1
     while True:
@@ -185,6 +201,11 @@ def editar_perfil_usuario(op, data_in_kwargs, pos_user):
         return data_in_kwargs
 
 def editar_categoria(data_in_kwargs, pos_user):
+    '''
+    Reasigna la categoria del usuario
+    ==> Recibe Diccionario
+    <== Devuelve Diccionario
+    '''
     print(">>>> Modificando categoria de usuario\nATENCION: MODIFICAR SIN AUTORIZACION ESTE VALOR SIN AUTORIZACION ES SANCIONABLE, ASEGURESE DE TENER EL PERMISO DE SU COORDINADOR PARA ESTO.")
     yo = input("Continuar? (y/n) ")
     if yo == "y":
@@ -205,6 +226,11 @@ def editar_categoria(data_in_kwargs, pos_user):
 
 
 def eliminar_usuario(data_in_kwargs,pos_user):
+    '''
+    Elimina al usuario
+    ==> Recibe Diccionario
+    <== Devuelve Diccionario
+    '''
     data = data_in_kwargs["db"]["usuarios"][pos_user]
     if len(data["servicios"]) == 0:
         op = input("///////////////////////////\nEsta accion es irreversible\n///////////////////////////\n['BORRAR' para confirmar]\n[Cualquier otro ingreso para abortar]\n> ")
