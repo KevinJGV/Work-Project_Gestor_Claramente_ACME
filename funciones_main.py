@@ -8,7 +8,7 @@ import datetime
 #     '''
 
 
-def int_val(msg):
+def int_val(msg,es_menu=None,op_menu=0):
     '''
     Validador de valor numerico
     ==> Recibe String
@@ -16,8 +16,13 @@ def int_val(msg):
     '''
     while True:
         try:
-            prompt = int(input(msg))
-            return prompt
+            if es_menu is None:
+                prompt = int(input(msg))
+                return prompt
+            else:
+                msgs(op_menu)
+                prompt = int(input(msg))
+                return prompt
         except:
             input("Error de ingreso \nIntente nuevamente\n(Enter para continuar)\n")
 
@@ -60,20 +65,23 @@ def msgs(op):
     Visualizador de mensajes para el algoritmo
     ==> Recibe Numero entero
     '''
-    if op == 0:
-        print("Para inicializar ingrese la ruta relativa actual de este scprit 'main.py: ")
-    elif op == 1:
-        print("=" * 6 + " CLARAMENTE ACME - PROGRAMA GESTOR v1 " + "=" * 6 +
-              "\nPara iniciar porfavor asegurese de tener un archivo .json con el cual trabajar.")
-    elif op == 2:
-        print("=" * 6 + " MENU PRINCIPAL " + "=" * 6 +
-              "\n1 - Registro y Gestión de Usuarios\n2 - Seguimiento del Historial de Usuarios\n3 - Personalización de Servicios\n4 - Gestión de las ventas\n0 - Salir")
-    elif op == 3:
-        print("\n>> Registro y Gestión de Usuarios\n1 - Visualizar todos los usuarios\n2 - Gestionar usuario\n0 - Volver")
-    elif op == 4:
-        print("1 - Actualizar datos del usuario")
-    elif op == 9:
-        print("\n(Enter, regresar)")
+    try:
+        if op == 0:
+            print("Para inicializar ingrese la ruta relativa actual de este scprit 'main.py: ")
+        elif op == 1:
+            print("=" * 6 + " CLARAMENTE ACME - PROGRAMA GESTOR v1 " + "=" * 6 +
+                "\nPara iniciar porfavor asegurese de tener un archivo .json con el cual trabajar.")
+        elif op == 2:
+            print("=" * 6 + " MENU PRINCIPAL " + "=" * 6 +
+                "\n1 - Registro y Gestión de Usuarios\n2 - Seguimiento del Historial de Usuarios\n3 - Personalización de Servicios\n4 - Gestión de las ventas\n0 - Salir")
+        elif op == 3:
+            print("\n>> Registro y Gestión de Usuarios\n1 - Visualizar todos los usuarios\n2 - Gestionar usuario\n0 - Volver")
+        elif op == 4:
+            print("1 - Actualizar datos del usuario")
+        elif op == 9:
+            print("\n(Enter, regresar)")
+    except:
+        print(op)
 
 
 def validar_ruta_main(msg):
@@ -125,24 +133,31 @@ def opener(ruta):
         return data
 
 
-def menu_selector(*opcs, es_return=False,**kwargs):
+def menu_selector(*opcs, msg_op=None,**kwargs):
     '''
     Menu generico, recibe funciones y argumentos para estas como argumentos a las cuales se accede a solicitud del usuario 
     ==> Recibe (Argumentos de longitud variable, Argumentos de palabra clave)
     ==> Devuelve lo que devuelve la funcion señalada en ella
     '''
+    resultado_menu = None
     while True:
         try:
-            op = int_val("> ")
-            if op == 0:
-                break
-            elif op <= len(opcs):
-                if not es_return:
-                    opcs[op-1](kwargs)
-                else:
+            if msg_op is None:
+                op = int_val("> ")
+                if op == 0:
+                    break
+                elif op <= len(opcs):
                     return opcs[op-1](kwargs)
+                else:
+                    raise ValueError
             else:
-                raise ValueError
+                op = int_val("> ",es_menu=True,op_menu=msg_op)
+                if op == 0:
+                    return resultado_menu
+                elif op <= len(opcs):
+                    resultado_menu = opcs[op-1](kwargs)
+                else:
+                    raise ValueError
         except:
             input("Ingrese valor valido. \nIntente nuevamente\n(Enter para continuar)")
 
