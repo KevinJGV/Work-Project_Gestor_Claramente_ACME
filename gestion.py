@@ -1,6 +1,15 @@
-from funciones_main import *
-from imports_reportes import *
+# Imports de funciones_main.py
 
+from funciones_main import int_val
+from funciones_main import str_val
+from funciones_main import validar_email_regexp
+from funciones_main import msgs
+from funciones_main import validar_ruta_main
+from funciones_main import validar_ruta_json
+from funciones_main import opener
+from funciones_main import menu_selector
+from funciones_main import export_file
+from funciones_main import encontrar_en_bdd
 
 # Formato docstring para copiar (esta linea no)
 #     '''
@@ -8,67 +17,67 @@ from imports_reportes import *
 #     <== Devuelve
 #     '''
 
-def gestiones(data_in_kwargs):
-    '''
-    Funcion para dar como argumento de longitud variable a funcion Menu_selector()
-    ==> Recibe Diccionario
-    <== Devuelve Diccionario
-    '''
-    res = menu_selector(mostrar_usuario_s, gestion_usuario,msg_op=3, db=data_in_kwargs)
-    return res
 
-def mostrar_usuario_s(data_in_kwargs, es_paginado=True):
+def mostrar_en_terminal(data_in_kwargs, es_paginado=True, config=0):
     '''
     Muestra en consola el contenido .json paginadamente por defecto
     ==> Recibe Diccionario
     '''
+    config = data_in_kwargs.get("mostrar_cofig")
     if es_paginado:
-        print(">>> Visualizar todos los usuarios")
-        unpacked_data = data_in_kwargs.get("db")
-        users_data = unpacked_data["usuarios"]
-        keys = [key.upper() for key in users_data[0].keys()]
-        header = " | ".join(keys) + "\n"
-        for pos, user in enumerate(users_data):
-            users_data[pos]["id"] = str(user["id"])
-            users_data[pos]["servicios"] = str(len(user["servicios"]))
-        start = 0
-        pag_size = 5
-        while True:
-            end = start + pag_size
-            print(header)
-            if end > len(users_data):
-                end = len(users_data)
-            if start < 0:
-                start = 0
-            seccion = users_data[start:end]
-            current_page = ""
-            for dic in seccion:
-                line = " | ".join(list(dic.values())) + "\n"
-                current_page += line
-            print(current_page)
-            print(f"\t< {start} / {end} >\n[0 - Pagina anterior]    [1 - Pagina siguiente]\n[2 - Volver]")
-            movimiento = int_val("> ")
-            if movimiento == 2:
-                break
-            elif movimiento == 1:
-                start += pag_size
-                if start > end:
-                    start -= pag_size
-            elif movimiento == 0:
-                if start != 0:
-                    start -= pag_size
-        msgs(3)
+        if config == 0:
+            print("[NO SELECCIONADA CONFIGURACION PARA VISUALIZAR]")
+        elif config == "usuarios":
+            print(">>> Visualizar todos los usuarios")
+            unpacked_data = data_in_kwargs.get("db")
+            users_data = unpacked_data["usuarios"]
+            keys = [key.upper() for key in users_data[0].keys()]
+            header = " | ".join(keys) + "\n"
+            for pos, user in enumerate(users_data):
+                users_data[pos]["id"] = str(user["id"])
+                users_data[pos]["servicios"] = str(len(user["servicios"]))
+            start = 0
+            pag_size = 5
+            while True:
+                end = start + pag_size
+                print(header)
+                if end > len(users_data):
+                    end = len(users_data)
+                if start < 0:
+                    start = 0
+                seccion = users_data[start:end]
+                current_page = ""
+                for dic in seccion:
+                    line = " | ".join(list(dic.values())) + "\n"
+                    current_page += line
+                print(current_page)
+                print(
+                    f"\t< {start} / {end} >\n[0 - Pagina anterior]    [1 - Pagina siguiente]\n[2 - Volver]")
+                movimiento = int_val("> ")
+                if movimiento == 2:
+                    break
+                elif movimiento == 1:
+                    start += pag_size
+                    if start > end:
+                        start -= pag_size
+                elif movimiento == 0:
+                    if start != 0:
+                        start -= pag_size
+            msgs(3)
+        elif config == "reportes":
+            return
     else:
-        keys = list(data_in_kwargs.keys())
-        for key in keys:
-            if key != "servicios":
-                print(f"{key.upper()} => {data_in_kwargs[key]}")
-        print("SERVICIOS ACTUALES DEL USUARIO:")
-        if len(data_in_kwargs["servicios"]) != 0:
-            for servicio in data_in_kwargs["servicios"]:
-                print(f"-> {servicio['servicio']}")
-        else:
-            print("[Este usuario no tiene servicios contratados actualemente]")
+        if config == "usuarios":
+            keys = list(data_in_kwargs.keys())
+            for key in keys:
+                if key != "servicios":
+                    print(f"{key.upper()} => {data_in_kwargs[key]}")
+            print("SERVICIOS ACTUALES DEL USUARIO:")
+            if len(data_in_kwargs["servicios"]) != 0:
+                for servicio in data_in_kwargs["servicios"]:
+                    print(f"-> {servicio['servicio']}")
+            else:
+                print("[Este usuario no tiene servicios contratados actualemente]")
 
 
 def gestion_usuario(data_in_kwargs):
@@ -80,33 +89,36 @@ def gestion_usuario(data_in_kwargs):
     print(">>> Gestionar usuario")
     data_in_kwargs = data_in_kwargs.get("db")
     unpacked_data = data_in_kwargs.get("db").get("usuarios")
-    user_is_finded = encontrar_en_bdd(unpacked_data,"usuarios")
+    user_is_finded = encontrar_en_bdd(unpacked_data, "usuarios")
     user_in_i = user_is_finded[2]
     pos = user_is_finded[1]
     if user_is_finded != 0:
         if user_is_finded[0]:
             while True:
-                mostrar_usuario_s(user_in_i, es_paginado=False)
+                mostrar_en_terminal(
+                    user_in_i, es_paginado=False, config="usuarios")
                 op = int_val("[1 - Editar Nombre]   [2 - Editar direccion]   [3 - Editar contacto]   [4 - Editar categoria manualmente -NO RECOMENDADO]\n[5 - Contratar/Descontratar Servicio]   [6 - ELIMINAR USUARIO]   [0 - Cancelar]\n> ")
                 if op >= 0 and op <= 6:
                     if op == 1 or op == 2 or op == 3:
                         res = editar_perfil_usuario(op, data_in_kwargs, pos)
                         if res is not None:
                             data_in_kwargs = res
-                            continuar = int_val("¿Desea continuar gestionando al usuario?\n1 - Continuar    2 - Salir\n> ")
+                            continuar = int_val(
+                                "¿Desea continuar gestionando al usuario?\n1 - Continuar    2 - Salir\n> ")
                             if continuar == 2:
                                 break
                     elif op == 4:
                         res = editar_categoria(data_in_kwargs, pos)
                         if res is not None:
                             data_in_kwargs = res
-                            continuar = int_val("¿Desea continuar gestionando al usuario?\n1 - Continuar    2 - Salir\n> ")
+                            continuar = int_val(
+                                "¿Desea continuar gestionando al usuario?\n1 - Continuar    2 - Salir\n> ")
                             if continuar == 2:
                                 break
                     elif op == 5:
                         print("funcionalidad_en_desarrollo")
                     elif op == 6:
-                        res = eliminar_usuario(data_in_kwargs,pos)
+                        res = eliminar_usuario(data_in_kwargs, pos)
                         if res is not None:
                             data_in_kwargs = res
                         break
@@ -138,10 +150,12 @@ def agregar_usuario(data_in_kwargs):
         id = generar_id(unpacked_data)
         nombre = str_val("Nombre del usuario: ")
         direccion = str_val("Direccion de domicilio del usuario: ")
-        contacto = validar_email_regexp(input("Correo electronico del usuario: "),es_validado=True)
-        
+        contacto = validar_email_regexp(
+            input("Correo electronico del usuario: "), es_validado=True)
+
         return data_in_kwargs
-    
+
+
 def generar_id(data):
     '''
     Funcion auxiliar de agregar_usuario
@@ -155,6 +169,7 @@ def generar_id(data):
             return id
         else:
             id += 1
+
 
 def editar_perfil_usuario(op, data_in_kwargs, pos_user):
     '''
@@ -171,28 +186,33 @@ def editar_perfil_usuario(op, data_in_kwargs, pos_user):
     nuevo_dato = None
     if op != "contacto":
         while True:
-            nuevo_dato = str_val(f"Nuevo {op} de usuario ('cancelar' para Cancelar)\n> ")
+            nuevo_dato = str_val(
+                f"Nuevo {op} de usuario ('cancelar' para Cancelar)\n> ")
             if nuevo_dato == "cancelar":
                 print("> Cancelar")
                 break
             try:
                 int(nuevo_dato)
-                input(f"{op.title()} debe ser alfanumerico\n[Enter - Reintentar]\n")
+                input(
+                    f"{op.title()} debe ser alfanumerico\n[Enter - Reintentar]\n")
             except:
-                break                
+                break
     else:
         while True:
-            nuevo_dato = str_val(f"Nuevo {op} de usuario ('cancelar' para Cancelar)\n> ")
+            nuevo_dato = str_val(
+                f"Nuevo {op} de usuario ('cancelar' para Cancelar)\n> ")
             if validar_email_regexp(nuevo_dato) or nuevo_dato == "cancelar":
                 break
             else:
-                input("Ingrese un correo electronico valido\n[Enter - Reintentar]\n")
+                input(
+                    "Ingrese un correo electronico valido\n[Enter - Reintentar]\n")
     if nuevo_dato.lower() == "cancelar":
         print("Cancelando...")
     else:
         data_in_kwargs["db"]["usuarios"][pos_user][op] = nuevo_dato
         export_file(data_in_kwargs, "exported_db")
         return data_in_kwargs
+
 
 def editar_categoria(data_in_kwargs, pos_user):
     '''
@@ -204,10 +224,12 @@ def editar_categoria(data_in_kwargs, pos_user):
     yo = input("Continuar? (y/n) ")
     if yo == "y":
         while True:
-            op = int_val("[1 - Modificar a Cliente Nuevo]\n[2 - Modificar a Cliente Regular]\n[3 - Modificar a Cliente Leal]\n[0 - Cancelar]\n> ")
+            op = int_val(
+                "[1 - Modificar a Cliente Nuevo]\n[2 - Modificar a Cliente Regular]\n[3 - Modificar a Cliente Leal]\n[0 - Cancelar]\n> ")
             if op >= 0 and op <= 3:
                 if op != 0:
-                    modificadores = ["cliente nuevo","cliente regular","cliente leal"]
+                    modificadores = ["cliente nuevo",
+                                     "cliente regular", "cliente leal"]
                     data_in_kwargs["db"]["usuarios"][pos_user]["categoria"] = modificadores[op-1]
                     export_file(data_in_kwargs, "exported_db")
                     print(f"> Modificacion: {modificadores[op-1].title()}")
@@ -216,10 +238,11 @@ def editar_categoria(data_in_kwargs, pos_user):
                     print("> Cancelando...")
                     break
             else:
-                input("Seleccione opcion dentro del rango\n[Enter - Reintentar]")
+                input(
+                    "Seleccione opcion dentro del rango\n[Enter - Reintentar]")
 
 
-def eliminar_usuario(data_in_kwargs,pos_user):
+def eliminar_usuario(data_in_kwargs, pos_user):
     '''
     Elimina al usuario
     ==> Recibe Diccionario
@@ -227,7 +250,8 @@ def eliminar_usuario(data_in_kwargs,pos_user):
     '''
     data = data_in_kwargs["db"]["usuarios"][pos_user]
     if len(data["servicios"]) == 0:
-        op = input("///////////////////////////\nEsta accion es irreversible\n///////////////////////////\n['BORRAR' para confirmar]\n[Cualquier otro ingreso para abortar]\n> ")
+        op = input(
+            "///////////////////////////\nEsta accion es irreversible\n///////////////////////////\n['BORRAR' para confirmar]\n[Cualquier otro ingreso para abortar]\n> ")
         if op == "BORRAR":
             data_in_kwargs["db"]["usuarios"].pop(pos_user)
             input("Usuario eliminado satisfactoriamente\n Gestion añadida al registro de movimientos. PENDIENTE AÑADIR FUNCIONALIDAD")
@@ -236,4 +260,5 @@ def eliminar_usuario(data_in_kwargs,pos_user):
         else:
             print("> Cancelando...")
     else:
-        input("Accion no permitida.\nEl usuario seleccionado no debe tener servicios contradados. Se requiere descontratar todos los servicios.\n[Enter - Cancelar]\n")
+        input(
+            "Accion no permitida.\nEl usuario seleccionado no debe tener servicios contradados. Se requiere descontratar todos los servicios.\n[Enter - Cancelar]\n")
