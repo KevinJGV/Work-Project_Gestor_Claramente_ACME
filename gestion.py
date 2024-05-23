@@ -80,53 +80,47 @@ def gestion_usuario(data_in_kwargs):
     print(">>> Gestionar usuario")
     data_in_kwargs = data_in_kwargs.get("db")
     unpacked_data = data_in_kwargs.get("db").get("usuarios")
-    while True:
-        user_id = int_val("Ingresa ID existente para gestionar usuario o uno no registrado para crear perfil de usuario (0 - Cancelar)\n> ")
-        if user_id != 0:
-            user_is_finded = False
-            try:
-                for pos, user_in_i in enumerate(unpacked_data):
-                    if user_in_i["id"] == user_id:
-                        user_is_finded = True
-                        print("Usuario encontrado... Procesando...")
-                        while True:
-                            mostrar_usuario_s(user_in_i, es_paginado=False)
-                            op = int_val("[1 - Editar Nombre]   [2 - Editar direccion]   [3 - Editar contacto]   [4 - Editar categoria manualmente -NO RECOMENDADO]\n[5 - Contratar/Descontratar Servicio]   [6 - ELIMINAR USUARIO]   [0 - Cancelar]\n> ")
-                            if op >= 0 and op <= 6:
-                                if op == 1 or op == 2 or op == 3:
-                                    res = editar_perfil_usuario(op, data_in_kwargs, pos)
-                                    if res is not None:
-                                        data_in_kwargs = res
-                                        continuar = int_val("¿Desea continuar gestionando al usuario?\n1 - Continuar    2 - Salir\n> ")
-                                        if continuar == 2:
-                                            break
-                                elif op == 4:
-                                    res = editar_categoria(data_in_kwargs, pos)
-                                    if res is not None:
-                                        data_in_kwargs = res
-                                        continuar = int_val("¿Desea continuar gestionando al usuario?\n1 - Continuar    2 - Salir\n> ")
-                                        if continuar == 2:
-                                            break
-                                elif op == 5:
-                                    print("funcionalidad_en_desarrollo")
-                                elif op == 6:
-                                    res = eliminar_usuario(data_in_kwargs,pos)
-                                    if res is not None:
-                                        data_in_kwargs = res
-                                    break
-                                else:
-                                    break
-                            else:
-                                input("Seleccione una opcion dada\n[Enter - Reintentar]\n")
+    user_is_finded = encontrar_en_bdd(unpacked_data,"usuarios")
+    user_in_i = user_is_finded[2]
+    pos = user_is_finded[1]
+    if user_is_finded != 0:
+        if user_is_finded[0]:
+            while True:
+                mostrar_usuario_s(user_in_i, es_paginado=False)
+                op = int_val("[1 - Editar Nombre]   [2 - Editar direccion]   [3 - Editar contacto]   [4 - Editar categoria manualmente -NO RECOMENDADO]\n[5 - Contratar/Descontratar Servicio]   [6 - ELIMINAR USUARIO]   [0 - Cancelar]\n> ")
+                if op >= 0 and op <= 6:
+                    if op == 1 or op == 2 or op == 3:
+                        res = editar_perfil_usuario(op, data_in_kwargs, pos)
+                        if res is not None:
+                            data_in_kwargs = res
+                            continuar = int_val("¿Desea continuar gestionando al usuario?\n1 - Continuar    2 - Salir\n> ")
+                            if continuar == 2:
+                                break
+                    elif op == 4:
+                        res = editar_categoria(data_in_kwargs, pos)
+                        if res is not None:
+                            data_in_kwargs = res
+                            continuar = int_val("¿Desea continuar gestionando al usuario?\n1 - Continuar    2 - Salir\n> ")
+                            if continuar == 2:
+                                break
+                    elif op == 5:
+                        print("funcionalidad_en_desarrollo")
+                    elif op == 6:
+                        res = eliminar_usuario(data_in_kwargs,pos)
+                        if res is not None:
+                            data_in_kwargs = res
                         break
-            finally:
-                if not user_is_finded:
-                    res = agregar_usuario(data_in_kwargs)
-                    if res is not None:
-                        data_in_kwargs = res
+                    else:
+                        break
+                else:
+                    input("Seleccione una opcion dada\n[Enter - Reintentar]\n")
         else:
-            break
-    return data_in_kwargs
+            res = agregar_usuario(data_in_kwargs)
+            if res is not None:
+                data_in_kwargs = res
+        return data_in_kwargs
+    else:
+        print("> Cancelando...")
 
 
 def agregar_usuario(data_in_kwargs):
