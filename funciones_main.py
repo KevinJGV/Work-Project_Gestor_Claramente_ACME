@@ -73,11 +73,13 @@ def msgs(op):
                 "\nPara iniciar porfavor asegurese de tener un archivo .json con el cual trabajar.")
         elif op == 2:
             print("=" * 6 + " MENU PRINCIPAL " + "=" * 6 +
-                "\n1 - Registro y Gestión de Usuarios\n2 - Seguimiento del Historial de Usuarios\n3 - Personalización de Servicios\n4 - Gestión de las ventas\n0 - Salir")
+                "\n1 - Registro y Gestión de Usuarios\n2 - Reportes de usuarios\n3 - Personalización de Servicios\n4 - Gestión de las ventas\n0 - Salir")
         elif op == 3:
             print("\n>> Registro y Gestión de Usuarios\n1 - Visualizar todos los usuarios\n2 - Gestionar usuario\n0 - Volver")
         elif op == 4:
-            print("1 - Actualizar datos del usuario")
+            print("\n>> Reportes de usuarios\n1 - Visualizar todos los reportes\n2 - Gestionar un reporte\n0 - Volver")
+        elif op == 5:
+            print("\n>> Reportes de usuarios\n1 - Visualizar todos los reportes\n2 - Gestionar un reporte\n0 - Volver")
         elif op == 9:
             print("\n(Enter, regresar)")
     except:
@@ -172,3 +174,21 @@ def export_file(data_in_kwargs, name_file):
     jsonobject = json.dumps(config, indent=4, ensure_ascii=False)
     with open(current_route+".json", "w", encoding="utf-8") as nuevo_archivo:
         nuevo_archivo.write(jsonobject)
+
+def encontrar_en_bdd(bdd,estructura):
+    if estructura == "usuarios":
+        while True:
+            user_id = int_val("Ingresa ID existente para gestionar usuario o uno no registrado para crear perfil de usuario (0 - Cancelar)\n> ")
+            if user_id != 0:
+                user_is_finded = False
+                for pos, user_in_i in enumerate(bdd):
+                        if user_in_i["id"] == user_id:
+                            user_is_finded = True
+                            print("Usuario encontrado... Procesando...")
+                            return [user_is_finded,pos, user_in_i]
+                if not user_is_finded:
+                    return [False,None,None]
+            else:
+                return 0
+    elif estructura == "reportes":
+        return "PENDIENTE"
