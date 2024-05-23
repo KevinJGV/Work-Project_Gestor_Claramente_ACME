@@ -1,3 +1,7 @@
+'''
+Lineas import para copy&paste en cada modulo
+'''
+
 # Imports de funciones_main.py
 
 from funciones_main import int_val
