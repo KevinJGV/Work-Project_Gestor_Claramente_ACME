@@ -216,5 +216,42 @@
                 }
             ]
         }
+    ],
+    "reportes" : [
+        {
+            "id_usuario": 1,
+            "soporte":{
+                "abiertas":[
+                    {
+                        "id":"1-2",
+                        "descripcion": "No puede apagar la tv"
+                    }
+                ],
+                "cerradas":[
+                    {
+                        "id":"1-1",
+                        "descripcion": "Se le fue el internet desde hace 2 dias"
+                    }
+                ]
+            },
+            "reclamaciones":{
+                "abiertas":[
+                    {
+                        "id":"1-1",
+                        "descripcion": "Factura llego $100 mas cara de lo contratado"
+                    }
+                ],
+                "cerradas":[
+                    
+                ]
+            },
+            "sugerencias":[
+                {
+                    "id": "1-1",
+                    "descripcion" : "La sede en Cabecera necesita otro baño publico, es muy congestionado" 
+                }
+            ],
+            "Cantidad Reportes" : 4
+        }
     ]
 }
