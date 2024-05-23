@@ -13,9 +13,7 @@ def gestiones(data_in_kwargs):
     Funcion para dar como argumento de longitud variable a funcion Menu_selector()
     ==> Recibe Argumentos de palabra clave
     '''
-    msgs(3)
-    res = menu_selector(mostrar_usuario_s, gestion_usuario, db=data_in_kwargs)
-    msgs(2)
+    res = menu_selector(mostrar_usuario_s, gestion_usuario,msg_op=3, db=data_in_kwargs)
     return res
 
 def mostrar_usuario_s(data_in_kwargs, es_paginado=True):
@@ -79,56 +77,65 @@ def gestion_usuario(data_in_kwargs):
     while True:
         user_id = int_val("Ingresa ID existente para gestionar usuario o uno no registrado para crear perfil de usuario (0 - Cancelar)\n> ")
         if user_id != 0:
-            for pos, user_in_i in enumerate(unpacked_data):
-                if user_in_i["id"] == user_id:
-                    print("Usuario encontrado... Procesando...")
-                    while True:
-                        mostrar_usuario_s(user_in_i, es_paginado=False)
-                        op = int_val("[1 - Editar Nombre]   [2 - Editar direccion]   [3 - Editar contacto]   [4 - Editar categoria manualmente -NO RECOMENDADO]\n[5 - Contratar/Descontratar Servicio]   [6 - ELIMINAR USUARIO]   [0 - Cancelar]\n> ")
-                        if op >= 0 and op <= 6:
-                            if op == 1 or op == 2 or op == 3:
-                                res = editar_perfil_usuario(op, data_in_kwargs, pos)
-                                if res is not None:
-                                    data_in_kwargs = res
-                                    continuar = int_val("¿Desea continuar gestionando al usuario?\n1 - Continuar    2 - Salir\n> ")
-                                    if continuar == 2:
-                                        break
-                            elif op == 4:
-                                res = editar_categoria(data_in_kwargs, pos)
-                                if res is not None:
-                                    data_in_kwargs = res
-                                    continuar = int_val("¿Desea continuar gestionando al usuario?\n1 - Continuar    2 - Salir\n> ")
-                                    if continuar == 2:
-                                        break
-                            elif op == 5:
-                                print("funcionalidad_en_desarrollo")
-                            elif op == 6:
-                                res = eliminar_usuario(data_in_kwargs,pos)
-                                if res is not None:
-                                    data_in_kwargs = res
-                                break
+            user_is_finded = False
+            try:
+                for pos, user_in_i in enumerate(unpacked_data):
+                    if user_in_i["id"] == user_id:
+                        user_is_finded = True
+                        print("Usuario encontrado... Procesando...")
+                        while True:
+                            mostrar_usuario_s(user_in_i, es_paginado=False)
+                            op = int_val("[1 - Editar Nombre]   [2 - Editar direccion]   [3 - Editar contacto]   [4 - Editar categoria manualmente -NO RECOMENDADO]\n[5 - Contratar/Descontratar Servicio]   [6 - ELIMINAR USUARIO]   [0 - Cancelar]\n> ")
+                            if op >= 0 and op <= 6:
+                                if op == 1 or op == 2 or op == 3:
+                                    res = editar_perfil_usuario(op, data_in_kwargs, pos)
+                                    if res is not None:
+                                        data_in_kwargs = res
+                                        continuar = int_val("¿Desea continuar gestionando al usuario?\n1 - Continuar    2 - Salir\n> ")
+                                        if continuar == 2:
+                                            break
+                                elif op == 4:
+                                    res = editar_categoria(data_in_kwargs, pos)
+                                    if res is not None:
+                                        data_in_kwargs = res
+                                        continuar = int_val("¿Desea continuar gestionando al usuario?\n1 - Continuar    2 - Salir\n> ")
+                                        if continuar == 2:
+                                            break
+                                elif op == 5:
+                                    print("funcionalidad_en_desarrollo")
+                                elif op == 6:
+                                    res = eliminar_usuario(data_in_kwargs,pos)
+                                    if res is not None:
+                                        data_in_kwargs = res
+                                    break
+                                else:
+                                    break
                             else:
-                                break
-                        else:
-                            input("Seleccione una opcion dada\n[Enter - Reintentar]\n")
-                    break
-            res = agregar_usuario(data_in_kwargs)
+                                input("Seleccione una opcion dada\n[Enter - Reintentar]\n")
+                        break
+            finally:
+                if not user_is_finded:
+                    res = agregar_usuario(data_in_kwargs)
+                    if res is not None:
+                        data_in_kwargs = res
         else:
             break
-    msgs(3)
+    return data_in_kwargs
 
 
 def agregar_usuario(data_in_kwargs):
+    input("SE EJECUTA EL MODULO DE VENTAS, PENDIENTE\nAgregar usuario incompleto")
     print(">>>> Agregando usuario a base de datos")
     unpacked_data = data_in_kwargs.get("db").get("usuarios")
-    input("SE EJECUTA EL MODULO DE VENTAS, PENDIENTE\nAgregar usuario incompleto")
-    user_to_fill = {}
-    id = generar_id(unpacked_data)
-    nombre = str_val("Nombre del usuario: ")
-    direccion = str_val("Direccion de domicilio del usuario: ")
-    contacto = validar_email_regexp(input("Correo electronico del usuario: "),es_validado=True)
-    
-    return ""
+    servicios = ""
+    if servicios is not None:
+        user_to_fill = {}
+        id = generar_id(unpacked_data)
+        nombre = str_val("Nombre del usuario: ")
+        direccion = str_val("Direccion de domicilio del usuario: ")
+        contacto = validar_email_regexp(input("Correo electronico del usuario: "),es_validado=True)
+        
+        return data_in_kwargs
     
 def generar_id(data):
     ids = [user["id"] for user in data]
@@ -180,9 +187,9 @@ def editar_perfil_usuario(op, data_in_kwargs, pos_user):
 def editar_categoria(data_in_kwargs, pos_user):
     print(">>>> Modificando categoria de usuario\nATENCION: MODIFICAR SIN AUTORIZACION ESTE VALOR SIN AUTORIZACION ES SANCIONABLE, ASEGURESE DE TENER EL PERMISO DE SU COORDINADOR PARA ESTO.")
     yo = input("Continuar? (y/n) ")
-    if yo != "y":
+    if yo == "y":
         while True:
-            op = int_val("[1 - Modificar a Cliente Nuevo]\n[2 - Modificar a Cliente Regular]\n[3 - Modificar a Cliente Leal]\n[0 - Cancelar]")
+            op = int_val("[1 - Modificar a Cliente Nuevo]\n[2 - Modificar a Cliente Regular]\n[3 - Modificar a Cliente Leal]\n[0 - Cancelar]\n> ")
             if op >= 0 and op <= 3:
                 if op != 0:
                     modificadores = ["cliente nuevo","cliente regular","cliente leal"]
