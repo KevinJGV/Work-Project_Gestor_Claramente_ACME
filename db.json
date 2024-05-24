@@ -7,12 +7,7 @@
             "contacto": "carlos.gomez@ejemplo.co",
             "categoria": "cliente nuevo",
             "antiguedad": "10-05-2024",
-            "servicios": [
-                {
-                    "servicio": "Plan prepago",
-                    "fecha": "10-05-2024"
-                }
-            ]
+            "servicios": []
         },
         {
             "id": 2,
