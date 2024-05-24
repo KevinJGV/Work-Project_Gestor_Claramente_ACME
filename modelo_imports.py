@@ -14,10 +14,10 @@ from funciones_main import opener
 from funciones_main import menu_selector
 from funciones_main import export_file
 from funciones_main import encontrar_en_bdd
+from funciones_main import mostrar_en_terminal
 
 # Imports de gestion.py
 
-from gestion import mostrar_en_terminal
 from gestion import gestion_usuario
 from gestion import agregar_usuario
 from gestion import generar_id

@@ -10,6 +10,7 @@ from funciones_main import opener
 from funciones_main import menu_selector
 from funciones_main import export_file
 from funciones_main import encontrar_en_bdd
+from funciones_main import mostrar_en_terminal
 
 # Imports librerias
 
@@ -23,69 +24,6 @@ import copy
 #     ==> Recibe
 #     <== Devuelve
 #     '''
-
-
-def mostrar_en_terminal(data_in_kwargs, es_paginado=True, config=0):
-    '''
-    Muestra en consola el contenido .json paginadamente por defecto
-    ==> Recibe Diccionario
-    '''
-    data_copy = copy.deepcopy(data_in_kwargs)
-    if es_paginado:
-        config = data_copy.get("mostrar_cofig")
-        if config == 0:
-            print("[NO SELECCIONADA CONFIGURACION PARA VISUALIZAR]")
-        elif config == "usuarios":
-            print(">>> Visualizar todos los usuarios")
-            users_data = data_copy.get("db").get("usuarios")
-            keys = [key.upper() for key in users_data[0].keys()]
-            header = " | ".join(keys) + "\n"
-            for pos, user in enumerate(users_data):
-                users_data[pos]["id"] = str(user["id"])
-                users_data[pos]["servicios"] = str(len(user["servicios"]))
-            start = 0
-            pag_size = 5
-            while True:
-                end = start + pag_size
-                print(header)
-                if end > len(users_data):
-                    end = len(users_data)
-                if start < 0:
-                    start = 0
-                seccion = users_data[start:end]
-                current_page = ""
-                for dic in seccion:
-                    line = " | ".join(list(dic.values())) + "\n"
-                    current_page += line
-                print(current_page)
-                print(
-                    f"\t< {start} / {end} >\n[0 - Pagina anterior]    [1 - Pagina siguiente]\n[2 - Volver]")
-                movimiento = int_val("> ")
-                if movimiento == 2:
-                    break
-                elif movimiento == 1:
-                    start += pag_size
-                    if start > end:
-                        start -= pag_size
-                elif movimiento == 0:
-                    if start != 0:
-                        start -= pag_size
-        elif config == "reportes":
-            return
-    else:
-        if config == "usuarios":
-            keys = list(data_copy.keys())
-            for key in keys:
-                if key != "servicios":
-                    print(f"{key.upper()} => {data_copy[key]}")
-            print("SERVICIOS ACTUALES DEL USUARIO:")
-            if len(data_copy["servicios"]) != 0:
-                for servicio in data_copy["servicios"]:
-                    print(f"-> {servicio['servicio']}")
-            else:
-                print("[Este usuario no tiene servicios contratados actualemente]")
-        elif config == "reportes":
-            return
 
 
 def gestion_usuario(data_in_kwargs):

@@ -79,13 +79,13 @@ def msgs(op):
                   "\nPara iniciar porfavor asegurese de tener un archivo .json con el cual trabajar.")
         elif op == 2:
             print("=" * 6 + " MENU PRINCIPAL " + "=" * 6 +
-                  "\n1 - Registro y Gestión de Usuarios\n2 - Reportes de usuarios\n3 - Personalización de Servicios\n4 - Gestión de las ventas\n0 - Salir")
+                  "\n1 - Gestión de usuarios\n2 - Reportes de usuarios\n3 - Tratador de servicios\n0 - Salir del software")
         elif op == 3:
-            print("\n>> Registro y Gestión de Usuarios\n1 - Visualizar todos los usuarios\n2 - Gestionar usuario\n0 - Volver")
+            print("\n>> Gestión de usuarios\n1 - Visualizar todos los usuarios\n2 - Gestionar usuario\n0 - Volver")
         elif op == 4:
             print("\n>> Reportes de usuarios\n1 - Visualizar todos los reportes\n2 - Gestionar un reporte\n0 - Volver")
         elif op == 5:
-            print("\n>> Reportes de usuarios\n1 - Visualizar todos los reportes\n2 - Gestionar un reporte\n0 - Volver")
+            print("\n>> Tratador de servicios\n1 - \n2 - \n0 - Volver")
         elif op == 9:
             print("\n(Enter, regresar)")
     except:
@@ -166,8 +166,7 @@ def menu_selector(*opcs, msg_op=None, **kwargs):
                     resultado_menu = opcs[op-1](kwargs)
                 else:
                     raise ValueError
-        except Exception as e:
-            # print(type(e).__name__)
+        except:
             input("Ingrese valor valido. \nIntente nuevamente\n(Enter para continuar)")
 
 
@@ -217,3 +216,84 @@ def encontrar_en_bdd(bdd, estructura):
                     return [False, None, None]
             else:
                 return 0
+
+
+def mostrar_en_terminal(data_in_kwargs, es_paginado=True, config=0):
+    '''
+    Muestra en consola el contenido .json paginadamente por defecto
+    ==> Recibe Diccionario
+    '''
+    data_copy = copy.deepcopy(data_in_kwargs)
+    if es_paginado:
+        config = data_copy.get("mostrar_cofig")
+        if config == 0:
+            print("[NO SELECCIONADA CONFIGURACION PARA VISUALIZAR]")
+        else:
+            print(f">>> Visualizar todos los {config}")
+            target_data = data_copy.get("db").get(config)
+            if config == "usuarios":
+                keys = [key.upper() for key in target_data[0].keys()]
+                header = " | ".join(keys) + "\n"
+                for pos, user in enumerate(target_data):
+                    target_data[pos]["id"] = str(user["id"])
+                    target_data[pos]["servicios"] = str(len(user["servicios"]))
+                paginacion(header,target_data)
+            elif config == "reportes":
+                keys = [key.upper() for key in target_data[0].keys()]
+                keys[-1] = "AUN ABIERTOS"
+                header = " | ".join(keys) + "\n"
+                for pos_report, report in enumerate(target_data):
+                    acceder = ["soporte", "reclamaciones"]                    
+                    abiertas = 0
+                    for clave_in_report_db, valor_in_report_db in report.items():
+                        if clave_in_report_db in acceder:
+                            contador = sum([len(valor_in_report_db["abiertas"]),len(valor_in_report_db["cerradas"])])
+                            target_data[pos_report][clave_in_report_db] = contador
+                            abiertas += len(valor_in_report_db["abiertas"])
+                    target_data[pos_report]["sugerencias"] = len(target_data[pos_report]["sugerencias"])
+                    target_data[pos_report]["Cantidad Reportes"] = abiertas
+                PROBLEMA EN PAGINACION PENDIENTE
+                paginacion(target_data,header)
+    else:
+        if config == "usuarios":
+            keys = list(data_copy.keys())
+            for key in keys:
+                if key != "servicios":
+                    print(f"{key.upper()} => {data_copy[key]}")
+            print("SERVICIOS ACTUALES DEL USUARIO:")
+            if len(data_copy["servicios"]) != 0:
+                for servicio in data_copy["servicios"]:
+                    print(f"-> {servicio['servicio']}")
+            else:
+                print("[Este usuario no tiene servicios contratados actualemente]")
+        elif config == "reportes":
+            return
+
+def paginacion(dict_to_print,header):
+    start = 0
+    pag_size = 5
+    while True:
+        end = start + pag_size
+        print(header)
+        if end > len(dict_to_print):
+            end = len(dict_to_print)
+        if start < 0:
+            start = 0
+        seccion = dict_to_print[start:end]
+        current_page = ""
+        for dic in seccion:
+            line = " | ".join(list(dic.values())) + "\n"
+            current_page += line
+        print(current_page)
+        print(
+            f"\t< {start} / {end} >\n[0 - Pagina anterior]    [1 - Pagina siguiente]\n[2 - Volver]")
+        movimiento = int_val("> ")
+        if movimiento == 2:
+            break
+        elif movimiento == 1:
+            start += pag_size
+            if start > end:
+                start -= pag_size
+        elif movimiento == 0:
+            if start != 0:
+                start -= pag_size
