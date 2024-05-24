@@ -21,6 +21,16 @@ from gestion import editar_perfil_usuario
 from gestion import editar_categoria
 from gestion import eliminar_usuario
 
+# Imports de ventas.py
+
+# Imports librerias
+
+import json
+import re
+import datetime
+import copy
+
+
 # Formato docstring para copiar (esta linea no)
 #     '''
 #     ==> Recibe

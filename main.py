@@ -21,6 +21,17 @@ from gestion import editar_perfil_usuario
 from gestion import editar_categoria
 from gestion import eliminar_usuario
 
+# Imports de reportes.py
+
+# Imports de ventas.py
+
+# Imports librerias
+
+import json
+import re
+import datetime
+import copy
+
 
 def navegador(data, ruta_script, cofiguracion):
     res = None
@@ -40,6 +51,8 @@ def navegador(data, ruta_script, cofiguracion):
                 elif op == 3:
                     res = navegador(data, ruta_script, "ventas")
                     return res
+            else:
+                input("Opción no identificada\nIntente nuevamente\n(Enter para continuar)\n")
     elif cofiguracion == "gestiones":
         res = menu_selector(mostrar_en_terminal, gestion_usuario,
                             msg_op=3, db=data, mostrar_cofig="usuarios")
