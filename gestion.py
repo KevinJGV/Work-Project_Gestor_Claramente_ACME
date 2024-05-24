@@ -30,14 +30,14 @@ def mostrar_en_terminal(data_in_kwargs, es_paginado=True, config=0):
     Muestra en consola el contenido .json paginadamente por defecto
     ==> Recibe Diccionario
     '''
+    data_copy = copy.deepcopy(data_in_kwargs)
     if es_paginado:
-        config = data_in_kwargs.get("mostrar_cofig")
+        config = data_copy.get("mostrar_cofig")
         if config == 0:
             print("[NO SELECCIONADA CONFIGURACION PARA VISUALIZAR]")
         elif config == "usuarios":
             print(">>> Visualizar todos los usuarios")
-            PARTIR DE REALIZAR COPIA PROFUNDA A DATA_IM_KWARGS
-            users_data = data_in_kwargs.get("db").get("usuarios")
+            users_data = data_copy.get("db").get("usuarios")
             keys = [key.upper() for key in users_data[0].keys()]
             header = " | ".join(keys) + "\n"
             for pos, user in enumerate(users_data):
@@ -74,16 +74,16 @@ def mostrar_en_terminal(data_in_kwargs, es_paginado=True, config=0):
             return
     else:
         if config == "usuarios":
-            keys = list(unpacked_data.keys())
+            keys = list(data_copy.keys())
             for key in keys:
                 if key != "servicios":
-                    print(f"{key.upper()} => {unpacked_data[key]}")
+                    print(f"{key.upper()} => {data_copy[key]}")
             print("SERVICIOS ACTUALES DEL USUARIO:")
-            if len(unpacked_data["servicios"]) != 0:
-                for servicio in unpacked_data["servicios"]:
+            if len(data_copy["servicios"]) != 0:
+                for servicio in data_copy["servicios"]:
                     print(f"-> {servicio['servicio']}")
             else:
-                input("[Este usuario no tiene servicios contratados actualemente]\n[Enter - Regresar]")
+                print("[Este usuario no tiene servicios contratados actualemente]")
         elif config == "reportes":
             return
 
@@ -124,9 +124,7 @@ def gestion_usuario(data_in_kwargs):
                     elif op == 5:
                         print("funcionalidad_en_desarrollo")
                     elif op == 6:
-                        res = eliminar_usuario(data_in_kwargs, pos)
-                        if res is not None:
-                            data_in_kwargs = res
+                        eliminar_usuario(data_in_kwargs, pos)
                         break
                     else:
                         break
