@@ -10,10 +10,10 @@ from funciones_main import opener
 from funciones_main import menu_selector
 from funciones_main import export_file
 from funciones_main import encontrar_en_bdd
+from funciones_main import mostrar_en_terminal
 
 # Imports de gestion.py
 
-from gestion import mostrar_en_terminal
 from gestion import gestion_usuario
 from gestion import agregar_usuario
 from gestion import generar_id
@@ -42,21 +42,20 @@ def navegador(data, ruta_script, cofiguracion):
                     print("> Cerrando programa...")
                     break
                 elif op == 1:
-                    navegador(data, ruta_script, "gestiones")
+                    navegador(data, ruta_script, "usuarios")
                 elif op == 2:
                     navegador(data, ruta_script, "reportes")
                 elif op == 3:
                     navegador(data, ruta_script, "ventas")
             else:
                 input("Opción no identificada\nIntente nuevamente\n(Enter para continuar)\n")
-    elif cofiguracion == "gestiones":
+    elif cofiguracion == "usuarios":
         menu_selector(mostrar_en_terminal, gestion_usuario,
-                            msg_op=3, db=data, mostrar_cofig="usuarios", script_path=ruta_script)
+                            msg_op=3, db=data, mostrar_cofig=cofiguracion, script_path=ruta_script)
     elif cofiguracion == "reportes":
-        return
+        menu_selector(mostrar_en_terminal, msg_op=4, db=data, mostrar_cofig=cofiguracion, script_path=ruta_script)
     elif cofiguracion == "ventas":
         return
-
 
 ruta_actual = validar_ruta_main("> ")
 json_path = validar_ruta_json(
