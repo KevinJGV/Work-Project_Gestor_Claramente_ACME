@@ -11,6 +11,13 @@ from funciones_main import menu_selector
 from funciones_main import export_file
 from funciones_main import encontrar_en_bdd
 
+# Imports librerias
+
+import json
+import re
+import datetime
+import copy
+
 # Formato docstring para copiar (esta linea no)
 #     '''
 #     ==> Recibe
@@ -23,14 +30,14 @@ def mostrar_en_terminal(data_in_kwargs, es_paginado=True, config=0):
     Muestra en consola el contenido .json paginadamente por defecto
     ==> Recibe Diccionario
     '''
-    config = data_in_kwargs.get("mostrar_cofig")
     if es_paginado:
+        config = data_in_kwargs.get("mostrar_cofig")
         if config == 0:
             print("[NO SELECCIONADA CONFIGURACION PARA VISUALIZAR]")
         elif config == "usuarios":
             print(">>> Visualizar todos los usuarios")
-            unpacked_data = data_in_kwargs.get("db")
-            users_data = unpacked_data["usuarios"]
+            PARTIR DE REALIZAR COPIA PROFUNDA A DATA_IM_KWARGS
+            users_data = data_in_kwargs.get("db").get("usuarios")
             keys = [key.upper() for key in users_data[0].keys()]
             header = " | ".join(keys) + "\n"
             for pos, user in enumerate(users_data):
@@ -63,21 +70,22 @@ def mostrar_en_terminal(data_in_kwargs, es_paginado=True, config=0):
                 elif movimiento == 0:
                     if start != 0:
                         start -= pag_size
-            msgs(3)
         elif config == "reportes":
             return
     else:
         if config == "usuarios":
-            keys = list(data_in_kwargs.keys())
+            keys = list(unpacked_data.keys())
             for key in keys:
                 if key != "servicios":
-                    print(f"{key.upper()} => {data_in_kwargs[key]}")
+                    print(f"{key.upper()} => {unpacked_data[key]}")
             print("SERVICIOS ACTUALES DEL USUARIO:")
-            if len(data_in_kwargs["servicios"]) != 0:
-                for servicio in data_in_kwargs["servicios"]:
+            if len(unpacked_data["servicios"]) != 0:
+                for servicio in unpacked_data["servicios"]:
                     print(f"-> {servicio['servicio']}")
             else:
-                print("[Este usuario no tiene servicios contratados actualemente]")
+                input("[Este usuario no tiene servicios contratados actualemente]\n[Enter - Regresar]")
+        elif config == "reportes":
+            return
 
 
 def gestion_usuario(data_in_kwargs):
@@ -87,9 +95,7 @@ def gestion_usuario(data_in_kwargs):
     <== Devuelve Diccionario
     '''
     print(">>> Gestionar usuario")
-    data_in_kwargs = data_in_kwargs.get("db")
-    unpacked_data = data_in_kwargs.get("db").get("usuarios")
-    user_is_finded = encontrar_en_bdd(unpacked_data, "usuarios")
+    user_is_finded = encontrar_en_bdd(data_in_kwargs, "usuarios")
     user_in_i = user_is_finded[2]
     pos = user_is_finded[1]
     if user_is_finded != 0:
