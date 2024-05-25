@@ -208,7 +208,7 @@ def encontrar_en_bdd(bdd, estructura):
             if user_id != 0:
                 user_is_finded = False
                 for pos, user_reports_in_i in enumerate(bdd):
-                    if user_reports_in_i["id"] == user_id:
+                    if user_reports_in_i["id_usuario"] == user_id:
                         user_is_finded = True
                         print("Reportes encontrados...")
                         return [user_is_finded, pos, user_reports_in_i]
@@ -230,30 +230,31 @@ def mostrar_en_terminal(data_in_kwargs, es_paginado=True, config=0):
             print("[NO SELECCIONADA CONFIGURACION PARA VISUALIZAR]")
         else:
             print(f">>> Visualizar todos los {config}")
-            target_data = data_copy.get("db").get(config)
+            data_copy = data_copy.get("db").get(config)
             if config == "usuarios":
-                keys = [key.upper() for key in target_data[0].keys()]
+                keys = [key.upper() for key in data_copy[0].keys()]
                 header = " | ".join(keys) + "\n"
-                for pos, user in enumerate(target_data):
-                    target_data[pos]["id"] = str(user["id"])
-                    target_data[pos]["servicios"] = str(len(user["servicios"]))
-                paginacion(header,target_data)
+                for pos, user in enumerate(data_copy):
+                    data_copy[pos]["id"] = str(user["id"])
+                    data_copy[pos]["servicios"] = str(len(user["servicios"]))
+                paginacion(header,data_copy)
             elif config == "reportes":
-                keys = [key.upper() for key in target_data[0].keys()]
+                keys = [key.upper() for key in data_copy[0].keys()]
                 keys[-1] = "AUN ABIERTOS"
                 header = " | ".join(keys) + "\n"
-                for pos_report, report in enumerate(target_data):
+                for pos_report, data_copy in enumerate(data_copy):
                     acceder = ["soporte", "reclamaciones"]                    
                     abiertas = 0
-                    for clave_in_report_db, valor_in_report_db in report.items():
-                        if clave_in_report_db in acceder:
-                            contador = sum([len(valor_in_report_db["abiertas"]),len(valor_in_report_db["cerradas"])])
-                            target_data[pos_report][clave_in_report_db] = contador
-                            abiertas += len(valor_in_report_db["abiertas"])
-                    target_data[pos_report]["sugerencias"] = len(target_data[pos_report]["sugerencias"])
-                    target_data[pos_report]["Cantidad Reportes"] = abiertas
-                PROBLEMA EN PAGINACION PENDIENTE
-                paginacion(target_data,header)
+                    for clave_in_report, valor_in_report in data_copy.items():
+                        if clave_in_report in acceder:
+                            contador = sum([len(valor_in_report["abiertas"]),len(valor_in_report["cerradas"])])
+                            data_copy[pos_report][clave_in_report] = str(contador)
+                            abiertas += len(valor_in_report["abiertas"])
+                        elif clave_in_report == "id_usuario":
+                            data_copy[pos_report][clave_in_report.lower()] = str(data_copy[pos_report][clave_in_report.lower()])
+                    data_copy[pos_report]["sugerencias"] = str(len(data_copy[pos_report]["sugerencias"]))
+                    data_copy[pos_report]["Cantidad Reportes"] = str(abiertas)
+                paginacion(data_copy,header)
     else:
         if config == "usuarios":
             keys = list(data_copy.keys())
@@ -267,7 +268,20 @@ def mostrar_en_terminal(data_in_kwargs, es_paginado=True, config=0):
             else:
                 print("[Este usuario no tiene servicios contratados actualemente]")
         elif config == "reportes":
+            keys = [key.title() for key in data_copy.keys()]
+            header = " | ".join(keys) + "\n"
+            line = " | ".join(list(data_copy.values())) + "\n"
+            acceder = ["soporte", "reclamaciones", "sugerencias"]
+            contador = 0
+            for clave_in_report, valor_in_report in data_copy.items():
+                if clave_in_report in acceder:
+                    contador = sum([len(valor_in_report["abiertas"]),len(valor_in_report["cerradas"])])
+                    data_copy[clave_in_report] = str(contador)
+                    abiertas += len(valor_in_report["abiertas"])
+                elif clave_in_report == "sugerencias":
+
             return
+
 
 def paginacion(dict_to_print,header):
     start = 0
