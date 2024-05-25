@@ -27,6 +27,8 @@ from gestion import eliminar_usuario
 
 # Imports de reportes.py
 
+from reportes import generar_reporte
+
 # Imports de ventas.py
 
 # Imports librerias

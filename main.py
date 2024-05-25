@@ -22,6 +22,7 @@ from gestion import editar_categoria
 from gestion import eliminar_usuario
 
 # Imports de reportes.py
+from reportes import generar_reporte
 
 # Imports de ventas.py
 
@@ -53,7 +54,7 @@ def navegador(data, ruta_script, cofiguracion):
         menu_selector(mostrar_en_terminal, gestion_usuario,
                             msg_op=3, db=data, mostrar_cofig=cofiguracion, script_path=ruta_script)
     elif cofiguracion == "reportes":
-        menu_selector(mostrar_en_terminal, msg_op=4, db=data, mostrar_cofig=cofiguracion, script_path=ruta_script)
+        menu_selector(mostrar_en_terminal, generar_reporte,msg_op=4, db=data, mostrar_cofig=cofiguracion, script_path=ruta_script)
     elif cofiguracion == "ventas":
         return
 
