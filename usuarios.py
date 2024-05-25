@@ -1,23 +1,5 @@
-# Imports de funciones_main.py
-
-from funciones_main import int_val
-from funciones_main import str_val
-from funciones_main import validar_email_regexp
-from funciones_main import msgs
-from funciones_main import validar_ruta_main
-from funciones_main import validar_ruta_json
-from funciones_main import opener
-from funciones_main import menu_selector
-from funciones_main import export_file
-from funciones_main import encontrar_en_bdd
-from funciones_main import mostrar_en_terminal
-
-# Imports librerias
-
-import json
-import re
-import datetime
-import copy
+import funciones_main
+import funciones_intermodulares
 
 # Formato docstring para copiar (esta linea no)
 #     '''
@@ -33,48 +15,12 @@ def gestion_usuario(data_in_kwargs):
     <== Devuelve Diccionario
     '''
     print(">>> Gestionar usuario")
-    user_is_finded = encontrar_en_bdd(data_in_kwargs, "usuarios")
+    user_is_finded = funciones_main.encontrar_en_bdd(
+        data_in_kwargs, "usuarios")
     user_in_i = user_is_finded[2]
     pos = user_is_finded[1]
-    if user_is_finded != 0:
-        if user_is_finded[0]:
-            while True:
-                mostrar_en_terminal(
-                    user_in_i, es_paginado=False, config="usuarios")
-                op = int_val("[1 - Editar Nombre]   [2 - Editar direccion]   [3 - Editar contacto]   [4 - Editar categoria manualmente -NO RECOMENDADO]\n[5 - Contratar/Descontratar Servicio]   [6 - ELIMINAR USUARIO]   [0 - Cancelar]\n> ")
-                if op >= 0 and op <= 6:
-                    if op == 1 or op == 2 or op == 3:
-                        res = editar_perfil_usuario(op, data_in_kwargs, pos)
-                        if res is not None:
-                            data_in_kwargs = res
-                            continuar = int_val(
-                                "¿Desea continuar gestionando al usuario?\n1 - Continuar    2 - Salir\n> ")
-                            if continuar == 2:
-                                break
-                    elif op == 4:
-                        res = editar_categoria(data_in_kwargs, pos)
-                        if res is not None:
-                            data_in_kwargs = res
-                            continuar = int_val(
-                                "¿Desea continuar gestionando al usuario?\n1 - Continuar    2 - Salir\n> ")
-                            if continuar == 2:
-                                break
-                    elif op == 5:
-                        print("funcionalidad_en_desarrollo")
-                    elif op == 6:
-                        eliminar_usuario(data_in_kwargs, pos)
-                        break
-                    else:
-                        break
-                else:
-                    input("Seleccione una opcion dada\n[Enter - Reintentar]\n")
-        else:
-            res = agregar_usuario(data_in_kwargs)
-            if res is not None:
-                data_in_kwargs = res
-        return data_in_kwargs
-    else:
-        print("> Cancelando...")
+    funciones_intermodulares.logica_gestiones(
+        "usuarios", user_is_finded, user_in_i, pos, data_in_kwargs)
 
 
 def agregar_usuario(data_in_kwargs):
@@ -90,9 +36,10 @@ def agregar_usuario(data_in_kwargs):
     if servicios is not None:
         user_to_fill = {}
         id = generar_id(unpacked_data)
-        nombre = str_val("Nombre del usuario: ")
-        direccion = str_val("Direccion de domicilio del usuario: ")
-        contacto = validar_email_regexp(
+        nombre = funciones_main.str_val("Nombre del usuario: ")
+        direccion = funciones_main.str_val(
+            "Direccion de domicilio del usuario: ")
+        contacto = funciones_main.validar_email_regexp(
             input("Correo electronico del usuario: "), es_validado=True)
 
         return data_in_kwargs
@@ -128,7 +75,7 @@ def editar_perfil_usuario(op, data_in_kwargs, pos_user):
     nuevo_dato = None
     if op != "contacto":
         while True:
-            nuevo_dato = str_val(
+            nuevo_dato = funciones_main.str_val(
                 f"Nuevo {op} de usuario ('cancelar' para Cancelar)\n> ")
             if nuevo_dato == "cancelar":
                 print("> Cancelar")
@@ -141,9 +88,9 @@ def editar_perfil_usuario(op, data_in_kwargs, pos_user):
                 break
     else:
         while True:
-            nuevo_dato = str_val(
+            nuevo_dato = funciones_main.str_val(
                 f"Nuevo {op} de usuario ('cancelar' para Cancelar)\n> ")
-            if validar_email_regexp(nuevo_dato) or nuevo_dato == "cancelar":
+            if funciones_main.validar_email_regexp(nuevo_dato) or nuevo_dato == "cancelar":
                 break
             else:
                 input(
@@ -152,7 +99,7 @@ def editar_perfil_usuario(op, data_in_kwargs, pos_user):
         print("Cancelando...")
     else:
         data_in_kwargs["db"]["usuarios"][pos_user][op] = nuevo_dato
-        export_file(data_in_kwargs, "exported_db")
+        funciones_main.export_file(data_in_kwargs, "exported_db")
         return data_in_kwargs
 
 
@@ -166,14 +113,14 @@ def editar_categoria(data_in_kwargs, pos_user):
     yo = input("Continuar? (y/n) ")
     if yo == "y":
         while True:
-            op = int_val(
+            op = funciones_main.int_val(
                 "[1 - Modificar a Cliente Nuevo]\n[2 - Modificar a Cliente Regular]\n[3 - Modificar a Cliente Leal]\n[0 - Cancelar]\n> ")
             if op >= 0 and op <= 3:
                 if op != 0:
                     modificadores = ["cliente nuevo",
                                      "cliente regular", "cliente leal"]
                     data_in_kwargs["db"]["usuarios"][pos_user]["categoria"] = modificadores[op-1]
-                    export_file(data_in_kwargs, "exported_db")
+                    funciones_main.export_file(data_in_kwargs, "exported_db")
                     print(f"> Modificacion: {modificadores[op-1].title()}")
                     return data_in_kwargs
                 else:
@@ -197,7 +144,7 @@ def eliminar_usuario(data_in_kwargs, pos_user):
         if op == "BORRAR":
             data_in_kwargs["db"]["usuarios"].pop(pos_user)
             input("Usuario eliminado satisfactoriamente\n Gestion añadida al registro de movimientos. PENDIENTE AÑADIR FUNCIONALIDAD")
-            export_file(data_in_kwargs, "exported_db")
+            funciones_main.export_file(data_in_kwargs, "exported_db")
             return data_in_kwargs
         else:
             print("> Cancelando...")
