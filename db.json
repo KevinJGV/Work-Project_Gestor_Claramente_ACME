@@ -212,41 +212,292 @@
             ]
         }
     ],
-    "reportes" : [
+    "reportes": [
         {
             "id_usuario": 1,
-            "soporte":{
-                "abiertas":[
+            "soporte": {
+                "abiertas": [
                     {
-                        "id":"1-2",
+                        "id": "1-2",
                         "descripcion": "No puede apagar la tv"
                     }
                 ],
-                "cerradas":[
+                "cerradas": [
                     {
-                        "id":"1-1",
-                        "descripcion": "Se le fue el internet desde hace 2 dias"
+                        "id": "1-1",
+                        "descripcion": "Se le fue el internet desde hace 2 días"
                     }
                 ]
             },
-            "reclamaciones":{
-                "abiertas":[
+            "reclamaciones": {
+                "abiertas": [
                     {
-                        "id":"1-1",
-                        "descripcion": "Factura llego $100 mas cara de lo contratado"
+                        "id": "1-1",
+                        "descripcion": "Factura llegó $100 más cara de lo contratado"
                     }
                 ],
-                "cerradas":[
-                    
-                ]
+                "cerradas": []
             },
-            "sugerencias":[
+            "sugerencias": [
                 {
                     "id": "1-1",
-                    "descripcion" : "La sede en Cabecera necesita otro baño publico, es muy congestionado" 
+                    "descripcion": "La sede en Cabecera necesita otro baño público, es muy congestionado"
                 }
             ],
-            "Cantidad Reportes" : 4
+            "Cantidad Reportes": 4
+        },
+        {
+            "id_usuario": 2,
+            "soporte": {
+                "abiertas": [
+                    {
+                        "id": "2-1",
+                        "descripcion": "Problema con la señal de internet"
+                    }
+                ],
+                "cerradas": []
+            },
+            "reclamaciones": {
+                "abiertas": [],
+                "cerradas": []
+            },
+            "sugerencias": [
+                {
+                    "id": "2-1",
+                    "descripcion": "Ampliar la cobertura en la zona céntrica"
+                }
+            ],
+            "Cantidad Reportes": 1
+        },
+        {
+            "id_usuario": 3,
+            "soporte": {
+                "abiertas": [
+                    {
+                        "id": "3-1",
+                        "descripcion": "Problema con la señal de televisión"
+                    }
+                ],
+                "cerradas": []
+            },
+            "reclamaciones": {
+                "abiertas": [],
+                "cerradas": []
+            },
+            "sugerencias": [
+                {
+                    "id": "3-1",
+                    "descripcion": "Mejorar la atención al cliente en la sucursal"
+                }
+            ],
+            "Cantidad Reportes": 1
+        },
+        {
+            "id_usuario": 4,
+            "soporte": {
+                "abiertas": [
+                    {
+                        "id": "4-1",
+                        "descripcion": "No puede acceder al correo electrónico"
+                    }
+                ],
+                "cerradas": []
+            },
+            "reclamaciones": {
+                "abiertas": [],
+                "cerradas": []
+            },
+            "sugerencias": [
+                {
+                    "id": "4-1",
+                    "descripcion": "Ampliar la cobertura de internet en la zona residencial"
+                }
+            ],
+            "Cantidad Reportes": 1
+        },
+        {
+            "id_usuario": 5,
+            "soporte": {
+                "abiertas": [
+                    {
+                        "id": "5-1",
+                        "descripcion": "Problema con la señal de televisión"
+                    }
+                ],
+                "cerradas": []
+            },
+            "reclamaciones": {
+                "abiertas": [],
+                "cerradas": []
+            },
+            "sugerencias": [
+                {
+                    "id": "5-1",
+                    "descripcion": "Mejorar la atención al cliente en la sucursal"
+                }
+            ],
+            "Cantidad Reportes": 1
+        },
+        {
+            "id_usuario": 6,
+            "soporte": {
+                "abiertas": [
+                    {
+                        "id": "6-1",
+                        "descripcion": "No puede acceder al correo electrónico"
+                    }
+                ],
+                "cerradas": []
+            },
+            "reclamaciones": {
+                "abiertas": [],
+                "cerradas": []
+            },
+            "sugerencias": [
+                {
+                    "id": "6-1",
+                    "descripcion": "Ampliar la cobertura de internet en la zona residencial"
+                }
+            ],
+            "Cantidad Reportes": 1
+        },
+        {
+            "id_usuario": 7,
+            "soporte": {
+                "abiertas": [
+                    {
+                        "id": "7-1",
+                        "descripcion": "Problema con la señal de telefonía móvil"
+                    }
+                ],
+                "cerradas": []
+            },
+            "reclamaciones": {
+                "abiertas": [],
+                "cerradas": []
+            },
+            "sugerencias": [
+                {
+                    "id": "7-1",
+                    "descripcion": "Mejorar la calidad de las llamadas"
+                }
+            ],
+            "Cantidad Reportes": 1
+        },
+        {
+            "id_usuario": 8,
+            "soporte": {
+                "abiertas": [
+                    {
+                        "id": "8-1",
+                        "descripcion": "Problema con la señal de televisión"
+                    }
+                ],
+                "cerradas": []
+            },
+            "reclamaciones": {
+                "abiertas": [],
+                "cerradas": []
+            },
+            "sugerencias": [
+                {
+                    "id": "8-1",
+                    "descripcion": "Ampliar la cobertura en la zona céntrica"
+                }
+            ],
+            "Cantidad Reportes": 1
+        },
+        {
+            "id_usuario": 9,
+            "soporte": {
+                "abiertas": [
+                    {
+                        "id": "9-1",
+                        "descripcion": "No puede acceder al correo electrónico"
+                    }
+                ],
+                "cerradas": []
+            },
+            "reclamaciones": {
+                "abiertas": [],
+                "cerradas": []
+            },
+            "sugerencias": [
+                {
+                    "id": "9-1",
+                    "descripcion": "Mejorar la atención al cliente en la sucursal"
+                }
+            ],
+            "Cantidad Reportes": 1
+        },
+        {
+            "id_usuario": 10,
+            "soporte": {
+                "abiertas": [
+                    {
+                        "id": "10-1",
+                        "descripcion": "Problema con la señal de telefonía móvil"
+                    }
+                ],
+                "cerradas": []
+            },
+            "reclamaciones": {
+                "abiertas": [],
+                "cerradas": []
+            },
+            "sugerencias": [
+                {
+                    "id": "10-1",
+                    "descripcion": "Mejorar la calidad de las llamadas"
+                }
+            ],
+            "Cantidad Reportes": 1
+        },
+        {
+            "id_usuario": 11,
+            "soporte": {
+                "abiertas": [
+                    {
+                        "id": "11-1",
+                        "descripcion": "No puede acceder al correo electrónico"
+                    }
+                ],
+                "cerradas": []
+            },
+            "reclamaciones": {
+                "abiertas": [],
+                "cerradas": []
+            },
+            "sugerencias": [
+                {
+                    "id": "11-1",
+                    "descripcion": "Mejorar la atención telefónica al cliente"
+                }
+            ],
+            "Cantidad Reportes": 1
+        },
+        {
+            "id_usuario": 12,
+            "soporte": {
+                "abiertas": [
+                    {
+                        "id": "12-1",
+                        "descripcion": "Problema con la señal de televisión"
+                    }
+                ],
+                "cerradas": []
+            },
+            "reclamaciones": {
+                "abiertas": [],
+                "cerradas": []
+            },
+            "sugerencias": [
+                {
+                    "id": "12-1",
+                    "descripcion": "Ampliar la cobertura de internet en la zona rural"
+                }
+            ],
+            "Cantidad Reportes": 1
         }
     ]
 }
