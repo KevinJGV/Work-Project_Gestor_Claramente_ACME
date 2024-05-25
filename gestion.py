@@ -28,7 +28,7 @@ import copy
 
 def gestion_usuario(data_in_kwargs):
     '''
-    Realiza CRUDs en el json con la idea logica de un software para proveedor de servicios de telecomunicaciones
+    Realiza CRUDs a perfiles de usuario en el json con la idea logica de un software para proveedor de servicios de telecomunicaciones
     ==> Recibe Diccionario
     <== Devuelve Diccionario
     '''
