@@ -1,5 +1,6 @@
 import funciones_main
-import funciones_intermodulares
+import reportes
+import ventas
 
 # Formato docstring para copiar (esta linea no)
 #     '''
@@ -19,7 +20,7 @@ def gestion_usuario(data_in_kwargs):
         data_in_kwargs, "usuarios")
     user_in_i = user_is_finded[2]
     pos = user_is_finded[1]
-    funciones_intermodulares.logica_gestiones(
+    funciones_main.logica_gestiones(
         "usuarios", user_is_finded, user_in_i, pos, data_in_kwargs)
 
 
