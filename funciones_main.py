@@ -82,7 +82,8 @@ def msgs(op):
             print("=" * 6 + " MENU PRINCIPAL " + "=" * 6 +
                   "\n1 - Gestión de usuarios\n2 - Reportes de usuarios\n3 - Tratador de servicios\n0 - Salir del software")
         elif op == 3:
-            print("\n>> Gestión de usuarios\n1 - Visualizar todos los usuarios\n2 - Gestionar usuario\n0 - Volver")
+            print(
+                "\n>> Gestión de usuarios\n1 - Visualizar todos los usuarios\n2 - Gestionar usuario\n0 - Volver")
         elif op == 4:
             print("\n>> Reportes de usuarios\n1 - Visualizar todos los reportes\n2 - Gestionar un reporte\n0 - Volver")
         elif op == 5:
@@ -238,24 +239,28 @@ def mostrar_en_terminal(data_in_kwargs, es_paginado=True, config=0):
                 for pos, user in enumerate(data_copy):
                     data_copy[pos]["id"] = str(user["id"])
                     data_copy[pos]["servicios"] = str(len(user["servicios"]))
-                paginacion(header,data_copy)
+                paginacion(data_copy, header)
             elif config == "reportes":
                 keys = [key.upper() for key in data_copy[0].keys()]
                 keys[-1] = "AUN ABIERTOS"
                 header = " | ".join(keys) + "\n"
                 for pos_report, data_copy in enumerate(data_copy):
-                    acceder = ["soporte", "reclamaciones"]                    
+                    acceder = ["soporte", "reclamaciones"]
                     abiertas = 0
                     for clave_in_report, valor_in_report in data_copy.items():
                         if clave_in_report in acceder:
-                            contador = sum([len(valor_in_report["abiertas"]),len(valor_in_report["cerradas"])])
-                            data_copy[pos_report][clave_in_report] = str(contador)
+                            contador = sum(
+                                [len(valor_in_report["abiertas"]), len(valor_in_report["cerradas"])])
+                            data_copy[pos_report][clave_in_report] = str(
+                                contador)
                             abiertas += len(valor_in_report["abiertas"])
                         elif clave_in_report == "id_usuario":
-                            data_copy[pos_report][clave_in_report.lower()] = str(data_copy[pos_report][clave_in_report.lower()])
-                    data_copy[pos_report]["sugerencias"] = str(len(data_copy[pos_report]["sugerencias"]))
+                            data_copy[pos_report][clave_in_report.lower()] = str(
+                                data_copy[pos_report][clave_in_report.lower()])
+                    data_copy[pos_report]["sugerencias"] = str(
+                        len(data_copy[pos_report]["sugerencias"]))
                     data_copy[pos_report]["Cantidad Reportes"] = str(abiertas)
-                paginacion(data_copy,header)
+                paginacion(data_copy, header)
     else:
         if config == "usuarios":
             keys = list(data_copy.keys())
@@ -271,20 +276,17 @@ def mostrar_en_terminal(data_in_kwargs, es_paginado=True, config=0):
         elif config == "reportes":
             keys = [key.title() for key in data_copy.keys()]
             header = " | ".join(keys) + "\n"
-            line = " | ".join(list(data_copy.values())) + "\n"
             acceder = ["soporte", "reclamaciones", "sugerencias"]
-            contador = 0
             for clave_in_report, valor_in_report in data_copy.items():
                 if clave_in_report in acceder:
-                    contador = sum([len(valor_in_report["abiertas"]),len(valor_in_report["cerradas"])])
-                    data_copy[clave_in_report] = str(contador)
-                    abiertas += len(valor_in_report["abiertas"])
+                    data_copy[clave_in_report] = str(
+                        sum([len(valor_in_report["abiertas"]), len(valor_in_report["cerradas"])]))
                 elif clave_in_report == "sugerencias":
+                    data_copy[clave_in_report] = str(len(valor_in_report))
+            line = " | ".join(list(data_copy.values())) + "\n"
 
-            return
 
-
-def paginacion(dict_to_print,header):
+def paginacion(dict_to_print, header):
     start = 0
     pag_size = 5
     while True:
