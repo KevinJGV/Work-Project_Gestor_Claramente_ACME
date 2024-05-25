@@ -1,43 +1,19 @@
-# Imports de funciones_main.py
+import funciones_main
+import usuarios
+import reportes
 
-from funciones_main import int_val
-from funciones_main import str_val
-from funciones_main import validar_email_regexp
-from funciones_main import msgs
-from funciones_main import validar_ruta_main
-from funciones_main import validar_ruta_json
-from funciones_main import opener
-from funciones_main import menu_selector
-from funciones_main import export_file
-from funciones_main import encontrar_en_bdd
-from funciones_main import mostrar_en_terminal
 
-# Imports de gestion.py
-
-from gestion import gestion_usuario
-from gestion import agregar_usuario
-from gestion import generar_id
-from gestion import editar_perfil_usuario
-from gestion import editar_categoria
-from gestion import eliminar_usuario
-
-# Imports de reportes.py
-from reportes import generar_reporte
-
-# Imports de ventas.py
-
-# Imports librerias
-
-import json
-import re
-import datetime
-import copy
+# Formato docstring para copiar (esta linea no)
+#     '''
+#     ==> Recibe
+#     <== Devuelve
+#     '''
 
 
 def navegador(data, ruta_script, cofiguracion):
     if cofiguracion == "principal":
         while True:
-            op = int_val("> ", op_menu=2)
+            op = funciones_main.int_val("> ", op_menu=2)
             if op >= 0 and op <= 3:
                 if op == 0:
                     print("> Cerrando programa...")
@@ -49,17 +25,20 @@ def navegador(data, ruta_script, cofiguracion):
                 elif op == 3:
                     navegador(data, ruta_script, "ventas")
             else:
-                input("Opción no identificada\nIntente nuevamente\n(Enter para continuar)\n")
+                input(
+                    "Opción no identificada\nIntente nuevamente\n(Enter para continuar)\n")
     elif cofiguracion == "usuarios":
-        menu_selector(mostrar_en_terminal, gestion_usuario,
-                            msg_op=3, db=data, mostrar_cofig=cofiguracion, script_path=ruta_script)
+        funciones_main.menu_selector(funciones_main.mostrar_en_terminal, usuarios.gestion_usuario,
+                                     msg_op=3, db=data, mostrar_cofig=cofiguracion, script_path=ruta_script)
     elif cofiguracion == "reportes":
-        menu_selector(mostrar_en_terminal, generar_reporte,msg_op=4, db=data, mostrar_cofig=cofiguracion, script_path=ruta_script)
+        funciones_main.menu_selector(funciones_main.mostrar_en_terminal, reportes.generar_reporte,
+                                     msg_op=4, db=data, mostrar_cofig=cofiguracion, script_path=ruta_script)
     elif cofiguracion == "ventas":
         return
 
-ruta_actual = validar_ruta_main("> ")
-json_path = validar_ruta_json(
+
+ruta_actual = funciones_main.validar_ruta_main("> ")
+json_path = funciones_main.validar_ruta_json(
     "Ingrese la ruta relativa del archivo de datos a procesar\n> ")
-data = opener(json_path)
+data = funciones_main.opener(json_path)
 navegador(data, ruta_actual, "principal")
