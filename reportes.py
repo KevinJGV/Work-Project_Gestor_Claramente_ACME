@@ -21,10 +21,9 @@ def generar_reporte(data_in_kwargs):
     <== Devuelve Diccionario
     '''
     print(">>> Gestionar un reporte")
-    report_pos_finded = encontrar_en_bdd(data_in_kwargs, "reportes")
-    report_in_i = report_pos_finded[2]
-    pos = report_pos_finded[1]
-    if report_pos_finded != 0:
-        if report_pos_finded[0]:
-            while True:
-                mostrar_en_terminal(report_in_i, es_paginado=False, config="reportes")
+    report_is_finded = funciones_main.encontrar_en_bdd(
+        data_in_kwargs, "reportes")
+    report_in_i = report_is_finded[2]
+    pos = report_is_finded[1]
+    funciones_main.logica_gestiones(
+        "usuarios", report_is_finded, report_in_i, pos, data_in_kwargs)

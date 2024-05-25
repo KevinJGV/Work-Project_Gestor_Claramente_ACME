@@ -314,3 +314,78 @@ def paginacion(dict_to_print, header):
         elif movimiento == 0:
             if start != 0:
                 start -= pag_size
+
+
+def logica_gestiones(gestion, var_data_is_finded, var_data_in_i, var_pos, data_in_kwargs):
+    if var_data_is_finded != 0:
+        if gestion == "usuarios":
+            if var_data_is_finded[0]:
+                while True:
+                    mostrar_en_terminal(
+                        var_data_in_i, es_paginado=False, config="usuarios")
+                    op = int_val(
+                        "[1 - Editar Nombre]   [2 - Editar direccion]   [3 - Editar contacto]   [4 - Editar categoria manualmente -NO RECOMENDADO]\n[5 - Contratar/Descontratar Servicio]   [6 - ELIMINAR USUARIO]   [0 - Cancelar]\n> ")
+                    if op >= 0 and op <= 6:
+                        if op == 1 or op == 2 or op == 3:
+                            res = usuarios.editar_perfil_usuario(
+                                op, data_in_kwargs, var_pos)
+                            if res is not None:
+                                data_in_kwargs = res
+                                continuar = int_val(
+                                    "¿Desea continuar gestionando al usuario?\n1 - Continuar    2 - Salir\n> ")
+                                if continuar == 2:
+                                    break
+                        elif op == 4:
+                            res = usuarios.editar_categoria(
+                                data_in_kwargs, var_pos)
+                            if res is not None:
+                                data_in_kwargs = res
+                                continuar = int_val(
+                                    "¿Desea continuar gestionando al usuario?\n1 - Continuar    2 - Salir\n> ")
+                                if continuar == 2:
+                                    break
+                        elif op == 5:
+                            print("funcionalidad_en_desarrollo")
+                        elif op == 6:
+                            usuarios.eliminar_usuario(data_in_kwargs, var_pos)
+                            break
+                        else:
+                            break
+                    else:
+                        input(
+                            "Seleccione una opcion dada\n[Enter - Reintentar]\n")
+            else:
+                usuarios.agregar_usuario(data_in_kwargs)
+        elif gestion == "reportes":
+            if var_data_is_finded[0]:
+                while True:
+                    mostrar_en_terminal(
+                        var_data_in_i, es_paginado=False, config="reportes")
+                    op = int_val(
+                        "[1 - Ingresar: Reportes de Soportes]   [2 - Ingresar: Reportes de Reclamaciones]   [3 - Visualizar: Reportes de Sugerencias]  \n[0 - Cancelar]\n> ")
+                    if op >= 0 and op <= 3:
+                        if op == 1 or op == 2:
+                            res = usuarios.editar_perfil_usuario(
+                                op, data_in_kwargs, var_pos)
+                            if res is not None:
+                                data_in_kwargs = res
+                                continuar = int_val(
+                                    "¿Desea continuar gestionando al usuario?\n1 - Continuar    2 - Salir\n> ")
+                                if continuar == 2:
+                                    break
+                        elif op == 3:
+                            res = usuarios.editar_categoria(
+                                data_in_kwargs, var_pos)
+                            if res is not None:
+                                data_in_kwargs = res
+                                continuar = int_val(
+                                    "¿Desea continuar gestionando al usuario?\n1 - Continuar    2 - Salir\n> ")
+                                if continuar == 2:
+                                    break
+                        else:
+                            break
+                    else:
+                        input(
+                            "Seleccione una opcion dada\n[Enter - Reintentar]\n")
+    else:
+        print("> Cancelando...")
