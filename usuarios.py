@@ -1,6 +1,11 @@
 import funciones_main
 import reportes
 import ventas
+from datetime import datetime
+from dateutil.relativedelta import relativedelta
+
+# pip show dateutil
+# pip install python-dateutil
 
 # Formato docstring para copiar (esta linea no)
 #     '''
@@ -21,7 +26,7 @@ def agregar_usuario(data_in_kwargs):
     servicios = ""
     if servicios is not None:
         user_to_fill = {}
-        id = funciones_main.generar_id(unpacked_data,"usuarios")
+        id = funciones_main.generar_id(unpacked_data, "usuarios")
         nombre = funciones_main.alpnum_val("Nombre del usuario: ")
         direccion = funciones_main.alpnum_val(
             "Direccion de domicilio del usuario: ")
@@ -96,6 +101,7 @@ def editar_categoria(data_in_kwargs):
                     modificadores = ["cliente nuevo",
                                      "cliente regular", "cliente leal"]
                     data_in_kwargs["db"]["usuarios"][pos_user]["categoria"] = modificadores[op-1]
+                    data_in_kwargs["db"]["usuarios"][pos_user]["categoria gestionada"] = True
                     funciones_main.export_file(data_in_kwargs, "exported_db")
                     print(f"> Modificacion: {modificadores[op-1].title()}")
                     return data_in_kwargs

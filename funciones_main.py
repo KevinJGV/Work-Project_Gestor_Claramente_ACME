@@ -3,7 +3,6 @@ import reportes
 import ventas
 import json
 import re
-import datetime
 import copy
 
 # Formato docstring para copiar (esta linea no)
@@ -349,18 +348,21 @@ def mostrar_en_terminal(data_in_kwargs, es_paginado=True, config=0):
                     data_copy[pos_report]["Cantidad Reportes"] = str(abiertas)
                 paginacion(data_copy, header)
     else:
+        body = ""
         if isinstance(config,str):
             if config == "usuarios":
                 keys = list(data_copy.keys())
                 for key in keys:
                     if key != "servicios":
-                        print(f"{key.upper()} => {data_copy[key]}")
-                print("SERVICIOS ACTUALES DEL USUARIO:")
+                        line = f"{key.upper()} => {data_copy[key]}\n"
+                        body += line
+                body += "SERVICIOS ACTUALES DEL USUARIO:\n"
                 if len(data_copy["servicios"]) != 0:
                     for servicio in data_copy["servicios"]:
-                        print(f"-> {servicio['servicio']}")
+                        line = f"-> {servicio['servicio']}\n"
+                        body += line
                 else:
-                    print("[Este usuario no tiene servicios contratados actualemente]")
+                    body += "[Este usuario no tiene servicios contratados actualemente]"
             elif config == "reportes":
                 keys = [key.title() for key in data_copy.keys()]
                 header = " | ".join(keys) + "\n"
@@ -374,7 +376,7 @@ def mostrar_en_terminal(data_in_kwargs, es_paginado=True, config=0):
                     else:
                         data_copy[clave_in_report] = str(valor_in_report)
                 line = " | ".join(list(data_copy.values())) + "\n"
-                print(header + "\n" + line)
+                body = header + "\n" + line
         elif isinstance(config,list):
             if config[0] == "s&r&s":
                 config[1] -= 1
@@ -395,7 +397,9 @@ def mostrar_en_terminal(data_in_kwargs, es_paginado=True, config=0):
                                 body += f"{reporte["id"]} | {reporte["descripcion"]}\n"
                     else:
                         body = "[USUARIO SIN REPORTES]"
-                print(header + body)
+                body = header + body
+        print(body)
+        return body
 
 
 def paginacion(dict_to_print, header):
@@ -428,17 +432,18 @@ def paginacion(dict_to_print, header):
                 start -= pag_size
 
 
-def logica_gestiones(gestion, var_data_is_finded, var_data_in_i, var_pos, data_in_kwargs):
+def logica_gestiones(gestion, data_in_kwargs, var_data_is_finded=None, var_data_in_i=None, var_pos=None):
     if var_data_is_finded != 0:
+        terminal = None
         if gestion == "usuarios":
             if var_data_is_finded[0]:
                 while True:
-                    mostrar_en_terminal(
+                    terminal = mostrar_en_terminal(
                         var_data_in_i, es_paginado=False, config=gestion)
                     op = int_val("> ", 6)
                     if op >= 0 and op <= 6:
                         if op == 1 or op == 2 or op == 3:
-                            res = menu_selector(usuarios.editar_perfil_usuario,una_opcion=True, continuar=True,op=op,data_in_kwargs=data_in_kwargs,pos_user=var_pos)
+                            res = menu_selector(usuarios.editar_perfil_usuario,una_opcion=True, continuar=True,op=op,data_in_kwargs=data_in_kwargs,pos_user=var_pos, contenido_terminal=terminal)
                             if res == 0:
                                 break
                         elif op == 4:
@@ -450,7 +455,7 @@ def logica_gestiones(gestion, var_data_is_finded, var_data_in_i, var_pos, data_i
                             if res == 0:
                                 break
                         elif op == 6:
-                            menu_selector(usuarios.eliminar_usuario,una_opcion=True,continuar=True, data_in_kwargs=data_in_kwargs,pos_user=var_pos)
+                            menu_selector(usuarios.eliminar_usuario,una_opcion=True, data_in_kwargs=data_in_kwargs,pos_user=var_pos)
                             break
                         else:
                             break
@@ -481,5 +486,7 @@ def logica_gestiones(gestion, var_data_is_finded, var_data_in_i, var_pos, data_i
                     else:
                         input(
                             "Seleccione una opcion dada\n[Enter - Reintentar]\n")
+        else:
+            print("ventas")
     else:
         print("> Cancelando...")
