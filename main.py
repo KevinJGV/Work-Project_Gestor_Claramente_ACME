@@ -41,4 +41,4 @@ ruta_actual = funciones_main.validar_ruta_main("> ")
 json_path = funciones_main.validar_ruta_json(
     "Ingrese la ruta relativa del archivo de datos a procesar\n> ")
 data = funciones_main.opener(json_path)
-navegador(data, ruta_actual, "principal")
+usuarios.actualizar_categoria_automatico(data, ruta_actual, "principal")

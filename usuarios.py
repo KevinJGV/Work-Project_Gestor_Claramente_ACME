@@ -129,3 +129,25 @@ def eliminar_usuario(data_in_kwargs):
     else:
         input(
             "Accion no permitida.\nEl usuario seleccionado no debe tener servicios contradados. Se requiere descontratar todos los servicios.\n[Enter - Cancelar]\n")
+
+
+def actualizar_categoria_automatico(data, ruta_db):
+    print("Actualizando base de datos...")
+    usuarios = data["usuarios"]
+    fecha_actual = datetime.now().date()
+    fecha_actual = datetime.strftime(fecha_actual, "%d-%m-%Y")
+    fecha_actual = datetime.strptime(fecha_actual, "%d-%m-%Y")
+    for usuario in usuarios:
+        if usuario["categoria gestionada"] is False:
+            fecha_antigua = datetime.strptime(
+                usuario["antiguedad"], "%d-%m-%Y")
+            diferencia_total = relativedelta(fecha_actual, fecha_antigua)
+            meses_diferencia = diferencia_total.years * 12 + diferencia_total.months
+            if meses_diferencia <= 11:
+                usuario["categoria"] = "cliente nuevo"
+            elif meses_diferencia <= 23:
+                usuario["categoria"] = "cliente regular"
+            else:
+                usuario["categoria"] = "cliente leal"
+    funciones_main.export_file(data, "db", No_kwargs=True)
+    print("Actualizacion completa...")
