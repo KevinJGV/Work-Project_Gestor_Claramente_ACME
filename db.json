@@ -5,8 +5,9 @@
             "nombre": "Carlos Gómez",
             "dirección": "Carrera 45 #30-16, Medellín",
             "contacto": "carlos.gomez@ejemplo.co",
-            "categoria": "cliente nuevo",
-            "antiguedad": "10-05-2024",
+            "categoria": "cliente regular",
+            "categoria gestionada": false,
+            "antiguedad": "10-05-2023",
             "servicios": []
         },
         {
@@ -15,15 +16,16 @@
             "dirección": "Calle 70 #22-08, Bogotá",
             "contacto": "luisa.martinez@ejemplo.co",
             "categoria": "cliente leal",
-            "antiguedad": "05-04-2020",
+            "categoria gestionada": true,
+            "antiguedad": "05-04-2024",
             "servicios": [
                 {
-                    "servicio": "Internet de Fibra Óptica",
-                    "fecha": "05-04-2020"
+                    "servicio": "Internet de Fibra Óptica 500MB",
+                    "fecha": "05-04-2024"
                 },
                 {
-                    "servicio": "Plan pospago",
-                    "fecha": "05-04-2020"
+                    "servicio": "Plan pospago 40GB",
+                    "fecha": "05-04-2024"
                 }
             ]
         },
@@ -33,10 +35,11 @@
             "dirección": "Diagonal 33 #15-55, Cali",
             "contacto": "sofia.castro@ejemplo.co",
             "categoria": "cliente regular",
+            "categoria gestionada": false,
             "antiguedad": "15-12-2022",
             "servicios": [
                 {
-                    "servicio": "Plan pospago",
+                    "servicio": "Plan pospago 40GB",
                     "fecha": "15-12-2022"
                 }
             ]
@@ -47,10 +50,11 @@
             "dirección": "Avenida 5 #44-86, Barranquilla",
             "contacto": "andrea.ramirez@ejemplo.co",
             "categoria": "cliente nuevo",
+            "categoria gestionada": false,
             "antiguedad": "20-05-2024",
             "servicios": [
                 {
-                    "servicio": "TV hogar",
+                    "servicio": "TV hogar Premium",
                     "fecha": "20-05-2024"
                 },
                 {
@@ -65,14 +69,15 @@
             "dirección": "Calle 90 #10-80, Bucaramanga",
             "contacto": "juan.vargas@ejemplo.co",
             "categoria": "cliente leal",
+            "categoria gestionada": false,
             "antiguedad": "15-07-2019",
             "servicios": [
                 {
-                    "servicio": "Internet de Fibra Óptica",
+                    "servicio": "Internet de Fibra Óptica 500MB",
                     "fecha": "15-07-2019"
                 },
                 {
-                    "servicio": "Plan pospago",
+                    "servicio": "Plan pospago 40GB",
                     "fecha": "15-07-2019"
                 },
                 {
@@ -86,7 +91,8 @@
             "nombre": "Mónica López",
             "dirección": "Transversal 27 #50-30, Santa Marta",
             "contacto": "monica.lopez@ejemplo.co",
-            "categoria": "cliente regular",
+            "categoria": "cliente nuevo",
+            "categoria gestionada": false,
             "antiguedad": "01-09-2023",
             "servicios": [
                 {
@@ -94,7 +100,7 @@
                     "fecha": "01-09-2023"
                 },
                 {
-                    "servicio": "TV hogar",
+                    "servicio": "TV hogar Premium",
                     "fecha": "01-09-2023"
                 }
             ]
@@ -105,14 +111,15 @@
             "dirección": "Carrera 15 #28-45, Medellín",
             "contacto": "carlos.gomez@ejemplo.co",
             "categoria": "cliente nuevo",
+            "categoria gestionada": false,
             "antiguedad": "22-05-2024",
             "servicios": [
                 {
-                    "servicio": "Plan pospago",
+                    "servicio": "Plan pospago 40GB",
                     "fecha": "22-05-2024"
                 },
                 {
-                    "servicio": "Internet de Fibra Óptica",
+                    "servicio": "Internet de Fibra Óptica 500MB",
                     "fecha": "22-05-2024"
                 }
             ]
@@ -123,6 +130,7 @@
             "dirección": "Diagonal 33 #66-88, Cali",
             "contacto": "luisa.perez@ejemplo.co",
             "categoria": "cliente leal",
+            "categoria gestionada": false,
             "antiguedad": "10-05-2018",
             "servicios": [
                 {
@@ -130,11 +138,11 @@
                     "fecha": "10-05-2018"
                 },
                 {
-                    "servicio": "TV hogar",
+                    "servicio": "TV hogar Premium",
                     "fecha": "10-05-2018"
                 },
                 {
-                    "servicio": "Plan pospago",
+                    "servicio": "Plan pospago 40GB",
                     "fecha": "10-05-2018"
                 }
             ]
@@ -145,10 +153,11 @@
             "dirección": "Avenida Libertadores #50-76, Cúcuta",
             "contacto": "sofia.martinez@ejemplo.co",
             "categoria": "cliente regular",
+            "categoria gestionada": false,
             "antiguedad": "01-12-2022",
             "servicios": [
                 {
-                    "servicio": "Internet de Fibra Óptica",
+                    "servicio": "Internet de Fibra Óptica 500MB",
                     "fecha": "01-12-2022"
                 },
                 {
@@ -163,10 +172,11 @@
             "dirección": "Calle 70 #45-22, Barranquilla",
             "contacto": "andrea.castillo@ejemplo.co",
             "categoria": "cliente nuevo",
+            "categoria gestionada": false,
             "antiguedad": "24-05-2024",
             "servicios": [
                 {
-                    "servicio": "Plan pospago",
+                    "servicio": "Plan pospago 40GB",
                     "fecha": "24-05-2024"
                 }
             ]
@@ -177,18 +187,19 @@
             "dirección": "Calle 5 #12-34, Bucaramanga",
             "contacto": "juan.moreno@ejemplo.co",
             "categoria": "cliente leal",
+            "categoria gestionada": false,
             "antiguedad": "10-09-2019",
             "servicios": [
                 {
-                    "servicio": "Internet de Fibra Óptica",
+                    "servicio": "Internet de Fibra Óptica 500MB",
                     "fecha": "10-09-2019"
                 },
                 {
-                    "servicio": "Plan pospago",
+                    "servicio": "Plan pospago 40GB",
                     "fecha": "10-09-2019"
                 },
                 {
-                    "servicio": "TV hogar",
+                    "servicio": "TV hogar Premium",
                     "fecha": "10-09-2019"
                 }
             ]
@@ -198,7 +209,8 @@
             "nombre": "Mariana López",
             "dirección": "Transversal 27 #33-56, Cartagena",
             "contacto": "mariana.lopez@ejemplo.co",
-            "categoria": "cliente regular",
+            "categoria": "cliente nuevo",
+            "categoria gestionada": false,
             "antiguedad": "05-07-2023",
             "servicios": [
                 {
@@ -216,10 +228,8 @@
         {
             "id_usuario": 1,
             "soporte": {
-                "abiertas": [
-                ],
-                "cerradas": [
-                ]
+                "abiertas": [],
+                "cerradas": []
             },
             "reclamaciones": {
                 "abiertas": [
@@ -259,7 +269,7 @@
                     "descripcion": "Ampliar la cobertura en la zona céntrica"
                 }
             ],
-            "Cantidad Reportes": 1
+            "Cantidad Reportes": 2
         },
         {
             "id_usuario": 3,
@@ -282,7 +292,7 @@
                     "descripcion": "Mejorar la atención al cliente en la sucursal"
                 }
             ],
-            "Cantidad Reportes": 1
+            "Cantidad Reportes": 2
         },
         {
             "id_usuario": 4,
@@ -305,7 +315,7 @@
                     "descripcion": "Ampliar la cobertura de internet en la zona residencial"
                 }
             ],
-            "Cantidad Reportes": 1
+            "Cantidad Reportes": 2
         },
         {
             "id_usuario": 5,
@@ -328,7 +338,7 @@
                     "descripcion": "Mejorar la atención al cliente en la sucursal"
                 }
             ],
-            "Cantidad Reportes": 1
+            "Cantidad Reportes": 2
         },
         {
             "id_usuario": 6,
@@ -351,7 +361,7 @@
                     "descripcion": "Ampliar la cobertura de internet en la zona residencial"
                 }
             ],
-            "Cantidad Reportes": 1
+            "Cantidad Reportes": 2
         },
         {
             "id_usuario": 7,
@@ -374,7 +384,7 @@
                     "descripcion": "Mejorar la calidad de las llamadas"
                 }
             ],
-            "Cantidad Reportes": 1
+            "Cantidad Reportes": 2
         },
         {
             "id_usuario": 8,
@@ -397,7 +407,7 @@
                     "descripcion": "Ampliar la cobertura en la zona céntrica"
                 }
             ],
-            "Cantidad Reportes": 1
+            "Cantidad Reportes": 2
         },
         {
             "id_usuario": 9,
@@ -420,7 +430,7 @@
                     "descripcion": "Mejorar la atención al cliente en la sucursal"
                 }
             ],
-            "Cantidad Reportes": 1
+            "Cantidad Reportes": 2
         },
         {
             "id_usuario": 10,
@@ -443,7 +453,7 @@
                     "descripcion": "Mejorar la calidad de las llamadas"
                 }
             ],
-            "Cantidad Reportes": 1
+            "Cantidad Reportes": 2
         },
         {
             "id_usuario": 11,
@@ -466,7 +476,7 @@
                     "descripcion": "Mejorar la atención telefónica al cliente"
                 }
             ],
-            "Cantidad Reportes": 1
+            "Cantidad Reportes": 2
         },
         {
             "id_usuario": 12,
@@ -489,7 +499,29 @@
                     "descripcion": "Ampliar la cobertura de internet en la zona rural"
                 }
             ],
-            "Cantidad Reportes": 1
+            "Cantidad Reportes": 2
+        }
+    ],
+    "ventas": [
+        {
+            "servicio": "Internet de Fibra Óptica 500MB",
+            "tarifa": "90000"
+        },
+        {
+            "servicio": "Plan pospago 40GB",
+            "tarifa": "40000"
+        },
+        {
+            "servicio": "Plan prepago",
+            "tarifa": "Sin Tarifa"
+        },
+        {
+            "servicio": "TV hogar Premium",
+            "tarifa": "80000"
+        },
+        {
+            "servicio": "Renovación de equipo móvil",
+            "tarifa": "70000"
         }
     ]
 }
