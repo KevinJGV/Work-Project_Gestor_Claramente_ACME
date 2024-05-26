@@ -31,7 +31,7 @@ def navegador(data, ruta_script, cofiguracion):
         funciones_main.menu_selector(funciones_main.mostrar_en_terminal, usuarios.gestion_usuario,
                                      msg_op=3, db=data, mostrar_cofig=cofiguracion, script_path=ruta_script)
     elif cofiguracion == "reportes":
-        funciones_main.menu_selector(funciones_main.mostrar_en_terminal, reportes.generar_reporte,
+        funciones_main.menu_selector(funciones_main.mostrar_en_terminal, reportes.gestion_reporte,
                                      msg_op=4, db=data, mostrar_cofig=cofiguracion, script_path=ruta_script)
     elif cofiguracion == "ventas":
         return

@@ -16,12 +16,14 @@ def gestion_usuario(data_in_kwargs):
     <== Devuelve Diccionario
     '''
     print(">>> Gestionar usuario")
+    estructura = "usuarios"
     user_is_finded = funciones_main.encontrar_en_bdd(
-        data_in_kwargs, "usuarios")
-    user_in_i = user_is_finded[2]
-    pos = user_is_finded[1]
-    funciones_main.logica_gestiones(
-        "usuarios", user_is_finded, user_in_i, pos, data_in_kwargs)
+        data_in_kwargs, estructura)
+    if user_is_finded != 0:
+        report_in_i = user_is_finded[2]
+        pos = user_is_finded[1]
+        funciones_main.logica_gestiones(
+            estructura, user_is_finded, report_in_i, pos, data_in_kwargs)
 
 
 def agregar_usuario(data_in_kwargs):
@@ -36,9 +38,9 @@ def agregar_usuario(data_in_kwargs):
     servicios = ""
     if servicios is not None:
         user_to_fill = {}
-        id = generar_id(unpacked_data)
-        nombre = funciones_main.str_val("Nombre del usuario: ")
-        direccion = funciones_main.str_val(
+        id = funciones_main.generar_id(unpacked_data,"usuarios")
+        nombre = funciones_main.alpnum_val("Nombre del usuario: ")
+        direccion = funciones_main.alpnum_val(
             "Direccion de domicilio del usuario: ")
         contacto = funciones_main.validar_email_regexp(
             input("Correo electronico del usuario: "), es_validado=True)
@@ -46,26 +48,14 @@ def agregar_usuario(data_in_kwargs):
         return data_in_kwargs
 
 
-def generar_id(data):
-    '''
-    Funcion auxiliar de agregar_usuario
-    ==> Recibe Diccionario
-    <== Devuelve Diccionario
-    '''
-    ids = [user["id"] for user in data]
-    id = 1
-    while True:
-        if id not in ids:
-            return id
-        else:
-            id += 1
-
-
-def editar_perfil_usuario(op, data_in_kwargs, pos_user):
+def editar_perfil_usuario(data_in_kwargs):
     '''
     Edita informacion del usuario seleccionado previamente
     ==> Recibe Diccionario
     '''
+    op = data_in_kwargs.get("op")
+    pos_user = data_in_kwargs.get("pos_user")
+    data_in_kwargs = data_in_kwargs.get("data_in_kwargs")
     if op == 1:
         op = "nombre"
     elif op == 2:
@@ -76,7 +66,7 @@ def editar_perfil_usuario(op, data_in_kwargs, pos_user):
     nuevo_dato = None
     if op != "contacto":
         while True:
-            nuevo_dato = funciones_main.str_val(
+            nuevo_dato = funciones_main.alpnum_val(
                 f"Nuevo {op} de usuario ('cancelar' para Cancelar)\n> ")
             if nuevo_dato == "cancelar":
                 print("> Cancelar")
@@ -89,7 +79,7 @@ def editar_perfil_usuario(op, data_in_kwargs, pos_user):
                 break
     else:
         while True:
-            nuevo_dato = funciones_main.str_val(
+            nuevo_dato = funciones_main.alpnum_val(
                 f"Nuevo {op} de usuario ('cancelar' para Cancelar)\n> ")
             if funciones_main.validar_email_regexp(nuevo_dato) or nuevo_dato == "cancelar":
                 break
@@ -104,12 +94,14 @@ def editar_perfil_usuario(op, data_in_kwargs, pos_user):
         return data_in_kwargs
 
 
-def editar_categoria(data_in_kwargs, pos_user):
+def editar_categoria(data_in_kwargs):
     '''
     Reasigna la categoria del usuario
     ==> Recibe Diccionario
     <== Devuelve Diccionario
     '''
+    pos_user = data_in_kwargs.get("pos_user")
+    data_in_kwargs = data_in_kwargs.get("data_in_kwargs")
     print(">>>> Modificando categoria de usuario\nATENCION: MODIFICAR SIN AUTORIZACION ESTE VALOR SIN AUTORIZACION ES SANCIONABLE, ASEGURESE DE TENER EL PERMISO DE SU COORDINADOR PARA ESTO.")
     yo = input("Continuar? (y/n) ")
     if yo == "y":
@@ -132,12 +124,14 @@ def editar_categoria(data_in_kwargs, pos_user):
                     "Seleccione opcion dentro del rango\n[Enter - Reintentar]")
 
 
-def eliminar_usuario(data_in_kwargs, pos_user):
+def eliminar_usuario(data_in_kwargs):
     '''
     Elimina al usuario
     ==> Recibe Diccionario
     <== Devuelve Diccionario
     '''
+    pos_user = data_in_kwargs.get("pos_user")
+    data_in_kwargs = data_in_kwargs.get("data_in_kwargs")
     data = data_in_kwargs["db"]["usuarios"][pos_user]
     if len(data["servicios"]) == 0:
         op = input(

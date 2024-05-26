@@ -22,29 +22,31 @@ def int_val(msg, op_menu=0):
     while True:
         try:
             if op_menu == 0:
-                prompt = int(input(msg))
+                prompt = int(input(msg).strip())
                 return prompt
             else:
                 msgs(op_menu)
-                prompt = int(input(msg))
+                prompt = int(input(msg).strip())
                 return prompt
         except:
             input("Error de ingreso \nIntente nuevamente\n(Enter para continuar)\n")
 
 
-def str_val(msg):
+def alpnum_val(msg):
     '''
     Validador de tipo string
     ==> Recibe String
     <== Devuelve String
     '''
     while True:
+        prompt = None
         try:
-            prompt = str(input(msg).strip())
-            return prompt
-        except:
+            prompt = input(msg).strip()
+            int(prompt)
             input(
                 "Error de ingreso, debe ser alfanumerico \nIntente nuevamente\n(Enter para continuar)")
+        except:
+            return prompt
 
 
 def validar_email_regexp(email, es_validado=False):
@@ -63,7 +65,7 @@ def validar_email_regexp(email, es_validado=False):
             else:
                 input(
                     "Ingrese un correo electronico valido\n[Enter - Reintentar]\n")
-                email = str_val("> ")
+                email = alpnum_val("> ")
 
 
 def msgs(op):
@@ -88,8 +90,14 @@ def msgs(op):
             print("\n>> Reportes de usuarios\n1 - Visualizar todos los reportes\n2 - Gestionar un reporte\n0 - Volver")
         elif op == 5:
             print("\n>> Tratador de servicios\n1 - \n2 - \n0 - Volver")
+        elif op == 6:
+            print("[1 - Editar Nombre]   [2 - Editar direccion]   [3 - Editar contacto]   [4 - Editar categoria manualmente -NO RECOMENDADO]\n[5 - Contratar/Descontratar Servicio]   [6 - ELIMINAR USUARIO]   [0 - Cancelar]")
+        elif op == 7:
+            print("[1 - Ingresar: Reportes de Soportes]   [2 - Ingresar: Reportes de Reclamaciones]   [3 - Ingresar: Reportes de Sugerencias]  \n[0 - Cancelar]")
+        elif op == 8:
+            print("[1 - Agregar reporte]   [2 - Cerrar reporte]\n[0 - Cancelar]")
         elif op == 9:
-            print("\n(Enter, regresar)")
+            print("[1 - Agregar reporte]\n[0 - Cancelar]")
     except:
         print(op)
 
@@ -103,7 +111,7 @@ def validar_ruta_main(msg):
     while True:
         msgs(0)
         try:
-            ruta = str_val(msg)
+            ruta = alpnum_val(msg)
             if ruta.endswith("main.py"):
                 return ruta
             else:
@@ -118,7 +126,7 @@ def validar_ruta_json(msg):
     '''
     msgs(1)
     while True:
-        ruta = str_val(msg)
+        ruta = alpnum_val(msg)
         try:
             with open(ruta, "r"):
                 if ruta.endswith(".json"):
@@ -143,7 +151,7 @@ def opener(ruta):
         return data
 
 
-def menu_selector(*opcs, msg_op=None, **kwargs):
+def menu_selector(*opcs, msg_op=None, una_opcion=False, continuar=False, returna= False,**kwargs):
     '''
     Menu generico, recibe funciones y argumentos para estas como argumentos a las cuales se accede a solicitud del usuario 
     ==> Recibe (Argumentos de longitud variable, Argumentos de palabra clave)
@@ -152,23 +160,52 @@ def menu_selector(*opcs, msg_op=None, **kwargs):
     resultado_menu = None
     while True:
         try:
-            if msg_op is None:
-                op = int_val("> ")
-                if op == 0:
-                    return resultado_menu
-                elif op <= len(opcs):
-                    resultado_menu = opcs[op-1](kwargs)
+            if una_opcion:
+                resultado_menu = opcs[0](kwargs)
+                if continuar:   
+                    op = int_val(
+                                "¿Desea continuar esta gestion?\nCualquier digito - Continuar    0 - Salir\n> ")
+                    if op == 0:
+                        return 0
+                    else:
+                        return resultado_menu
                 else:
-                    raise ValueError
+                    if returna:
+                        return resultado_menu
+                    else:
+                        return 0
             else:
-                op = int_val("> ", op_menu=msg_op)
-                if op == 0:
-                    return resultado_menu
-                elif op <= len(opcs):
-                    resultado_menu = opcs[op-1](kwargs)
+                if continuar:   
+                    op = int_val("> ", op_menu=msg_op)
+                    if op == 0:
+                        if returna:
+                            return resultado_menu
+                        else:
+                            return 0
+                    elif op <= len(opcs):
+                        resultado_menu = opcs[op-1](kwargs)
+                    else:
+                        raise ValueError
+                    op = int_val(
+                                "¿Desea continuar esta gestion?\nCualquier digito - Continuar    0 - Salir\n> ")
+                    if op == 0:
+                        return 0
+                    else:
+                        return resultado_menu
                 else:
-                    raise ValueError
-        except:
+                    op = int_val("> ", op_menu=msg_op)
+                    if op == 0:
+                        if returna:
+                            return resultado_menu
+                        else:
+                            return 0
+                    elif op <= len(opcs):
+                        resultado_menu = opcs[op-1](kwargs)
+                    else:
+                        raise ValueError
+        except Exception as e:
+            print(e)
+            print(type(e).__name__)
             input("Ingrese valor valido. \nIntente nuevamente\n(Enter para continuar)")
 
 
@@ -215,9 +252,47 @@ def encontrar_en_bdd(bdd, estructura):
                         print("Reportes encontrados...")
                         return [user_is_finded, pos, user_reports_in_i]
                 if not user_is_finded:
-                    return [False, None, None]
+                    input("Reporte ID no existe en la base de datos\nNo existe un usuario con dicho ID en la base de datos\n [Enter - Reintentar]")
             else:
                 return 0
+
+
+def generar_id(data, estructura, complejidad=0, id=None):
+    '''
+    Funcion pendiente de documentar
+    ==> Recibe Diccionario
+    <== Devuelve Diccionario
+    '''
+    if estructura == "usuarios":
+        ids = [user["id"] for user in data]
+        id = 1
+        while True:
+            if id not in ids:
+                return id
+            else:
+                id += 1
+    elif estructura == "reportes":
+        ids = []
+        bigger_num = 0
+        if complejidad == 0:
+            for estado_reporte, reportes in data.items():
+                if len(data[estado_reporte]) != 0:
+                    for reporte in reportes:
+                        ids.append(reporte["id"])
+        elif complejidad == "sugerencias":
+            if len(data) != 0:
+                for reporte in data:
+                    ids.append(reporte["id"])
+        if len(ids) != 0:
+            for i in ids:
+                temp_var = i.split("-")
+                temp_var = int(temp_var[1])
+                if temp_var > bigger_num:
+                    bigger_num = temp_var
+            id = "-".join([str(id),str(bigger_num+1)])
+        else:
+            id = "-".join([str(id),"1"])
+        return id
 
 
 def mostrar_en_terminal(data_in_kwargs, es_paginado=True, config=0):
@@ -244,10 +319,10 @@ def mostrar_en_terminal(data_in_kwargs, es_paginado=True, config=0):
                 keys = [key.upper() for key in data_copy[0].keys()]
                 keys[-1] = "AUN ABIERTOS"
                 header = " | ".join(keys) + "\n"
-                for pos_report, data_copy in enumerate(data_copy):
+                for pos_report, todos_los_reportes in enumerate(data_copy):
                     acceder = ["soporte", "reclamaciones"]
                     abiertas = 0
-                    for clave_in_report, valor_in_report in data_copy.items():
+                    for clave_in_report, valor_in_report in todos_los_reportes.items():
                         if clave_in_report in acceder:
                             contador = sum(
                                 [len(valor_in_report["abiertas"]), len(valor_in_report["cerradas"])])
@@ -256,34 +331,59 @@ def mostrar_en_terminal(data_in_kwargs, es_paginado=True, config=0):
                             abiertas += len(valor_in_report["abiertas"])
                         elif clave_in_report == "id_usuario":
                             data_copy[pos_report][clave_in_report.lower()] = str(
-                                data_copy[pos_report][clave_in_report.lower()])
+                            data_copy[pos_report][clave_in_report.lower()])
                     data_copy[pos_report]["sugerencias"] = str(
                         len(data_copy[pos_report]["sugerencias"]))
                     data_copy[pos_report]["Cantidad Reportes"] = str(abiertas)
                 paginacion(data_copy, header)
     else:
-        if config == "usuarios":
-            keys = list(data_copy.keys())
-            for key in keys:
-                if key != "servicios":
-                    print(f"{key.upper()} => {data_copy[key]}")
-            print("SERVICIOS ACTUALES DEL USUARIO:")
-            if len(data_copy["servicios"]) != 0:
-                for servicio in data_copy["servicios"]:
-                    print(f"-> {servicio['servicio']}")
-            else:
-                print("[Este usuario no tiene servicios contratados actualemente]")
-        elif config == "reportes":
-            keys = [key.title() for key in data_copy.keys()]
-            header = " | ".join(keys) + "\n"
-            acceder = ["soporte", "reclamaciones", "sugerencias"]
-            for clave_in_report, valor_in_report in data_copy.items():
-                if clave_in_report in acceder:
-                    data_copy[clave_in_report] = str(
-                        sum([len(valor_in_report["abiertas"]), len(valor_in_report["cerradas"])]))
-                elif clave_in_report == "sugerencias":
-                    data_copy[clave_in_report] = str(len(valor_in_report))
-            line = " | ".join(list(data_copy.values())) + "\n"
+        if isinstance(config,str):
+            if config == "usuarios":
+                keys = list(data_copy.keys())
+                for key in keys:
+                    if key != "servicios":
+                        print(f"{key.upper()} => {data_copy[key]}")
+                print("SERVICIOS ACTUALES DEL USUARIO:")
+                if len(data_copy["servicios"]) != 0:
+                    for servicio in data_copy["servicios"]:
+                        print(f"-> {servicio['servicio']}")
+                else:
+                    print("[Este usuario no tiene servicios contratados actualemente]")
+            elif config == "reportes":
+                keys = [key.title() for key in data_copy.keys()]
+                header = " | ".join(keys) + "\n"
+                acceder = ["soporte", "reclamaciones"]
+                for clave_in_report, valor_in_report in data_copy.items():
+                    if clave_in_report in acceder:
+                        data_copy[clave_in_report] = str(
+                            sum([len(valor_in_report["abiertas"]), len(valor_in_report["cerradas"])]))
+                    elif clave_in_report == "sugerencias":
+                        data_copy[clave_in_report] = str(len(valor_in_report))
+                    else:
+                        data_copy[clave_in_report] = str(valor_in_report)
+                line = " | ".join(list(data_copy.values())) + "\n"
+                print(header + "\n" + line)
+        elif isinstance(config,list):
+            if config[0] == "s&r&s":
+                config[1] -= 1
+                op = ["soporte", "reclamaciones", "sugerencias"]
+                print(f">>>> Reportes de {op[config[1]].title()}")
+                header = "ID REPORTE | DESCRIPCIÓN | ESTADO\n"
+                body = ""
+                if config[1] != 2:
+                    if len(data_copy[op[config[1]]]["abiertas"]) != 0 or len(data_copy[op[config[1]]]["cerradas"]) != 0:
+                        for tipo_reportes, lista_reportes in data_copy[op[config[1]]].items():
+                            for reporte in lista_reportes:
+                                body += f"{reporte["id"]} | {reporte["descripcion"]} | {tipo_reportes[:-1].capitalize()}\n"
+                    else:
+                        body = "[USUARIO SIN REPORTES]"
+                else:
+                    if len(data_copy[op[config[1]]]) != 0:
+                        for reporte in data_copy[op[config[1]]]:
+                                body += f"{reporte["id"]} | {reporte["descripcion"]}\n"
+                    else:
+                        body = "[USUARIO SIN REPORTES]"
+                print(header + body)
 
 
 def paginacion(dict_to_print, header):
@@ -322,32 +422,23 @@ def logica_gestiones(gestion, var_data_is_finded, var_data_in_i, var_pos, data_i
             if var_data_is_finded[0]:
                 while True:
                     mostrar_en_terminal(
-                        var_data_in_i, es_paginado=False, config="usuarios")
-                    op = int_val(
-                        "[1 - Editar Nombre]   [2 - Editar direccion]   [3 - Editar contacto]   [4 - Editar categoria manualmente -NO RECOMENDADO]\n[5 - Contratar/Descontratar Servicio]   [6 - ELIMINAR USUARIO]   [0 - Cancelar]\n> ")
+                        var_data_in_i, es_paginado=False, config=gestion)
+                    op = int_val("> ", 6)
                     if op >= 0 and op <= 6:
                         if op == 1 or op == 2 or op == 3:
-                            res = usuarios.editar_perfil_usuario(
-                                op, data_in_kwargs, var_pos)
-                            if res is not None:
-                                data_in_kwargs = res
-                                continuar = int_val(
-                                    "¿Desea continuar gestionando al usuario?\n1 - Continuar    2 - Salir\n> ")
-                                if continuar == 2:
-                                    break
+                            res = menu_selector(usuarios.editar_perfil_usuario,una_opcion=True, continuar=True,op=op,data_in_kwargs=data_in_kwargs,pos_user=var_pos)
+                            if res == 0:
+                                break
                         elif op == 4:
-                            res = usuarios.editar_categoria(
-                                data_in_kwargs, var_pos)
-                            if res is not None:
-                                data_in_kwargs = res
-                                continuar = int_val(
-                                    "¿Desea continuar gestionando al usuario?\n1 - Continuar    2 - Salir\n> ")
-                                if continuar == 2:
-                                    break
+                            res = menu_selector(usuarios.editar_categoria,una_opcion=True,continuar=True, data_in_kwargs=data_in_kwargs,pos_user=var_pos)
+                            if res == 0:
+                                break
                         elif op == 5:
                             print("funcionalidad_en_desarrollo")
+                            if res == 0:
+                                break
                         elif op == 6:
-                            usuarios.eliminar_usuario(data_in_kwargs, var_pos)
+                            menu_selector(usuarios.eliminar_usuario,una_opcion=True,continuar=True, data_in_kwargs=data_in_kwargs,pos_user=var_pos)
                             break
                         else:
                             break
@@ -361,29 +452,20 @@ def logica_gestiones(gestion, var_data_is_finded, var_data_in_i, var_pos, data_i
                 while True:
                     mostrar_en_terminal(
                         var_data_in_i, es_paginado=False, config="reportes")
-                    op = int_val(
-                        "[1 - Ingresar: Reportes de Soportes]   [2 - Ingresar: Reportes de Reclamaciones]   [3 - Visualizar: Reportes de Sugerencias]  \n[0 - Cancelar]\n> ")
-                    if op >= 0 and op <= 3:
-                        if op == 1 or op == 2:
-                            res = usuarios.editar_perfil_usuario(
-                                op, data_in_kwargs, var_pos)
-                            if res is not None:
-                                data_in_kwargs = res
-                                continuar = int_val(
-                                    "¿Desea continuar gestionando al usuario?\n1 - Continuar    2 - Salir\n> ")
-                                if continuar == 2:
+                    op_estructura = int_val("> ", 7)
+                    if op_estructura == 0:
+                        break
+                    elif op_estructura >= 1 and op_estructura <= 3:
+                        while True:
+                            mostrar_en_terminal(var_data_in_i,es_paginado=False,config=["s&r&s",op_estructura])
+                            if op_estructura == 1 or op_estructura == 2:
+                                res = menu_selector(reportes.agregar_reporte, reportes.cerrar_reporte, msg_op=8, continuar=True,data_in_kwargs=data_in_kwargs, pos_report=var_pos, op_estructura=op_estructura)
+                                if res == 0:
                                     break
-                        elif op == 3:
-                            res = usuarios.editar_categoria(
-                                data_in_kwargs, var_pos)
-                            if res is not None:
-                                data_in_kwargs = res
-                                continuar = int_val(
-                                    "¿Desea continuar gestionando al usuario?\n1 - Continuar    2 - Salir\n> ")
-                                if continuar == 2:
+                            elif op_estructura == 3:
+                                res = menu_selector(reportes.agregar_reporte, msg_op=9, continuar=True,data_in_kwargs=data_in_kwargs, pos_report=var_pos, op_estructura=op_estructura)
+                                if res == 0:
                                     break
-                        else:
-                            break
                     else:
                         input(
                             "Seleccione una opcion dada\n[Enter - Reintentar]\n")
