@@ -217,16 +217,8 @@
             "id_usuario": 1,
             "soporte": {
                 "abiertas": [
-                    {
-                        "id": "1-2",
-                        "descripcion": "No puede apagar la tv"
-                    }
                 ],
                 "cerradas": [
-                    {
-                        "id": "1-1",
-                        "descripcion": "Se le fue el internet desde hace 2 días"
-                    }
                 ]
             },
             "reclamaciones": {
@@ -244,7 +236,7 @@
                     "descripcion": "La sede en Cabecera necesita otro baño público, es muy congestionado"
                 }
             ],
-            "Cantidad Reportes": 4
+            "Cantidad Reportes": 2
         },
         {
             "id_usuario": 2,
