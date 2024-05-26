@@ -151,72 +151,67 @@ def opener(ruta):
         return data
 
 
-def menu_selector(*opcs, msg_op=None, una_opcion=False, continuar=False, returna= False,**kwargs):
+def menu_selector(*opcs, msg_op=None, una_opcion=False, continuar=False, envia_op=None,contenido_terminal=False,**kwargs):
     '''
     Menu generico, recibe funciones y argumentos para estas como argumentos a las cuales se accede a solicitud del usuario 
     ==> Recibe (Argumentos de longitud variable, Argumentos de palabra clave)
     ==> Devuelve lo que devuelve la funcion señalada en ella
     '''
-    resultado_menu = None
+    resultado_menu = 0
     while True:
         try:
+            op = None
+            if contenido_terminal:
+                print(contenido_terminal)
+            if msg_op:
+                op = int_val("> ", op_menu=msg_op)
             if una_opcion:
-                resultado_menu = opcs[0](kwargs)
-                if continuar:   
-                    op = int_val(
-                                "¿Desea continuar esta gestion?\nCualquier digito - Continuar    0 - Salir\n> ")
+                if envia_op:
                     if op == 0:
-                        return 0
-                    else:
                         return resultado_menu
+                    else:
+                        resultado_menu = opcs[0](op,kwargs)
                 else:
-                    if returna:
-                        return resultado_menu
-                    else:
-                        return 0
+                    resultado_menu = opcs[0](kwargs)
             else:
-                if continuar:   
-                    op = int_val("> ", op_menu=msg_op)
-                    if op == 0:
-                        if returna:
-                            return resultado_menu
-                        else:
-                            return 0
-                    elif op <= len(opcs):
+                if op == 0:
+                    return resultado_menu
+                elif op <= len(opcs):
+                    if envia_op:
+                        resultado_menu = opcs[op-1](op,kwargs)
+                    else:
                         resultado_menu = opcs[op-1](kwargs)
-                    else:
-                        raise ValueError
-                    op = int_val(
-                                "¿Desea continuar esta gestion?\nCualquier digito - Continuar    0 - Salir\n> ")
-                    if op == 0:
-                        return 0
-                    else:
-                        return resultado_menu
                 else:
-                    op = int_val("> ", op_menu=msg_op)
-                    if op == 0:
-                        if returna:
-                            return resultado_menu
-                        else:
-                            return 0
-                    elif op <= len(opcs):
-                        resultado_menu = opcs[op-1](kwargs)
-                    else:
-                        raise ValueError
+                    raise ValueError
+            if continuar:
+                op = int_val(
+                            "¿Desea continuar esta gestion?\nCualquier digito - Continuar    0 - Salir\n> ")
+                if op == 0:
+                    if resultado_menu is None:
+                        resultado_menu = 0
+                    return resultado_menu
+                else:
+                    return resultado_menu
         except Exception as e:
             print(e)
             print(type(e).__name__)
             input("Ingrese valor valido. \nIntente nuevamente\n(Enter para continuar)")
 
 
-def export_file(data_in_kwargs, name_file):
+def export_file(data_in_kwargs, name_file,No_kwargs=False):
     '''
     Exporta la base de datos
     ==> Recibe Diccionario de datos, Nombre del archivo deseado
     '''
-    current_route = data_in_kwargs.get("script_path")
-    current_route = current_route.replace("main.py", name_file)
-    config = data_in_kwargs.get("db")
+    current_route = None
+    config = None
+    if not No_kwargs:
+        current_route = data_in_kwargs.get("script_path")
+        current_route = current_route.replace("main.py", name_file)
+        config = data_in_kwargs.get("db")
+    else:
+        current_route = name_file
+        config = data_in_kwargs
     jsonobject = json.dumps(config, indent=4, ensure_ascii=False)
     with open(current_route+".json", "w", encoding="utf-8") as nuevo_archivo:
         nuevo_archivo.write(jsonobject)
