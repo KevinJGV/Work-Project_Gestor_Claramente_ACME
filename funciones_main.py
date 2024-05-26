@@ -222,6 +222,23 @@ def export_file(data_in_kwargs, name_file):
         nuevo_archivo.write(jsonobject)
 
 
+
+def gestor(op,data_in_kwargs):
+    estructura = ["usuarios","reportes","ventas"]
+    print(f">>> Gestionar {estructura[op-1]}")
+    if estructura[op-1] == "usuarios" or estructura[op-1] == "reportes":
+        data_is_finded = encontrar_en_bdd(
+            data_in_kwargs, estructura[op-1])
+        if data_is_finded != 0:
+            data_in_i = data_is_finded[2]
+            pos = data_is_finded[1]
+            logica_gestiones(
+                estructura[op-1], data_in_kwargs,var_data_is_finded=data_is_finded, var_data_in_i=data_in_i, var_pos=pos)
+    else:
+        return
+
+
+
 def encontrar_en_bdd(bdd, estructura):
     bdd = bdd.get("db")
     if estructura == "usuarios":

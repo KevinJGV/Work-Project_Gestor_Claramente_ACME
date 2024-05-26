@@ -14,22 +14,6 @@ import copy
 #     '''
 
 
-def gestion_reporte(data_in_kwargs):
-    '''
-    Realiza CRUDs a reportes en el json con la idea logica de un software para proveedor de servicios de telecomunicaciones
-    ==> Recibe Diccionario
-    <== Devuelve Diccionario
-    '''
-    print(">>> Gestionar un reporte")
-    estructura = "reportes"
-    report_is_finded = funciones_main.encontrar_en_bdd(
-        data_in_kwargs, estructura)
-    if report_is_finded != 0:
-        report_in_i = report_is_finded[2]
-        pos = report_is_finded[1]
-        funciones_main.logica_gestiones(
-            estructura, report_is_finded, report_in_i, pos, data_in_kwargs)
-
 def agregar_reporte(data_in_kwargs):
     pos_report = data_in_kwargs.get("pos_report")
     op_estructura = data_in_kwargs.get("op_estructura")

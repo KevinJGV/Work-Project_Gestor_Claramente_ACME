@@ -9,23 +9,6 @@ import ventas
 #     '''
 
 
-def gestion_usuario(data_in_kwargs):
-    '''
-    Realiza CRUDs a perfiles de usuario en el json con la idea logica de un software para proveedor de servicios de telecomunicaciones
-    ==> Recibe Diccionario
-    <== Devuelve Diccionario
-    '''
-    print(">>> Gestionar usuario")
-    estructura = "usuarios"
-    user_is_finded = funciones_main.encontrar_en_bdd(
-        data_in_kwargs, estructura)
-    if user_is_finded != 0:
-        report_in_i = user_is_finded[2]
-        pos = user_is_finded[1]
-        funciones_main.logica_gestiones(
-            estructura, user_is_finded, report_in_i, pos, data_in_kwargs)
-
-
 def agregar_usuario(data_in_kwargs):
     '''
     Agrega un usuario a la bdd
