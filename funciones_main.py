@@ -150,7 +150,7 @@ def validar_ruta_json(msg, script_path):
 
 def opener(ruta):
     ''' 
-    Abridor de archivo codificado a utf-8
+    Abridor de archivo json codificado a utf-8
     ==> Recibe String
     <== Devuelve Estructura de datos
     '''
@@ -556,6 +556,10 @@ def logica_gestiones(gestion, data_in_kwargs, var_data_is_finded=None, var_data_
         print("> Cancelando...")
 
 def reportes_txt(msg,data_in_kwargs="main.py"):
+    '''
+    Funcion encargada de crear un .txt en la ruta que se le da al segundo parametro con un mensaje como primer parametro
+    ==> Recibe (String,String por defecto / Diccionario con clave "script_path")
+    '''
     try:
         script_path = data_in_kwargs.get("script_path")
         current_route = script_path.replace("main.py", "reportes.txt")
@@ -566,6 +570,6 @@ def reportes_txt(msg,data_in_kwargs="main.py"):
     except:
         current_route = data_in_kwargs.replace("main.py", "reportes.txt")
         fecha = datetime.now()
-        fecha = datetime.strftime(fecha,"%d/%m/%Y - %H:%M:%S")
+        fecha = datetime.strftime(data_in_kwargs,"%d/%m/%Y - %H:%M:%S")
         with open(current_route, "a",encoding="utf-8") as file:
             file.write(fecha + " Reporte - " + msg + "\n")

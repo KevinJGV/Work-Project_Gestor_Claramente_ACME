@@ -15,6 +15,11 @@ import copy
 
 
 def agregar_reporte(data_in_kwargs):
+    '''
+    Ingresa al 
+    ==> Recibe
+    <== Devuelve
+    '''
     pos_report = data_in_kwargs.get("pos_report")
     op_estructura = data_in_kwargs.get("op_estructura")
     data_in_kwargs = data_in_kwargs.get("data_in_kwargs")

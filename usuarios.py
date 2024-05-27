@@ -167,6 +167,11 @@ def eliminar_usuario(data_in_kwargs,pos_user):
 
 
 def actualizar_categoria_automatico(data, ruta_db):
+    '''
+    En la version actual unicamente leer la base de datos para aplicar la logica de categoria a cada usuario segun su antiguedad
+    ==> Recibe
+    <== Devuelve
+    '''
     print("Actualizando base de datos...")
     usuarios = data["usuarios"]
     fecha_actual = datetime.now().date()
