@@ -42,7 +42,7 @@ def contratacion(data_in_kwargs, proviene_agregar_usuario=False):
                 descuento = 0.15
         while True:
             funciones_main.mostrar_en_terminal(referencia_servicios,es_paginado=False, config=["contratar",descuento])
-            print(f"PROMOTOR: Este usuario es {datos_relevantes[1]["categoria"]} y tiene menos de 3 servicios, obtendra un descuento del {round(descuento*100)}% en este maximo de servicios. !Informaselo!\n")
+            print(f'PROMOTOR: Este usuario es {datos_relevantes[1]["categoria"]} y tiene menos de 3 servicios, obtendra un descuento del {round(descuento*100)}% en este maximo de servicios. !Informaselo!\n')
             op = funciones_main.int_val("> ",data_in_kwargs,op_msg="input")
             if op == 0:
                 break

@@ -361,7 +361,7 @@ def mostrar_en_terminal(data_in_kwargs, requiere_mostrar_config=True,es_paginado
             header = " FECHA DE VENTA | SERVICIO "
             line = ""
             for venta in data_in_kwargs:
-                line += f" {venta["fecha"]} | {venta["venta"]}\n"
+                line += f' {venta["fecha"]} | {venta["venta"]}\n'
                 body.append(line)
             paginacion(body,header, data_in_kwargs)
         else:
@@ -427,11 +427,11 @@ def mostrar_en_terminal(data_in_kwargs, requiere_mostrar_config=True,es_paginado
             elif config == "servicios":
                 body += " SERVICIOS PARA OFRECER | TARIFA MENSUAL ESTANDAR\n"
                 for servicio in data_copy:
-                    body += f" {servicio["servicio"]} | ${servicio["tarifa"]} COP\n"
+                    body += f' {servicio["servicio"]} | ${servicio["tarifa"]} COP\n'
             elif config == "descontratar":
                 body += " # | SERVICIO DEL USUARIO \n"
                 for pos, servicio in enumerate(data_copy):
-                    body += f" {pos+1} | {servicio["servicio"]}\n"
+                    body += f' {pos+1} | {servicio["servicio"]}\n'
         elif isinstance(config,list):
             if config[0] == "s&r&s":
                 config[1] -= 1
@@ -442,19 +442,19 @@ def mostrar_en_terminal(data_in_kwargs, requiere_mostrar_config=True,es_paginado
                     if len(data_copy[op[config[1]]]["abiertas"]) != 0 or len(data_copy[op[config[1]]]["cerradas"]) != 0:
                         for tipo_reportes, lista_reportes in data_copy[op[config[1]]].items():
                             for reporte in lista_reportes:
-                                body += f"{reporte["id"]} | {reporte["descripcion"]} | {tipo_reportes[:-1].capitalize()}\n"
+                                body += f'{reporte["id"]} | {reporte["descripcion"]} | {tipo_reportes[:-1].capitalize()}\n'
                     else:
                         body += "[USUARIO SIN REPORTES]"
                 else:
                     if len(data_copy[op[config[1]]]) != 0:
                         for reporte in data_copy[op[config[1]]]:
-                            body += f"{reporte["id"]} | {reporte["descripcion"]}\n"
+                            body += f'{reporte["id"]} | {reporte["descripcion"]}\n'
                     else:
                         body += "[USUARIO SIN REPORTES]"
             elif config[0] == "contratar":
                 body += " # | SERVICIO | TARIFA ESTANDAR | TARIFA PERSONALIZADA\n"
                 for pos, servicio in enumerate(data_copy):
-                    body += f" {pos+1} | {servicio["servicio"]} | ${servicio["tarifa"]} COP | ${round((int(servicio["tarifa"])*config[1]-int(servicio["tarifa"]))*(-1))} COP (-%{config[1]*100}Dcto)\n"
+                    body += f' {pos+1} | {servicio["servicio"]} | ${servicio["tarifa"]} COP | ${round((int(servicio["tarifa"])*config[1]-int(servicio["tarifa"]))*(-1))} COP (-%{config[1]*100}Dcto)\n'
         print(body)
         return body
 
