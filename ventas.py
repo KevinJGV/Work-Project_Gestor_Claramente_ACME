@@ -43,7 +43,7 @@ def contratacion(data_in_kwargs, proviene_agregar_usuario=False):
         while True:
             funciones_main.mostrar_en_terminal(referencia_servicios,es_paginado=False, config=["contratar",descuento])
             print(f"PROMOTOR: Este usuario es {datos_relevantes[1]["categoria"]} y tiene menos de 3 servicios, obtendra un descuento del {round(descuento*100)}% en este maximo de servicios. !Informaselo!\n")
-            op = funciones_main.int_val("> ",op_msg="input")
+            op = funciones_main.int_val("> ",data_in_kwargs,op_msg="input")
             if op == 0:
                 break
             elif len(referencia_servicios) >= op and op >= 1:
@@ -65,31 +65,38 @@ def contratacion(data_in_kwargs, proviene_agregar_usuario=False):
                 input("Contratacion exitosa...\n[Enter - Continuar]")
                 funciones_main.export_file(data_in_kwargs,"exported_db")
             else:
-                print("ERROR, PENDIENTE DE REPORTE")
+                funciones_main.reportes_txt("Opcion fuera de rango dentro de ventas",data_in_kwargs)
+                input("Seleccione una opcion dada\n[Enter - Reintentar]\n")
     else:
         referencia_servicios = data_in_kwargs["db"]["ventas"]["servicios"]
         referencia_historial = data_in_kwargs["db"]["ventas"]["historial"]
         descuento = 0.6
-        funciones_main.mostrar_en_terminal(referencia_servicios,es_paginado=False, config=["contratar",descuento])
-        print(f"PROMOTOR: Este usuario esta subscribiendose a Claro, obtendra un descuento del {round(descuento*100)}% en su primera contratacion. !Informaselo!\n")
-        op = funciones_main.int_val("APARTIR DE AQUI LA CONTRATACION SE HARA EFECTIVA\nSelecciona una opcion para continuar (0 - Cancelar contratacion)\n> ",)
-        if op == 0:
-            return 0
-        elif len(referencia_servicios) >= op and op >= 1:
-            op -= 1
-            fecha = proviene_agregar_usuario["antiguedad"]
-            tarifa = str(round((int(referencia_servicios[op]["tarifa"])*descuento-int(referencia_servicios[op]["tarifa"]))*(-1)))
-            servicio = {
-                    "servicio": referencia_servicios[op]["servicio"],
+        contador = 0
+        while contador != 1:
+            funciones_main.mostrar_en_terminal(referencia_servicios,es_paginado=False, config=["contratar",descuento])
+            print(f"PROMOTOR: Este usuario esta subscribiendose a Claro, obtendra un descuento del {round(descuento*100)}% en su primera contratacion. !Informaselo!\n")
+            op = funciones_main.int_val("APARTIR DE AQUI LA CONTRATACION SE HARA EFECTIVA\nSelecciona una opcion para continuar (0 - Cancelar contratacion)\n> ", data_in_kwargs)
+            if op == 0:
+                return 0
+            elif len(referencia_servicios) >= op and op >= 1:
+                op -= 1
+                fecha = proviene_agregar_usuario["antiguedad"]
+                tarifa = str(round((int(referencia_servicios[op]["tarifa"])*descuento-int(referencia_servicios[op]["tarifa"]))*(-1)))
+                servicio = {
+                        "servicio": referencia_servicios[op]["servicio"],
+                        "fecha": fecha,
+                        "tarifa": tarifa
+                    }
+                proviene_agregar_usuario["servicios"].append(servicio)
+                historial = {
                     "fecha": fecha,
-                    "tarifa": tarifa
+                    "venta": referencia_servicios[op]["servicio"]
                 }
-            proviene_agregar_usuario["servicios"].append(servicio)
-            historial = {
-                "fecha": fecha,
-                "venta": referencia_servicios[op]["servicio"]
-            }
-            referencia_historial.append(historial)
+                referencia_historial.append(historial)
+                contador = 1
+            else:
+                funciones_main.reportes_txt("Opcion fuera de rango dentro de ventas",data_in_kwargs)
+                input("Seleccione una opcion dada\n[Enter - Reintentar]\n")
 
 
 def descontratacion(data_in_kwargs):
@@ -100,7 +107,7 @@ def descontratacion(data_in_kwargs):
         print(">>>>> Descontratacion de Servicio")
         while True:
             funciones_main.mostrar_en_terminal(referencia_servicios,es_paginado=False, config="descontratar")
-            op = funciones_main.int_val("> ",op_msg="input")
+            op = funciones_main.int_val("> ", data_in_kwargs, op_msg="input")
             if op == 0:
                 break
             elif len(referencia_servicios) >= op and op >= 1:
@@ -114,6 +121,7 @@ def descontratacion(data_in_kwargs):
                 else:
                     print("> Abortando...")
     else:
+        funciones_main.reportes_txt("Intento de descontratacion a usuario sin servicios contratados",data_in_kwargs)
         print("Usuario sin servicios, modulo inaccesible")
 
 

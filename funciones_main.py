@@ -4,6 +4,8 @@ import ventas
 import json
 import re
 import copy
+from datetime import datetime
+
 
 # Formato docstring para copiar (esta linea no)
 #     '''
@@ -12,7 +14,7 @@ import copy
 #     '''
 
 
-def int_val(msg, op_msg=0):
+def int_val(msg, data_in_kwargs, op_msg=0):
     '''
     Validador de valor numerico
     ==> Recibe String
@@ -28,10 +30,11 @@ def int_val(msg, op_msg=0):
                 prompt = int(input(msg).strip())
                 return prompt
         except:
+            reportes_txt("Intento de ingreso con valor alfanumerico donde se requeria valor numerico",data_in_kwargs)
             input("Error de ingreso \nIntente nuevamente\n(Enter para continuar)\n")
 
 
-def alpnum_val(msg):
+def alpnum_val(msg, data_in_kwargs):
     '''
     Validador de tipo string
     ==> Recibe String
@@ -42,13 +45,14 @@ def alpnum_val(msg):
         try:
             prompt = input(msg).strip()
             int(prompt)
+            reportes_txt("Intento de ingreso con valor numerico donde se requeria valor alfanumerico",data_in_kwargs)
             input(
                 "Error de ingreso, debe ser alfanumerico \nIntente nuevamente\n(Enter para continuar)")
         except:
             return prompt
 
 
-def validar_email_regexp(email, es_validado=False):
+def validar_email_regexp(email, data_in_kwargs,es_validado=False):
     '''
     Validador de string en formato de correo electronico
     ==> Recibe String
@@ -59,12 +63,13 @@ def validar_email_regexp(email, es_validado=False):
         return re.match(pattern, email) is not None
     else:
         while True:
-            if validar_email_regexp(email):
+            if validar_email_regexp(email, data_in_kwargs):
                 return email
             else:
+                reportes_txt("Mal ingreso de contacto, no es un correo electronico valido",data_in_kwargs)
                 input(
                     "Ingrese un correo electronico valido\n[Enter - Reintentar]\n")
-                email = alpnum_val("> ")
+                email = alpnum_val("> ", data_in_kwargs)
 
 
 def msgs(op):
@@ -72,39 +77,36 @@ def msgs(op):
     Visualizador de mensajes para el algoritmo
     ==> Recibe Numero entero
     '''
-    try:
-        if op == 0:
-            print(
-                "Para inicializar ingrese la ruta relativa actual de este scprit 'main.py: ")
-        elif op == 1:
-            print("=" * 6 + " CLARAMENTE ACME - PROGRAMA GESTOR v1 " + "=" * 6 +
-                  "\nPara iniciar porfavor asegurese de tener un archivo .json con el cual trabajar.")
-        elif op == 2:
-            print("=" * 6 + " MENU PRINCIPAL " + "=" * 6 +
-                  "\n1 - Gestión de usuarios\n2 - Reportes de usuarios\n3 - Tratador de servicios\n0 - Salir del software")
-        elif op == 3:
-            print(
-                "\n>> Gestión de usuarios\n1 - Visualizar todos los usuarios\n2 - Gestionar usuario\n0 - Volver")
-        elif op == 4:
-            print("\n>> Reportes de usuarios\n1 - Visualizar todos los reportes\n2 - Gestionar un reporte\n0 - Volver")
-        elif op == 5:
-            print("\n>> Tratador de servicios\n1 - \n2 - \n0 - Volver")
-        elif op == 6:
-            print("[1 - Editar Nombre]   [2 - Editar direccion]   [3 - Editar contacto]\n[4 - Editar categoria manualmente -NO RECOMENDADO] [5 - ELIMINAR USUARIO]   [0 - Cancelar]")
-        elif op == 7:
-            print("[1 - Ingresar: Reportes de Soportes]   [2 - Ingresar: Reportes de Reclamaciones]   [3 - Ingresar: Reportes de Sugerencias]  \n[0 - Cancelar]")
-        elif op == 8:
-            print("[1 - Agregar reporte]   [2 - Cerrar reporte]\n[0 - Cancelar]")
-        elif op == 9:
-            print("[1 - Agregar reporte]\n[0 - Cancelar]")
-        elif op == 10:
-            print("[1 - Contratacion / Descontratacion de Servicio]   [2 - Visualizar historial de ventas]\n[0 - Cancelar]")
-        elif op == 11:
-            print("[1 - Contratar servicio]   [2 - Descontratar servicio]\n[0 - Cancelar]")
-        elif op == "input":
-            print("Selecciona una opcion para continuar (0 - cancelar)")
-    except:
-        print(op)
+    if op == 0:
+        print(
+            "Para inicializar ingrese la ruta relativa actual de este scprit 'main.py: ")
+    elif op == 1:
+        print("=" * 6 + " CLARAMENTE ACME - PROGRAMA GESTOR v1 " + "=" * 6 +
+                "\nPara iniciar porfavor asegurese de tener un archivo .json con el cual trabajar.")
+    elif op == 2:
+        print("=" * 6 + " MENU PRINCIPAL " + "=" * 6 +
+                "\n1 - Gestión de usuarios\n2 - Reportes de usuarios\n3 - Tratador de servicios\n0 - Salir del software")
+    elif op == 3:
+        print(
+            "\n>> Gestión de usuarios\n1 - Visualizar todos los usuarios\n2 - Gestionar usuario\n0 - Volver")
+    elif op == 4:
+        print("\n>> Reportes de usuarios\n1 - Visualizar todos los reportes\n2 - Gestionar un reporte\n0 - Volver")
+    elif op == 5:
+        print("\n>> Tratador de servicios\n1 - \n2 - \n0 - Volver")
+    elif op == 6:
+        print("[1 - Editar Nombre]   [2 - Editar direccion]   [3 - Editar contacto]\n[4 - Editar categoria manualmente -NO RECOMENDADO] [5 - ELIMINAR USUARIO]   [0 - Cancelar]")
+    elif op == 7:
+        print("[1 - Ingresar: Reportes de Soportes]   [2 - Ingresar: Reportes de Reclamaciones]   [3 - Ingresar: Reportes de Sugerencias]  \n[0 - Cancelar]")
+    elif op == 8:
+        print("[1 - Agregar reporte]   [2 - Cerrar reporte]\n[0 - Cancelar]")
+    elif op == 9:
+        print("[1 - Agregar reporte]\n[0 - Cancelar]")
+    elif op == 10:
+        print("[1 - Contratacion / Descontratacion de Servicio]   [2 - Visualizar historial de ventas]\n[0 - Cancelar]")
+    elif op == 11:
+        print("[1 - Contratar servicio]   [2 - Descontratar servicio]\n[0 - Cancelar]")
+    elif op == "input":
+        print("Selecciona una opcion para continuar (0 - cancelar)")
 
 
 def validar_ruta_main(msg):
@@ -116,22 +118,23 @@ def validar_ruta_main(msg):
     while True:
         msgs(0)
         try:
-            ruta = alpnum_val(msg)
+            ruta = alpnum_val(msg, "main.py")
             if ruta.endswith("main.py"):
                 return ruta
             else:
                 raise ValueError
         except:
+            reportes_txt("Ruta main.py incorrecta")
             input("Asegurese de que la ruta es del archivo 'main.py'. \nIntente nuevamente\n(Enter para continuar)")
 
 
-def validar_ruta_json(msg):
+def validar_ruta_json(msg, script_path):
     '''   Validador de ruta y formato .json de archivo
     <== Devuelve Str
     '''
     msgs(1)
     while True:
-        ruta = alpnum_val(msg)
+        ruta = alpnum_val(msg, script_path)
         try:
             with open(ruta, "r"):
                 if ruta.endswith(".json"):
@@ -141,6 +144,7 @@ def validar_ruta_json(msg):
                     input(
                         "Formato de archivo invalido, debe ser .json para este programa. \nIntente nuevamente\n(Enter para continuar)")
         except:
+            reportes_txt("Ruta db.json incorrecta", data_in_kwargs=script_path)
             input("Archivo no encontrado. \nIntente nuevamente\n(Enter para continuar)")
 
 
@@ -156,7 +160,7 @@ def opener(ruta):
         return data
 
 
-def menu_selector(*opcs, msg_op=None, una_opcion=False, continuar=False, envia_op=None,op_externa=False,contenido_terminal=False,**kwargs):
+def menu_selector(*opcs, msg_op=None, una_opcion=False, continuar=False, envia_op=None,op_externa=False, limitador=False,contenido_terminal=False,**kwargs):
     '''
     Menu generico, recibe funciones y argumentos para estas como argumentos a las cuales se accede a solicitud del usuario 
     ==> Recibe (Argumentos de longitud variable, Argumentos de palabra clave)
@@ -164,27 +168,37 @@ def menu_selector(*opcs, msg_op=None, una_opcion=False, continuar=False, envia_o
     '''
     resultado_menu = 0
     contador = 0
+    data_in_kwargs = None
+    data_in_kwargs = kwargs.get("script_path")
+    if data_in_kwargs is None:
+        data_in_kwargs = kwargs.get("data_in_kwargs")
     while True:
         try:
             op = op_externa
             if contador == 1:
                 break
             elif op_externa == False:
-                op = int_val("> ", op_msg=msg_op)
+                op = int_val("> ", data_in_kwargs, op_msg=msg_op)
                 if contenido_terminal:
                     contador = 1
             if una_opcion:
-                if envia_op:
-                    if op == 0:
-                        return resultado_menu
-                    else:
+                if op == 0:
+                    return resultado_menu
+                elif op >= 1 and op <= limitador:
+                    if envia_op:
                         resultado_menu = opcs[0](op,kwargs)
+                        if op_externa:
+                            break
+                    else:
+                        resultado_menu = opcs[0](kwargs)
+                        if op_externa:
+                            break
                 else:
-                    resultado_menu = opcs[0](kwargs)
+                    raise ValueError
             else:
                 if op == 0:
                     return resultado_menu
-                elif op <= len(opcs):
+                elif op >= 1 and op <= len(opcs):
                     if envia_op:
                         resultado_menu = opcs[op-1](op,kwargs)
                     else:
@@ -193,27 +207,26 @@ def menu_selector(*opcs, msg_op=None, una_opcion=False, continuar=False, envia_o
                     raise ValueError
             if continuar:
                 op = int_val(
-                            "¿Desea continuar esta gestion?\nCualquier digito - Continuar    0 - Salir\n> ")
+                            "¿Desea continuar esta gestion?\nCualquier digito - Continuar    0 - Salir\n> ", data_in_kwargs)
                 if op == 0:
                     if resultado_menu is None:
                         resultado_menu = 0
                     return resultado_menu
                 else:
                     return resultado_menu
-        except Exception as e:
-            print(e)
-            print(type(e).__name__)
+        except:
+            reportes_txt("Opcion fuera de rango en menu generico",kwargs)
             input("Ingrese valor valido. \nIntente nuevamente\n(Enter para continuar)")
 
 
-def export_file(data_in_kwargs, name_file,No_kwargs=False):
+def export_file(data_in_kwargs, name_file,no_kwargs=False):
     '''
     Exporta la base de datos
     ==> Recibe Diccionario de datos, Nombre del archivo deseado
     '''
     current_route = None
     config = None
-    if not No_kwargs:
+    if not no_kwargs:
         current_route = data_in_kwargs.get("script_path")
         current_route = current_route.replace("main.py", name_file)
         config = data_in_kwargs.get("db")
@@ -239,6 +252,7 @@ def gestor(op,data_in_kwargs):
                 logica_gestiones(
                     estructura[op-1], data_in_kwargs,var_data_is_finded=data_is_finded, var_data_in_i=data_in_i, var_pos=pos)
             else:
+                reportes_txt("Intento de ingreso a perfil de usuario no creado",data_in_kwargs)
                 input("Usuario sin perfil, inicie modulo de ventas para crear su perfil\n[Enter - Regresar]\n")
     else:
         print(">>> Tratador de ventas")
@@ -248,18 +262,18 @@ def gestor(op,data_in_kwargs):
 
 
 
-def encontrar_en_bdd(bdd, estructura, alt=None):
-    bdd = bdd.get("db")
+def encontrar_en_bdd(data_in_kwargs, estructura, alt=None):
+    bdd = data_in_kwargs.get("db")
     if estructura == "usuarios":
         bdd = bdd.get("usuarios")
         while True:
             user_id = None
             if alt == "venta":
                 user_id = int_val(
-                "Ingresar ID para esta gestion o una inexistente para crear perfil de usuario y continuar (0 - Cancelar)\n> ")
+                "Ingresar ID para esta gestion o una inexistente para crear perfil de usuario y continuar (0 - Cancelar)\n> ", data_in_kwargs)
             else:
                 user_id = int_val(
-                "Ingresar ID existente para esta gestion (0 - Cancelar)\n> ")
+                "Ingresar ID existente para esta gestion (0 - Cancelar)\n> ", data_in_kwargs)
             if user_id != 0:
                 user_is_finded = False
                 for pos, user_reports_in_i in enumerate(bdd):
@@ -274,7 +288,7 @@ def encontrar_en_bdd(bdd, estructura, alt=None):
     elif estructura == "reportes":
         bdd = bdd.get("reportes")
         while True:
-            user_id = int_val("Ingresa ID del usuario (0 - Cancelar)\n> ")
+            user_id = int_val("Ingresa ID del usuario (0 - Cancelar)\n> ", data_in_kwargs)
             if user_id != 0:
                 user_is_finded = False
                 for pos, user_reports_in_i in enumerate(bdd):
@@ -283,6 +297,7 @@ def encontrar_en_bdd(bdd, estructura, alt=None):
                         print("Reportes encontrados...")
                         return [user_is_finded, pos, user_reports_in_i]
                 if not user_is_finded:
+                    reportes_txt("Intento de ingreso a reportes de usuario sin registrar",data_in_kwargs)
                     input("Reporte ID no existe en la base de datos\nNo existe un usuario con dicho ID en la base de datos\n [Enter - Reintentar]")
             else:
                 return 0
@@ -348,7 +363,7 @@ def mostrar_en_terminal(data_in_kwargs, requiere_mostrar_config=True,es_paginado
             for venta in data_in_kwargs:
                 line += f" {venta["fecha"]} | {venta["venta"]}\n"
                 body.append(line)
-            paginacion(body,header)
+            paginacion(body,header, data_in_kwargs)
         else:
             print(f">>> Visualizar todos los {config}")
             data_copy = data_copy.get("db").get(config)
@@ -358,7 +373,7 @@ def mostrar_en_terminal(data_in_kwargs, requiere_mostrar_config=True,es_paginado
                 for pos, user in enumerate(data_copy):
                     data_copy[pos]["id"] = str(user["id"])
                     data_copy[pos]["servicios"] = str(len(user["servicios"]))
-                paginacion(data_copy, header)
+                paginacion(data_copy, header, data_in_kwargs)
             elif config == "reportes":
                 keys = [key.upper() for key in data_copy[0].keys()]
                 keys[-1] = "AUN ABIERTOS"
@@ -379,7 +394,7 @@ def mostrar_en_terminal(data_in_kwargs, requiere_mostrar_config=True,es_paginado
                     data_copy[pos_report]["sugerencias"] = str(
                         len(data_copy[pos_report]["sugerencias"]))
                     data_copy[pos_report]["Cantidad Reportes"] = str(abiertas)
-                paginacion(data_copy, header)
+                paginacion(data_copy, header, data_in_kwargs)
     else:
         if isinstance(config,str):
             if config == "usuarios":
@@ -444,7 +459,7 @@ def mostrar_en_terminal(data_in_kwargs, requiere_mostrar_config=True,es_paginado
         return body
 
 
-def paginacion(structure_to_print, header):
+def paginacion(structure_to_print, header, data_in_kwargs):
     start = 0
     pag_size = 5
     while True:
@@ -466,7 +481,7 @@ def paginacion(structure_to_print, header):
         print(current_page)
         print(
             f"\t< {start} / {end} >\n[0 - Pagina anterior]    [1 - Pagina siguiente]\n[2 - Volver]")
-        movimiento = int_val("> ")
+        movimiento = int_val("> ", data_in_kwargs)
         if movimiento == 2:
             break
         elif movimiento == 1:
@@ -486,32 +501,34 @@ def logica_gestiones(gestion, data_in_kwargs, var_data_is_finded=None, var_data_
                 while True:
                     terminal = mostrar_en_terminal(
                         var_data_in_i, es_paginado=False, config=gestion)
-                    op = int_val("> ", 6)
+                    op = int_val("> ", data_in_kwargs,6)
                     if op == 0:
                         break
                     elif op >= 1 and op <= 5:
                         if op == 1 or op == 2 or op == 3:
-                            res = menu_selector(usuarios.editar_perfil_usuario,una_opcion=True, continuar=True,op=op,data_in_kwargs=data_in_kwargs,pos_user=var_pos, contenido_terminal=terminal, op_externa=op)
+                            res = menu_selector(usuarios.editar_perfil_usuario,una_opcion=True, continuar=True,op=op,data_in_kwargs=data_in_kwargs,pos_user=var_pos, contenido_terminal=terminal, op_externa=op, limitador=3)
                             if res == 0:
                                 break
                         elif op == 4:
-                            res = menu_selector(usuarios.editar_categoria,una_opcion=True,continuar=True, op_externa=op, data_in_kwargs=data_in_kwargs,pos_user=var_pos)
+                            res = menu_selector(usuarios.editar_categoria,una_opcion=True,continuar=True, op_externa=op, data_in_kwargs=data_in_kwargs,pos_user=var_pos, limitador=4)
                             if res == 0:
                                 break
                         elif op == 5:
                             usuarios.eliminar_usuario(data_in_kwargs,var_pos)
                             break
                     else:
+                        reportes_txt("Opcion fuera de rango dentro de logica de gestiones",data_in_kwargs)
                         input(
                             "Seleccione una opcion dada\n[Enter - Reintentar]\n")
             else:
+                reportes_txt("Intento de ingreso a perfil de usuario no creado",data_in_kwargs)
                 input("Usuario sin perfil, inicie modulo de ventas para crear su perfil\n[Enter - Regresar]\n")
         elif gestion == "reportes":
             if var_data_is_finded[0]:
                 while True:
                     mostrar_en_terminal(
                         var_data_in_i, es_paginado=False, config="reportes")
-                    op_estructura = int_val("> ", 7)
+                    op_estructura = int_val("> ", data_in_kwargs, 7)
                     if op_estructura == 0:
                         break
                     elif op_estructura >= 1 and op_estructura <= 3:
@@ -526,6 +543,7 @@ def logica_gestiones(gestion, data_in_kwargs, var_data_is_finded=None, var_data_
                                 if res == 0:
                                     break
                     else:
+                        reportes_txt("Opcion fuera de rango dentro de logica de gestiones",data_in_kwargs)
                         input(
                             "Seleccione una opcion dada\n[Enter - Reintentar]\n")
         else:
@@ -536,3 +554,18 @@ def logica_gestiones(gestion, data_in_kwargs, var_data_is_finded=None, var_data_
                     break
     else:
         print("> Cancelando...")
+
+def reportes_txt(msg,data_in_kwargs="main.py"):
+    try:
+        script_path = data_in_kwargs.get("script_path")
+        current_route = script_path.replace("main.py", "reportes.txt")
+        fecha = datetime.now()
+        fecha = datetime.strftime(fecha,"%d/%m/%Y - %H:%M:%S")
+        with open(current_route, "a",encoding="utf-8") as file:
+            file.write(fecha + "Reporte - " + msg + "\n")
+    except:
+        current_route = data_in_kwargs.replace("main.py", "reportes.txt")
+        fecha = datetime.now()
+        fecha = datetime.strftime(fecha,"%d/%m/%Y - %H:%M:%S")
+        with open(current_route, "a",encoding="utf-8") as file:
+            file.write(fecha + " Reporte - " + msg + "\n")

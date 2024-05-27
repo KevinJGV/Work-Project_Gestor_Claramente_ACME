@@ -22,11 +22,11 @@ def agregar_usuario(data_in_kwargs, id):
     print(">>>> Creacion de usuario")
     referencia_usuarios = data_in_kwargs.get("db").get("usuarios")
     referencia_reportes = data_in_kwargs.get("db").get("reportes")
-    nombre = funciones_main.alpnum_val("Nombre del usuario: ")
+    nombre = funciones_main.alpnum_val("Nombre del usuario: ", data_in_kwargs)
     direccion = funciones_main.alpnum_val(
-        "Direccion de domicilio del usuario: ")
+        "Direccion de domicilio del usuario: ", data_in_kwargs)
     contacto = funciones_main.validar_email_regexp(
-        input("Correo electronico del usuario: "), es_validado=True)
+        input("Correo electronico del usuario: "), data_in_kwargs, es_validado=True)
     fecha = datetime.now().date()
     fecha = datetime.strftime(fecha, "%d-%m-%Y")
 
@@ -82,12 +82,13 @@ def editar_perfil_usuario(data_in_kwargs):
     if op != "contacto":
         while True:
             nuevo_dato = funciones_main.alpnum_val(
-                f"Nuevo {op} de usuario ('cancelar' para Cancelar)\n> ")
+                f"Nuevo {op} de usuario ('cancelar' para Cancelar)\n> ", data_in_kwargs)
             if nuevo_dato == "cancelar":
                 print("> Cancelar")
                 break
             try:
                 int(nuevo_dato)
+                funciones_main.reportes_txt("Intento de ingreso con valor numerico donde se requeria valor alfanumerico",data_in_kwargs)
                 input(
                     f"{op.title()} debe ser alfanumerico\n[Enter - Reintentar]\n")
             except:
@@ -95,8 +96,8 @@ def editar_perfil_usuario(data_in_kwargs):
     else:
         while True:
             nuevo_dato = funciones_main.alpnum_val(
-                f"Nuevo {op} de usuario ('cancelar' para Cancelar)\n> ")
-            if funciones_main.validar_email_regexp(nuevo_dato) or nuevo_dato == "cancelar":
+                f"Nuevo {op} de usuario ('cancelar' para Cancelar)\n> ", data_in_kwargs)
+            if funciones_main.validar_email_regexp(nuevo_dato,data_in_kwargs) or nuevo_dato == "cancelar":
                 break
             else:
                 input(
@@ -123,7 +124,7 @@ def editar_categoria(data_in_kwargs):
     if yo == "y":
         while True:
             op = funciones_main.int_val(
-                "[1 - Modificar a Cliente Nuevo]\n[2 - Modificar a Cliente Regular]\n[3 - Modificar a Cliente Leal]\n[0 - Cancelar]\n> ")
+                "[1 - Modificar a Cliente Nuevo]\n[2 - Modificar a Cliente Regular]\n[3 - Modificar a Cliente Leal]\n[0 - Cancelar]\n> ", data_in_kwargs)
             if op >= 0 and op <= 3:
                 if op != 0:
                     modificadores = ["cliente nuevo",
@@ -137,6 +138,7 @@ def editar_categoria(data_in_kwargs):
                     print("> Cancelando...")
                     break
             else:
+                funciones_main.reportes_txt("Opcion fuera de rango editando usuario",data_in_kwargs)
                 input(
                     "Seleccione opcion dentro del rango\n[Enter - Reintentar]")
 
@@ -159,6 +161,7 @@ def eliminar_usuario(data_in_kwargs,pos_user):
         else:
             print("> Cancelando...")
     else:
+        funciones_main.reportes_txt("Intento de eliminacion a perfil de usuario con servicios aun contratados",data_in_kwargs)
         input(
             "Accion no permitida.\nEl usuario seleccionado no debe tener servicios contradados. Se requiere descontratar todos los servicios.\n[Enter - Cancelar]\n")
 
@@ -181,5 +184,5 @@ def actualizar_categoria_automatico(data, ruta_db):
                 usuario["categoria"] = "cliente regular"
             else:
                 usuario["categoria"] = "cliente leal"
-    funciones_main.export_file(data, "db", No_kwargs=True)
+    funciones_main.export_file(data, "db", no_kwargs=True)
     print("Actualizacion completa...")
