@@ -14,26 +14,53 @@ from dateutil.relativedelta import relativedelta
 #     '''
 
 
-def agregar_usuario(data_in_kwargs):
+def agregar_usuario(data_in_kwargs, id):
     '''
     Agrega un usuario a la bdd
     ==> Recibe Diccionario
-    <== Devuelve Diccionario
     '''
-    input("SE EJECUTA EL MODULO DE VENTAS, PENDIENTE\nAgregar usuario incompleto")
-    print(">>>> Agregando usuario a base de datos")
-    unpacked_data = data_in_kwargs.get("db").get("usuarios")
-    servicios = ""
-    if servicios is not None:
-        user_to_fill = {}
-        id = funciones_main.generar_id(unpacked_data, "usuarios")
-        nombre = funciones_main.alpnum_val("Nombre del usuario: ")
-        direccion = funciones_main.alpnum_val(
-            "Direccion de domicilio del usuario: ")
-        contacto = funciones_main.validar_email_regexp(
-            input("Correo electronico del usuario: "), es_validado=True)
+    print(">>>> Creacion de usuario")
+    referencia_usuarios = data_in_kwargs.get("db").get("usuarios")
+    referencia_reportes = data_in_kwargs.get("db").get("reportes")
+    nombre = funciones_main.alpnum_val("Nombre del usuario: ")
+    direccion = funciones_main.alpnum_val(
+        "Direccion de domicilio del usuario: ")
+    contacto = funciones_main.validar_email_regexp(
+        input("Correo electronico del usuario: "), es_validado=True)
+    fecha = datetime.now().date()
+    fecha = datetime.strftime(fecha, "%d-%m-%Y")
 
-        return data_in_kwargs
+    user_to_fill = {
+        "id": id,
+        "nombre": nombre,
+        "direccion": direccion,
+        "contacto": contacto,
+        "categoria": "cliente nuevo",
+        "categoria gestionada": False,
+        "antiguedad" : fecha,
+        "servicios" : []
+    }    
+    finalizo = ventas.contratacion(data_in_kwargs, proviene_agregar_usuario=user_to_fill)
+    if finalizo == 0:
+        input("> Contratacion cancelada\n [Enter - Finalizar]")
+    else:
+        referencia_usuarios.append(user_to_fill)
+        report_to_fill = {
+            "id_usuario": id,
+            "soporte": {
+                "abiertas": [],
+                "cerradas": []
+            },
+            "reclamaciones": {
+                "abiertas": [],
+                "cerradas": []
+            },
+            "sugerencias": [],
+            "Cantidad Reportes": 0
+        }
+        referencia_reportes.append(report_to_fill)
+        input("Contratacion exitosa, Bienvenid@ a la familia Claro\n[Enter - Continuar]")
+        funciones_main.export_file(data_in_kwargs,"exported_db")
 
 
 def editar_perfil_usuario(data_in_kwargs):
@@ -78,6 +105,7 @@ def editar_perfil_usuario(data_in_kwargs):
         print("Cancelando...")
     else:
         data_in_kwargs["db"]["usuarios"][pos_user][op] = nuevo_dato
+        print(f"{op.title()} del usuario editado satisfactoriamente...")
         funciones_main.export_file(data_in_kwargs, "exported_db")
         return data_in_kwargs
 
@@ -113,21 +141,19 @@ def editar_categoria(data_in_kwargs):
                     "Seleccione opcion dentro del rango\n[Enter - Reintentar]")
 
 
-def eliminar_usuario(data_in_kwargs):
+def eliminar_usuario(data_in_kwargs,pos_user):
     '''
     Elimina al usuario
     ==> Recibe Diccionario
     <== Devuelve Diccionario
     '''
-    pos_user = data_in_kwargs.get("pos_user")
-    data_in_kwargs = data_in_kwargs.get("data_in_kwargs")
     data = data_in_kwargs["db"]["usuarios"][pos_user]
     if len(data["servicios"]) == 0:
         op = input(
-            "///////////////////////////\nEsta accion es irreversible\n///////////////////////////\n['BORRAR' para confirmar]\n[Cualquier otro ingreso para abortar]\n> ")
+            "PRECAUCION: Esta accion es irreversible\n['BORRAR' para confirmar]\n[Cualquier otro ingreso para abortar]\n> ")
         if op == "BORRAR":
             data_in_kwargs["db"]["usuarios"].pop(pos_user)
-            input("Usuario eliminado satisfactoriamente\n Gestion añadida al registro de movimientos. PENDIENTE AÑADIR FUNCIONALIDAD")
+            print("Usuario borrado de la base de datos con exito...")
             funciones_main.export_file(data_in_kwargs, "exported_db")
             return data_in_kwargs
         else:

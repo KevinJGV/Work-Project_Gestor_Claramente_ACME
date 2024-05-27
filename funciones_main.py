@@ -12,7 +12,7 @@ import copy
 #     '''
 
 
-def int_val(msg, op_menu=0):
+def int_val(msg, op_msg=0):
     '''
     Validador de valor numerico
     ==> Recibe String
@@ -20,11 +20,11 @@ def int_val(msg, op_menu=0):
     '''
     while True:
         try:
-            if op_menu == 0:
+            if op_msg == 0:
                 prompt = int(input(msg).strip())
                 return prompt
             else:
-                msgs(op_menu)
+                msgs(op_msg)
                 prompt = int(input(msg).strip())
                 return prompt
         except:
@@ -90,13 +90,19 @@ def msgs(op):
         elif op == 5:
             print("\n>> Tratador de servicios\n1 - \n2 - \n0 - Volver")
         elif op == 6:
-            print("[1 - Editar Nombre]   [2 - Editar direccion]   [3 - Editar contacto]   [4 - Editar categoria manualmente -NO RECOMENDADO]\n[5 - Contratar/Descontratar Servicio]   [6 - ELIMINAR USUARIO]   [0 - Cancelar]")
+            print("[1 - Editar Nombre]   [2 - Editar direccion]   [3 - Editar contacto]\n[4 - Editar categoria manualmente -NO RECOMENDADO] [5 - ELIMINAR USUARIO]   [0 - Cancelar]")
         elif op == 7:
             print("[1 - Ingresar: Reportes de Soportes]   [2 - Ingresar: Reportes de Reclamaciones]   [3 - Ingresar: Reportes de Sugerencias]  \n[0 - Cancelar]")
         elif op == 8:
             print("[1 - Agregar reporte]   [2 - Cerrar reporte]\n[0 - Cancelar]")
         elif op == 9:
             print("[1 - Agregar reporte]\n[0 - Cancelar]")
+        elif op == 10:
+            print("[1 - Contratacion / Descontratacion de Servicio]   [2 - Visualizar historial de ventas]\n[0 - Cancelar]")
+        elif op == 11:
+            print("[1 - Contratar servicio]   [2 - Descontratar servicio]\n[0 - Cancelar]")
+        elif op == "input":
+            print("Selecciona una opcion para continuar (0 - cancelar)")
     except:
         print(op)
 
@@ -150,20 +156,23 @@ def opener(ruta):
         return data
 
 
-def menu_selector(*opcs, msg_op=None, una_opcion=False, continuar=False, envia_op=None,contenido_terminal=False,**kwargs):
+def menu_selector(*opcs, msg_op=None, una_opcion=False, continuar=False, envia_op=None,op_externa=False,contenido_terminal=False,**kwargs):
     '''
     Menu generico, recibe funciones y argumentos para estas como argumentos a las cuales se accede a solicitud del usuario 
     ==> Recibe (Argumentos de longitud variable, Argumentos de palabra clave)
     ==> Devuelve lo que devuelve la funcion señalada en ella
     '''
     resultado_menu = 0
+    contador = 0
     while True:
         try:
-            op = None
-            if contenido_terminal:
-                print(contenido_terminal)
-            if msg_op:
-                op = int_val("> ", op_menu=msg_op)
+            op = op_externa
+            if contador == 1:
+                break
+            elif op_externa == False:
+                op = int_val("> ", op_msg=msg_op)
+                if contenido_terminal:
+                    contador = 1
             if una_opcion:
                 if envia_op:
                     if op == 0:
@@ -219,27 +228,38 @@ def export_file(data_in_kwargs, name_file,No_kwargs=False):
 
 def gestor(op,data_in_kwargs):
     estructura = ["usuarios","reportes","ventas"]
-    print(f">>> Gestionar {estructura[op-1]}")
     if estructura[op-1] == "usuarios" or estructura[op-1] == "reportes":
+        print(f">>> Gestionar {estructura[op-1]}")
         data_is_finded = encontrar_en_bdd(
             data_in_kwargs, estructura[op-1])
         if data_is_finded != 0:
-            data_in_i = data_is_finded[2]
-            pos = data_is_finded[1]
-            logica_gestiones(
-                estructura[op-1], data_in_kwargs,var_data_is_finded=data_is_finded, var_data_in_i=data_in_i, var_pos=pos)
+            if data_is_finded[0] is not False:
+                data_in_i = data_is_finded[2]
+                pos = data_is_finded[1]
+                logica_gestiones(
+                    estructura[op-1], data_in_kwargs,var_data_is_finded=data_is_finded, var_data_in_i=data_in_i, var_pos=pos)
+            else:
+                input("Usuario sin perfil, inicie modulo de ventas para crear su perfil\n[Enter - Regresar]\n")
     else:
-        return
+        print(">>> Tratador de ventas")
+        data_is_finded = encontrar_en_bdd(
+            data_in_kwargs, estructura[op-1])
+        logica_gestiones(estructura[op-1],data_in_kwargs, var_data_is_finded=data_is_finded)
 
 
 
-def encontrar_en_bdd(bdd, estructura):
+def encontrar_en_bdd(bdd, estructura, alt=None):
     bdd = bdd.get("db")
     if estructura == "usuarios":
         bdd = bdd.get("usuarios")
         while True:
-            user_id = int_val(
-                "Ingresa ID existente para gestionar usuario o uno no registrado para crear perfil de usuario (0 - Cancelar)\n> ")
+            user_id = None
+            if alt == "venta":
+                user_id = int_val(
+                "Ingresar ID para esta gestion o una inexistente para crear perfil de usuario y continuar (0 - Cancelar)\n> ")
+            else:
+                user_id = int_val(
+                "Ingresar ID existente para esta gestion (0 - Cancelar)\n> ")
             if user_id != 0:
                 user_is_finded = False
                 for pos, user_reports_in_i in enumerate(bdd):
@@ -248,7 +268,7 @@ def encontrar_en_bdd(bdd, estructura):
                         print("Usuario encontrado... Procesando...")
                         return [user_is_finded, pos, user_reports_in_i]
                 if not user_is_finded:
-                    return [False, None, None]
+                    return [False, user_id]
             else:
                 return 0
     elif estructura == "reportes":
@@ -266,6 +286,9 @@ def encontrar_en_bdd(bdd, estructura):
                     input("Reporte ID no existe en la base de datos\nNo existe un usuario con dicho ID en la base de datos\n [Enter - Reintentar]")
             else:
                 return 0
+    else:
+        return bdd.get("ventas")
+
 
 
 def generar_id(data, estructura, complejidad=0, id=None):
@@ -306,16 +329,26 @@ def generar_id(data, estructura, complejidad=0, id=None):
         return id
 
 
-def mostrar_en_terminal(data_in_kwargs, es_paginado=True, config=0):
+def mostrar_en_terminal(data_in_kwargs, requiere_mostrar_config=True,es_paginado=True, config=0):
     '''
     Muestra en consola el contenido .json paginadamente por defecto
     ==> Recibe Diccionario
     '''
     data_copy = copy.deepcopy(data_in_kwargs)
+    body = ""
     if es_paginado:
-        config = data_copy.get("mostrar_cofig")
+        if requiere_mostrar_config:
+            config = data_copy.get("mostrar_cofig")
         if config == 0:
             print("[NO SELECCIONADA CONFIGURACION PARA VISUALIZAR]")
+        elif config == "historial":
+            body = []
+            header = " FECHA DE VENTA | SERVICIO "
+            line = ""
+            for venta in data_in_kwargs:
+                line += f" {venta["fecha"]} | {venta["venta"]}\n"
+                body.append(line)
+            paginacion(body,header)
         else:
             print(f">>> Visualizar todos los {config}")
             data_copy = data_copy.get("db").get(config)
@@ -348,7 +381,6 @@ def mostrar_en_terminal(data_in_kwargs, es_paginado=True, config=0):
                     data_copy[pos_report]["Cantidad Reportes"] = str(abiertas)
                 paginacion(data_copy, header)
     else:
-        body = ""
         if isinstance(config,str):
             if config == "usuarios":
                 keys = list(data_copy.keys())
@@ -377,45 +409,59 @@ def mostrar_en_terminal(data_in_kwargs, es_paginado=True, config=0):
                         data_copy[clave_in_report] = str(valor_in_report)
                 line = " | ".join(list(data_copy.values())) + "\n"
                 body = header + "\n" + line
+            elif config == "servicios":
+                body += " SERVICIOS PARA OFRECER | TARIFA MENSUAL ESTANDAR\n"
+                for servicio in data_copy:
+                    body += f" {servicio["servicio"]} | ${servicio["tarifa"]} COP\n"
+            elif config == "descontratar":
+                body += " # | SERVICIO DEL USUARIO \n"
+                for pos, servicio in enumerate(data_copy):
+                    body += f" {pos+1} | {servicio["servicio"]}\n"
         elif isinstance(config,list):
             if config[0] == "s&r&s":
                 config[1] -= 1
                 op = ["soporte", "reclamaciones", "sugerencias"]
                 print(f">>>> Reportes de {op[config[1]].title()}")
-                header = "ID REPORTE | DESCRIPCIÓN | ESTADO\n"
-                body = ""
+                body += "ID REPORTE | DESCRIPCIÓN | ESTADO\n"
                 if config[1] != 2:
                     if len(data_copy[op[config[1]]]["abiertas"]) != 0 or len(data_copy[op[config[1]]]["cerradas"]) != 0:
                         for tipo_reportes, lista_reportes in data_copy[op[config[1]]].items():
                             for reporte in lista_reportes:
                                 body += f"{reporte["id"]} | {reporte["descripcion"]} | {tipo_reportes[:-1].capitalize()}\n"
                     else:
-                        body = "[USUARIO SIN REPORTES]"
+                        body += "[USUARIO SIN REPORTES]"
                 else:
                     if len(data_copy[op[config[1]]]) != 0:
                         for reporte in data_copy[op[config[1]]]:
-                                body += f"{reporte["id"]} | {reporte["descripcion"]}\n"
+                            body += f"{reporte["id"]} | {reporte["descripcion"]}\n"
                     else:
-                        body = "[USUARIO SIN REPORTES]"
-                body = header + body
+                        body += "[USUARIO SIN REPORTES]"
+            elif config[0] == "contratar":
+                body += " # | SERVICIO | TARIFA ESTANDAR | TARIFA PERSONALIZADA\n"
+                for pos, servicio in enumerate(data_copy):
+                    body += f" {pos+1} | {servicio["servicio"]} | ${servicio["tarifa"]} COP | ${round((int(servicio["tarifa"])*config[1]-int(servicio["tarifa"]))*(-1))} COP (-%{config[1]*100}Dcto)\n"
         print(body)
         return body
 
 
-def paginacion(dict_to_print, header):
+def paginacion(structure_to_print, header):
     start = 0
     pag_size = 5
     while True:
         end = start + pag_size
         print(header)
-        if end > len(dict_to_print):
-            end = len(dict_to_print)
+        if end > len(structure_to_print):
+            end = len(structure_to_print)
         if start < 0:
             start = 0
-        seccion = dict_to_print[start:end]
+        seccion = structure_to_print[start:end]
         current_page = ""
-        for dic in seccion:
-            line = " | ".join(list(dic.values())) + "\n"
+        for componente in seccion:
+            line = ""
+            if isinstance(structure_to_print,dict):
+                line = " | ".join(list(componente.values())) + "\n"
+            else:
+                line = "".join(componente)
             current_page += line
         print(current_page)
         print(
@@ -441,29 +487,25 @@ def logica_gestiones(gestion, data_in_kwargs, var_data_is_finded=None, var_data_
                     terminal = mostrar_en_terminal(
                         var_data_in_i, es_paginado=False, config=gestion)
                     op = int_val("> ", 6)
-                    if op >= 0 and op <= 6:
+                    if op == 0:
+                        break
+                    elif op >= 1 and op <= 5:
                         if op == 1 or op == 2 or op == 3:
-                            res = menu_selector(usuarios.editar_perfil_usuario,una_opcion=True, continuar=True,op=op,data_in_kwargs=data_in_kwargs,pos_user=var_pos, contenido_terminal=terminal)
+                            res = menu_selector(usuarios.editar_perfil_usuario,una_opcion=True, continuar=True,op=op,data_in_kwargs=data_in_kwargs,pos_user=var_pos, contenido_terminal=terminal, op_externa=op)
                             if res == 0:
                                 break
                         elif op == 4:
-                            res = menu_selector(usuarios.editar_categoria,una_opcion=True,continuar=True, data_in_kwargs=data_in_kwargs,pos_user=var_pos)
+                            res = menu_selector(usuarios.editar_categoria,una_opcion=True,continuar=True, op_externa=op, data_in_kwargs=data_in_kwargs,pos_user=var_pos)
                             if res == 0:
                                 break
                         elif op == 5:
-                            print("funcionalidad_en_desarrollo")
-                            if res == 0:
-                                break
-                        elif op == 6:
-                            menu_selector(usuarios.eliminar_usuario,una_opcion=True, data_in_kwargs=data_in_kwargs,pos_user=var_pos)
-                            break
-                        else:
+                            usuarios.eliminar_usuario(data_in_kwargs,var_pos)
                             break
                     else:
                         input(
                             "Seleccione una opcion dada\n[Enter - Reintentar]\n")
             else:
-                usuarios.agregar_usuario(data_in_kwargs)
+                input("Usuario sin perfil, inicie modulo de ventas para crear su perfil\n[Enter - Regresar]\n")
         elif gestion == "reportes":
             if var_data_is_finded[0]:
                 while True:
@@ -487,6 +529,10 @@ def logica_gestiones(gestion, data_in_kwargs, var_data_is_finded=None, var_data_
                         input(
                             "Seleccione una opcion dada\n[Enter - Reintentar]\n")
         else:
-            print("ventas")
+            while True:
+                mostrar_en_terminal(var_data_is_finded["servicios"],es_paginado=False, config="servicios")
+                res = menu_selector(ventas.contratacion_descontratacion,ventas.historial_ventas,msg_op=10,contenido_terminal=True, data_in_kwargs=data_in_kwargs,)
+                if res == 0:
+                    break
     else:
         print("> Cancelando...")
