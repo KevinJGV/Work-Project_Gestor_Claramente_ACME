@@ -85,143 +85,6 @@
                     "fecha": "15-07-2019"
                 }
             ]
-        },
-        {
-            "id": 6,
-            "nombre": "Mónica López",
-            "dirección": "Transversal 27 #50-30, Santa Marta",
-            "contacto": "monica.lopez@ejemplo.co",
-            "categoria": "cliente nuevo",
-            "categoria gestionada": false,
-            "antiguedad": "01-09-2023",
-            "servicios": [
-                {
-                    "servicio": "Plan prepago",
-                    "fecha": "01-09-2023"
-                },
-                {
-                    "servicio": "TV hogar Premium",
-                    "fecha": "01-09-2023"
-                }
-            ]
-        },
-        {
-            "id": 7,
-            "nombre": "Carlos Gómez",
-            "dirección": "Carrera 15 #28-45, Medellín",
-            "contacto": "carlos.gomez@ejemplo.co",
-            "categoria": "cliente nuevo",
-            "categoria gestionada": false,
-            "antiguedad": "22-05-2024",
-            "servicios": [
-                {
-                    "servicio": "Plan pospago 40GB",
-                    "fecha": "22-05-2024"
-                },
-                {
-                    "servicio": "Internet de Fibra Óptica 500MB",
-                    "fecha": "22-05-2024"
-                }
-            ]
-        },
-        {
-            "id": 8,
-            "nombre": "Luisa Fernanda Pérez",
-            "dirección": "Diagonal 33 #66-88, Cali",
-            "contacto": "luisa.perez@ejemplo.co",
-            "categoria": "cliente leal",
-            "categoria gestionada": false,
-            "antiguedad": "10-05-2018",
-            "servicios": [
-                {
-                    "servicio": "Renovación de equipo móvil",
-                    "fecha": "10-05-2018"
-                },
-                {
-                    "servicio": "TV hogar Premium",
-                    "fecha": "10-05-2018"
-                },
-                {
-                    "servicio": "Plan pospago 40GB",
-                    "fecha": "10-05-2018"
-                }
-            ]
-        },
-        {
-            "id": 9,
-            "nombre": "Sofía Martínez",
-            "dirección": "Avenida Libertadores #50-76, Cúcuta",
-            "contacto": "sofia.martinez@ejemplo.co",
-            "categoria": "cliente regular",
-            "categoria gestionada": false,
-            "antiguedad": "01-12-2022",
-            "servicios": [
-                {
-                    "servicio": "Internet de Fibra Óptica 500MB",
-                    "fecha": "01-12-2022"
-                },
-                {
-                    "servicio": "Plan prepago",
-                    "fecha": "01-12-2022"
-                }
-            ]
-        },
-        {
-            "id": 10,
-            "nombre": "Andrea Castillo",
-            "dirección": "Calle 70 #45-22, Barranquilla",
-            "contacto": "andrea.castillo@ejemplo.co",
-            "categoria": "cliente nuevo",
-            "categoria gestionada": false,
-            "antiguedad": "24-05-2024",
-            "servicios": [
-                {
-                    "servicio": "Plan pospago 40GB",
-                    "fecha": "24-05-2024"
-                }
-            ]
-        },
-        {
-            "id": 11,
-            "nombre": "Juan David Moreno",
-            "dirección": "Calle 5 #12-34, Bucaramanga",
-            "contacto": "juan.moreno@ejemplo.co",
-            "categoria": "cliente leal",
-            "categoria gestionada": false,
-            "antiguedad": "10-09-2019",
-            "servicios": [
-                {
-                    "servicio": "Internet de Fibra Óptica 500MB",
-                    "fecha": "10-09-2019"
-                },
-                {
-                    "servicio": "Plan pospago 40GB",
-                    "fecha": "10-09-2019"
-                },
-                {
-                    "servicio": "TV hogar Premium",
-                    "fecha": "10-09-2019"
-                }
-            ]
-        },
-        {
-            "id": 12,
-            "nombre": "Mariana López",
-            "dirección": "Transversal 27 #33-56, Cartagena",
-            "contacto": "mariana.lopez@ejemplo.co",
-            "categoria": "cliente nuevo",
-            "categoria gestionada": false,
-            "antiguedad": "05-07-2023",
-            "servicios": [
-                {
-                    "servicio": "Plan prepago",
-                    "fecha": "05-07-2023"
-                },
-                {
-                    "servicio": "Renovación de equipo móvil",
-                    "fecha": "05-07-2023"
-                }
-            ]
         }
     ],
     "reportes": [
@@ -362,166 +225,36 @@
                 }
             ],
             "Cantidad Reportes": 2
-        },
-        {
-            "id_usuario": 7,
-            "soporte": {
-                "abiertas": [
-                    {
-                        "id": "7-1",
-                        "descripcion": "Problema con la señal de telefonía móvil"
-                    }
-                ],
-                "cerradas": []
-            },
-            "reclamaciones": {
-                "abiertas": [],
-                "cerradas": []
-            },
-            "sugerencias": [
-                {
-                    "id": "7-1",
-                    "descripcion": "Mejorar la calidad de las llamadas"
-                }
-            ],
-            "Cantidad Reportes": 2
-        },
-        {
-            "id_usuario": 8,
-            "soporte": {
-                "abiertas": [
-                    {
-                        "id": "8-1",
-                        "descripcion": "Problema con la señal de televisión"
-                    }
-                ],
-                "cerradas": []
-            },
-            "reclamaciones": {
-                "abiertas": [],
-                "cerradas": []
-            },
-            "sugerencias": [
-                {
-                    "id": "8-1",
-                    "descripcion": "Ampliar la cobertura en la zona céntrica"
-                }
-            ],
-            "Cantidad Reportes": 2
-        },
-        {
-            "id_usuario": 9,
-            "soporte": {
-                "abiertas": [
-                    {
-                        "id": "9-1",
-                        "descripcion": "No puede acceder al correo electrónico"
-                    }
-                ],
-                "cerradas": []
-            },
-            "reclamaciones": {
-                "abiertas": [],
-                "cerradas": []
-            },
-            "sugerencias": [
-                {
-                    "id": "9-1",
-                    "descripcion": "Mejorar la atención al cliente en la sucursal"
-                }
-            ],
-            "Cantidad Reportes": 2
-        },
-        {
-            "id_usuario": 10,
-            "soporte": {
-                "abiertas": [
-                    {
-                        "id": "10-1",
-                        "descripcion": "Problema con la señal de telefonía móvil"
-                    }
-                ],
-                "cerradas": []
-            },
-            "reclamaciones": {
-                "abiertas": [],
-                "cerradas": []
-            },
-            "sugerencias": [
-                {
-                    "id": "10-1",
-                    "descripcion": "Mejorar la calidad de las llamadas"
-                }
-            ],
-            "Cantidad Reportes": 2
-        },
-        {
-            "id_usuario": 11,
-            "soporte": {
-                "abiertas": [
-                    {
-                        "id": "11-1",
-                        "descripcion": "No puede acceder al correo electrónico"
-                    }
-                ],
-                "cerradas": []
-            },
-            "reclamaciones": {
-                "abiertas": [],
-                "cerradas": []
-            },
-            "sugerencias": [
-                {
-                    "id": "11-1",
-                    "descripcion": "Mejorar la atención telefónica al cliente"
-                }
-            ],
-            "Cantidad Reportes": 2
-        },
-        {
-            "id_usuario": 12,
-            "soporte": {
-                "abiertas": [
-                    {
-                        "id": "12-1",
-                        "descripcion": "Problema con la señal de televisión"
-                    }
-                ],
-                "cerradas": []
-            },
-            "reclamaciones": {
-                "abiertas": [],
-                "cerradas": []
-            },
-            "sugerencias": [
-                {
-                    "id": "12-1",
-                    "descripcion": "Ampliar la cobertura de internet en la zona rural"
-                }
-            ],
-            "Cantidad Reportes": 2
         }
     ],
-    "ventas": [
-        {
-            "servicio": "Internet de Fibra Óptica 500MB",
-            "tarifa": "90000"
-        },
-        {
-            "servicio": "Plan pospago 40GB",
-            "tarifa": "40000"
-        },
-        {
-            "servicio": "Plan prepago",
-            "tarifa": "Sin Tarifa"
-        },
-        {
-            "servicio": "TV hogar Premium",
-            "tarifa": "80000"
-        },
-        {
-            "servicio": "Renovación de equipo móvil",
-            "tarifa": "70000"
-        }
-    ]
+    "ventas": {
+        "servicios": [
+            {
+                "servicio": "Internet de Fibra Óptica 500MB",
+                "tarifa": "90000"
+            },
+            {
+                "servicio": "Plan pospago 40GB",
+                "tarifa": "40000"
+            },
+            {
+                "servicio": "Plan prepago",
+                "tarifa": "0"
+            },
+            {
+                "servicio": "TV hogar Premium",
+                "tarifa": "80000"
+            },
+            {
+                "servicio": "Renovación de equipo móvil",
+                "tarifa": "70000"
+            }
+        ],
+        "historial": [
+            {
+                "fecha": "01-09-2023",
+                "venta": "Plan pospago 40GB"
+            }
+        ]
+    }
 }
