@@ -62,4 +62,4 @@ Unicamente Python
 
 * [Kevin González - KevinJGV](https://github.com/KevinJGV)
 
-También puedes mirar la lista de todos los [contribuyentes](https://github.com/your/project/contributors) quíenes han participado en este proyecto.
+También puedes mirar la lista de todos los [contribuyentes](https://github.com/KevinJGV/Work-Project_Gestor_Claramente_ACME/graphs/contributors) quíenes han participado en este proyecto.
